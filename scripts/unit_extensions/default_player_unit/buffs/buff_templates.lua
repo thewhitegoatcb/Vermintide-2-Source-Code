@@ -2548,7 +2548,7 @@ ProcFunctions = {
 		local buff_system = Managers.state.entity:system("buff_system")
 
 		local buff_name = template.buff_area_buff
-		local sync_type = template.sync_buffs and BuffSyncType.All or BuffSyncType.Local
+		local sync_type = template.buff_sync_type or BuffSyncType.Local
 		local params = FrameTable.alloc_table()
 		params.attacker_unit = source_unit
 		params.source_attacker_unit = source_unit

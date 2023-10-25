@@ -68,7 +68,7 @@ function PlayerCharacterStateLunging:on_enter(unit, input, dt, context, t, previ
 	local damage_settings = lunge_data.damage
 	if damage_settings then
 		local damage_profile_name = damage_settings.damage_profile or "default"
-		local damage_profile_id, power_level, hit_zone_id, ignore_shield, allow_backstab = self:_parse_attack_data(damage_settings)
+		local damage_profile_id, power_level, hit_zone_id, ignore_shield = self:_parse_attack_data(damage_settings)
 
 		self.damage_profile_id = NetworkLookup.damage_profiles [damage_profile_name]
 		local damage_profile = DamageProfileTemplates [damage_profile_name]
@@ -397,7 +397,7 @@ function PlayerCharacterStateLunging:_parse_attack_data(damage_settings)
 	local hit_zone_hit_name = damage_settings.hit_zone_hit_name
 	local hit_zone_id = NetworkLookup.hit_zones [hit_zone_hit_name]
 
-	return damage_profile_id, power_level, hit_zone_id, damage_settings.ignore_shield, damage_settings.allow_backstab
+	return damage_profile_id, power_level, hit_zone_id, damage_settings.ignore_shield
 end
 
 function PlayerCharacterStateLunging:_calculate_hit_mass(shield_blocked, current_action, hit_unit, breed, unit)
@@ -457,48 +457,44 @@ function PlayerCharacterStateLunging:_update_damage(unit, dt, t, damage_data)
 	local attack_direction = Vector3.normalize(delta_move)
 	local weapon_system = Managers.state.entity:system("weapon_system")
 	local buff_hit_target_index = 0
+	local side_manager = Managers.state.side
 
-	for i = 1, num_actors do
-		local hit_actor = actors [i]
-		local hit_unit = Actor.unit(hit_actor)
+	for i = 1, num_actors do repeat
+			local hit_actor = actors [i]
+			local hit_unit = Actor.unit(hit_actor)
 
-		if not hit_units [hit_unit] then
-			buff_hit_target_index = buff_hit_target_index + 1
-			hit_units [hit_unit] = true
+			if not hit_units [hit_unit] then
+				hit_units [hit_unit] = true
 
-
-
-
-
-			local hit_unit_id = network_manager:unit_game_object_id(hit_unit)
-
-			local hit_unit_pos = POSITION_LOOKUP [hit_unit]
-
-			local shield_blocked = nil
-			local backstab_multiplier = 1
-			local procced = false
-
-			local breed = Unit.get_data(hit_unit, "breed")
-			local damage_profile_id, power_level, hit_zone_id, ignore_shield, allow_backstab = self:_parse_attack_data(damage_data)
-
-			if breed and HEALTH_ALIVE [hit_unit] then
-				shield_blocked = not ignore_shield and AiUtils.attack_is_shield_blocked(hit_unit, unit)
-
-				if allow_backstab then
-					local owner_to_hit_dir = Vector3.normalize(hit_unit_pos - new_pos)
-					local hit_unit_direction = Quaternion.forward(Unit.local_rotation(hit_unit, 0))
-					local hit_angle = Vector3.dot(hit_unit_direction, owner_to_hit_dir)
-					local behind_target = hit_angle >= 0.55
-					if behind_target then
-						backstab_multiplier, procced = buff_extension:apply_buffs_to_value(backstab_multiplier, "backstab_multiplier")
-					end
+				if not HEALTH_ALIVE [hit_unit] then
+					return
 				end
-				shield_blocked = self:_calculate_hit_mass(shield_blocked, damage_data, hit_unit, breed, unit)
-			else
-				shield_blocked = false
-			end
 
-			if breed and HEALTH_ALIVE [hit_unit] then
+				local is_enemy = side_manager:is_enemy(unit, hit_unit)
+				if not is_enemy then
+					return
+				end
+
+				local breed = Unit.get_data(hit_unit, "breed")
+				if not breed then
+					return
+				end
+
+				buff_hit_target_index = buff_hit_target_index + 1
+
+
+
+
+
+
+				local hit_unit_id = network_manager:unit_game_object_id(hit_unit)
+				local hit_unit_pos = POSITION_LOOKUP [hit_unit]
+
+				local damage_profile_id, power_level, hit_zone_id, ignore_shield = self:_parse_attack_data(damage_data)
+
+				local shield_blocked = not ignore_shield and AiUtils.attack_is_shield_blocked(hit_unit, unit)
+				shield_blocked = self:_calculate_hit_mass(shield_blocked, damage_data, hit_unit, breed, unit)
+
 				local final_stagger_direction = nil
 				if damage_data.stagger_angles then
 					local owner_to_hit_dir = Vector3.normalize(hit_unit_pos - new_pos)
@@ -555,13 +551,12 @@ function PlayerCharacterStateLunging:_update_damage(unit, dt, t, damage_data)
 				end
 
 				local hit_mass_count_reached = self.max_targets <= self._amount_of_mass_hit or breed.armor_category == 2 or breed.armor_category == 3
-				if HEALTH_ALIVE [hit_unit] and (damage_data.interrupt_on_first_hit or hit_mass_count_reached and damage_data.interrupt_on_max_hit_mass) then
+				if damage_data.interrupt_on_first_hit or hit_mass_count_reached and damage_data.interrupt_on_max_hit_mass then
 					self:_do_blast(new_pos, forward_direction)
-					return true
-				end
-			end
-		end
+					return true end end until true
 	end
+
+
 
 	return false
 end
@@ -581,56 +576,64 @@ function PlayerCharacterStateLunging:_do_blast(new_pos, forward_direction)
 		local weapon_system = Managers.state.entity:system("weapon_system")
 		local unit = self.unit
 		local attacker_unit_id = network_manager:unit_game_object_id(unit)
-		local buff_extension = self.buff_extension
 
 		local radius = blast_damage_data.radius
 		local blast_pos = new_pos + forward_direction * radius
 		local actors, num_actors = PhysicsWorld.immediate_overlap(physics_world, "shape", "sphere", "position", blast_pos, "size", radius, "collision_filter", collision_filter)
 		local buff_hit_target_index = 0
+		local side_manager = Managers.state.side
 
 		table.clear(hit_units)
-		for i = 1, num_actors do
-			local hit_actor = actors [i]
-			local hit_unit = Actor.unit(hit_actor)
-			if not hit_units [hit_unit] then
+		for i = 1, num_actors do repeat
+				local hit_actor = actors [i]
+				local hit_unit = Actor.unit(hit_actor)
+				if hit_units [hit_unit] then
+					return
+				end
 				hit_units [hit_unit] = true
 
 				local breed = Unit.get_data(hit_unit, "breed")
-				if breed then
-					local damage_profile_id, power_level, hit_zone_id, ignore_shield, allow_backstab = self:_parse_attack_data(blast_damage_data)
-					local hit_unit_id = network_manager:unit_game_object_id(hit_unit)
-					buff_hit_target_index = buff_hit_target_index + 1
-					local damage_source = "charge_ability_hit_blast"
-					local damage_source_id = NetworkLookup.damage_sources [damage_source]
-
-					local target_position = POSITION_LOOKUP [hit_unit]
-					local attack_direction = Vector3.normalize(blast_pos - target_position)
-					local boost_curve_multiplier = 0
-
-					local actual_hit_target_index = nil
-					local shield_blocked = not ignore_shield and AiUtils.attack_is_shield_blocked(hit_unit, unit)
-					local shield_break_procc = false
-					local is_critical_strike = false
-					local can_damage = true
-					local can_stagger = true
-
-					weapon_system:send_rpc_attack_hit(damage_source_id,
-					attacker_unit_id,
-					hit_unit_id,
-					hit_zone_id,
-					target_position,
-					attack_direction,
-					damage_profile_id,
-					"power_level", power_level,
-					"hit_target_index", actual_hit_target_index,
-					"blocking", shield_blocked,
-					"shield_break_procced", shield_break_procc,
-					"boost_curve_multiplier", boost_curve_multiplier,
-					"is_critical_strike", is_critical_strike,
-					"can_damage", can_damage,
-					"can_stagger", can_stagger)
+				if not breed then
+					return
 				end
-			end
+
+				local is_enemy = side_manager:is_enemy(unit, hit_unit)
+				if is_enemy then
+					return
+				end
+
+				local damage_profile_id, power_level, hit_zone_id, ignore_shield = self:_parse_attack_data(blast_damage_data)
+				local hit_unit_id = network_manager:unit_game_object_id(hit_unit)
+				buff_hit_target_index = buff_hit_target_index + 1
+				local damage_source = "charge_ability_hit_blast"
+				local damage_source_id = NetworkLookup.damage_sources [damage_source]
+
+				local target_position = POSITION_LOOKUP [hit_unit]
+				local attack_direction = Vector3.normalize(blast_pos - target_position)
+				local boost_curve_multiplier = 0
+
+				local actual_hit_target_index = nil
+				local shield_blocked = not ignore_shield and AiUtils.attack_is_shield_blocked(hit_unit, unit)
+				local shield_break_procc = false
+				local is_critical_strike = false
+				local can_damage = true
+				local can_stagger = true
+
+				weapon_system:send_rpc_attack_hit(damage_source_id,
+				attacker_unit_id,
+				hit_unit_id,
+				hit_zone_id,
+				target_position,
+				attack_direction,
+				damage_profile_id,
+				"power_level", power_level,
+				"hit_target_index", actual_hit_target_index,
+				"blocking", shield_blocked,
+				"shield_break_procced", shield_break_procc,
+				"boost_curve_multiplier", boost_curve_multiplier,
+				"is_critical_strike", is_critical_strike,
+				"can_damage", can_damage,
+				"can_stagger", can_stagger) until true
 		end
 	end
 end

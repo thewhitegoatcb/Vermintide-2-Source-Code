@@ -101,7 +101,7 @@ function ScrollbarUI:_update_input(dt, t, input_service, ui_renderer)
 		scroll_value = scroll_axis and scroll_axis [2] or 0
 	elseif UIUtils.is_button_hover(self._scroll_area_hotspot_widget) then
 		local scroll_axis = input_service:get("scroll_axis")
-		scroll_value = scroll_axis [2]
+		scroll_value = scroll_axis and scroll_axis [2] or 0
 	end
 
 	if math.abs(scroll_value) == 0 then
@@ -127,7 +127,7 @@ function ScrollbarUI:_update_scroller_position(input_service, ui_scenegraph)
 	local end_point = world_pos [2] + size [2]
 
 	local scroller_height = style.scroller.rect_size [2]
-	local input_pos = cursor_pos [2]
+	local input_pos = UIInverseScaleVectorToResolution(cursor_pos [2])
 
 	self._progress = math.clamp(1 - math.inv_lerp(start_point + scroller_height * 0.5, end_point - scroller_height * 0.5, input_pos), 0, 1)
 end

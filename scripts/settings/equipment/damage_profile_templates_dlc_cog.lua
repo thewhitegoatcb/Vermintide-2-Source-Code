@@ -39,7 +39,7 @@ local damage_templates = {
 
 
 
-			range_dropoff_settings = engineer_ability_shot_dropoff_ranges } },
+			range_modifier_settings = engineer_ability_shot_dropoff_ranges } },
 
 
 
@@ -77,7 +77,7 @@ local damage_templates = {
 
 
 
-			range_dropoff_settings = engineer_ability_shot_dropoff_ranges } },
+			range_modifier_settings = engineer_ability_shot_dropoff_ranges } },
 
 
 
@@ -101,7 +101,7 @@ local damage_templates = {
 
 
 
-		default_target = { headshot_boost_boss = 0.5, boost_curve_coefficient_headshot = 1, boost_curve_type = "smiter_curve", boost_curve_coefficient = 1, attack_template = "shot_sniper",
+		default_target = { boost_curve_coefficient_headshot = 1, headshot_boost_boss = 0.5, boost_curve_type = "smiter_curve", boost_curve_coefficient = 1, attack_template = "shot_sniper",
 
 
 
@@ -116,7 +116,7 @@ local damage_templates = {
 
 
 
-			range_dropoff_settings = shotgun_dropoff_ranges } } }
+			range_modifier_settings = shotgun_dropoff_ranges } } }
 
 
 

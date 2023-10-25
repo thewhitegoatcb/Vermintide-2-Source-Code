@@ -46,8 +46,8 @@ function ActionCareerDRRanger:_create_smoke_screen()
 	if has_extended_duration_talent then
 		buff_extension:add_buff("bardin_ranger_smoke_attack")
 		buff_extension:add_buff("bardin_ranger_smoke_heal")
-		return
 	end
+
 	local has_stealth_outside_of_smoke_talent = talent_extension:has_talent("bardin_ranger_activated_ability_stealth_outside_of_smoke", "dwarf_ranger", true)
 	if has_stealth_outside_of_smoke_talent then
 		buff_extension:add_buff("bardin_ranger_activated_ability_stealth_outside_of_smoke")
@@ -55,7 +55,6 @@ function ActionCareerDRRanger:_create_smoke_screen()
 	end
 
 	buff_extension:add_buff(buff_name, { attacker_unit = owner_unit })
-
 end
 
 function ActionCareerDRRanger:_play_vo()

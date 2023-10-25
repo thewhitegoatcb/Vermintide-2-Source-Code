@@ -939,6 +939,7 @@ function AICommanderExtension:cancel_current_command(controlled_unit, ignore_att
 	blackboard.override_detection_radius = nil
 	blackboard.fallback_rotation = nil
 	blackboard.commander_target = nil
+	blackboard.new_command_attack = nil
 
 
 

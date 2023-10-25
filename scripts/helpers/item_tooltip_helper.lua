@@ -68,11 +68,11 @@ function ItemTooltipHelper.get_damage(unit, item, armor_type, primary_armor_type
 	local is_critical_strike = false
 	local backstab_multiplier = 1
 	local breed = Breeds.skaven_clan_rat
-	local dropoff_scalar = 0
+	local range_scalar_multiplier = 0
 	local has_power_boost = false
 
 	local damage = DamageUtils.calculate_damage_tooltip(unit, damage_source, power_level, hit_zone_name, damage_profile, target_index, boost_curve, boost_damage_multiplier,
-	is_critical_strike, backstab_multiplier, breed, dropoff_scalar, has_power_boost, difficulty_level, armor_type, primary_armor_type)
+	is_critical_strike, backstab_multiplier, breed, range_scalar_multiplier, has_power_boost, difficulty_level, armor_type, primary_armor_type)
 
 	return damage
 end
@@ -85,10 +85,10 @@ function ItemTooltipHelper.get_stagger_strength(unit, item, damage_profile, powe
 	local blocked = false
 	local damage_source = item.name
 	local has_power_boost = false
-	local dropoff_scalar = 0
+	local range_scalar_multiplier = 0
 
 	local type, duration, distance, value, strength = DamageUtils.calculate_stagger_player_tooltip(breed, unit, hit_zone_name, power_level, is_critical_strike, damage_profile, target_index,
-	blocked, damage_source, difficulty_level, has_power_boost, dropoff_scalar)
+	blocked, damage_source, difficulty_level, has_power_boost, range_scalar_multiplier)
 
 	return type, duration, distance, value, strength
 end
@@ -535,7 +535,7 @@ function ItemTooltipHelper.get_push_strengths(values, action, unit, item, stat_d
 		local blocked = false
 		local damage_source = item.name
 		local has_power_boost = false
-		local dropoff_scalar = 0
+		local range_scalar_multiplier = 0
 
 		local type_inner, duration_inner, distance_inner, value_inner, strength_inner = ItemTooltipHelper.get_stagger_strength(unit, item, damage_profile_inner, power_level, difficulty_level)
 		local type_outer, duration_outer, distance_outer, value_outer, strength_outer = ItemTooltipHelper.get_stagger_strength(unit, item, damage_profile_outer, power_level, difficulty_level)

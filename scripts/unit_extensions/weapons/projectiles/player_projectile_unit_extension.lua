@@ -576,25 +576,24 @@ function PlayerProjectileUnitExtension:hit_enemy(impact_data, hit_unit, hit_posi
 
 	if self._num_additional_penetrations == 0 then
 		local should_stop = false
-		if aoe_data and self._max_mass <= self._amount_of_mass_hit then
+		if aoe_data and (grenade or self._max_mass <= self._amount_of_mass_hit) then
 			self:do_aoe(aoe_data, hit_position)
-			should_stop = true
-		end
 
-		if grenade then
-			local owner_unit = self._owner_unit
-			local owner_buff_extension = ScriptUnit.has_extension(owner_unit, "buff_system")
-			if owner_buff_extension then
-				owner_buff_extension:trigger_procs(
-				"on_grenade_exploded",
-				impact_data,
-				hit_position,
-				self._is_critical_strike,
-				self.item_name,
-				Unit.local_rotation(self._projectile_unit, 0),
-				self.scale,
+			if grenade then
+				local owner_unit = self._owner_unit
+				local owner_buff_extension = ScriptUnit.has_extension(owner_unit, "buff_system")
+				if owner_buff_extension then
+					owner_buff_extension:trigger_procs(
+					"on_grenade_exploded",
+					impact_data,
+					hit_position,
+					self._is_critical_strike,
+					self.item_name,
+					Unit.local_rotation(self._projectile_unit, 0),
+					self.scale,
 
-				self.power_level)
+					self.power_level)
+				end
 			end
 			should_stop = true
 		end

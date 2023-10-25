@@ -1137,7 +1137,10 @@ function BuffSystem:rpc_add_buff_synced(channel_id, target_unit_id, template_nam
 	local buff_extension = self.unit_extension_data [target_unit]
 	if buff_extension then
 		local template_name = NetworkLookup.buff_templates [template_name_id]
-		local id = buff_extension:add_buff(template_name)
+		local id, num_sub_buffs = buff_extension:add_buff(template_name)
+		if num_sub_buffs <= 0 then
+			remote_sync_id = invalid_buff_sync_id
+		end
 
 		local local_sync_id = remote_sync_id ~= invalid_buff_sync_id and buff_extension:generate_sync_id() or invalid_buff_sync_id
 		local server_sync_id = self.is_server and local_sync_id or remote_sync_id

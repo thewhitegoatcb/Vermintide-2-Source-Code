@@ -22,14 +22,12 @@ function BuffAreaExtension:init(extension_init_context, unit, extension_init_dat
 	self.source_unit = extension_init_data.source_unit
 	self.radius = radius
 	self.radius_squared = radius * radius
-	self._inside = {
-		by_broadphase = { },
-		by_position = { } }
 
+	self._buff_area_system = extension_init_context.owning_system
 	self._unlimited = self.template.unlimited
 
 	local side_by_unit = Managers.state.side.side_by_unit
-	self._side = side_by_unit [self.source_unit] or side_by_unit [self.owner_unit]
+	self.side = side_by_unit [self.source_unit] or side_by_unit [self.owner_unit]
 	self._buff_allies = template.buff_allies
 	self._buff_enemies = template.buff_enemies
 	self._buff_self = template.buff_self
@@ -47,16 +45,15 @@ function BuffAreaExtension:destroy()
 end
 
 function BuffAreaExtension:_cleanup_inside_units()
-	local by_position = self._inside.by_position
+	local inside = self._buff_area_system:inside_by_area(self)
+	local by_position = inside.by_position
 	for inside_unit in pairs(by_position) do
-		self:_leave_func(inside_unit)
-		by_position [inside_unit] = nil
+		self:_set_not_inside(by_position, inside_unit)
 	end
 
-	local by_broadphase = self._inside.by_broadphase
+	local by_broadphase = inside.by_broadphase
 	for inside_unit in pairs(by_broadphase) do
-		self:_leave_func(inside_unit)
-		by_broadphase [inside_unit] = nil
+		self:_set_not_inside(by_broadphase, inside_unit)
 	end
 end
 
@@ -80,7 +77,7 @@ end
 
 function BuffAreaExtension:_check_ai(position, radius)
 	local source_unit = self.source_unit or self.owner_unit
-	local inside = self._inside.by_broadphase
+	local inside = self._buff_area_system:inside_by_area(self).by_broadphase
 	local buff_allies = self._buff_allies
 	local buff_enemies = self._buff_enemies
 	local side_manager = Managers.state.side
@@ -95,18 +92,16 @@ function BuffAreaExtension:_check_ai(position, radius)
 
 		local already_inside = inside [ai_unit]
 		if not already_inside then
-			inside [ai_unit] = true
 			local should_buff = buff_allies and side_manager:is_ally(source_unit, ai_unit) or buff_enemies and side_manager:is_enemy(source_unit, ai_unit)
 			if should_buff then
-				self:_enter_func(ai_unit)
+				self:_set_inside(inside, ai_unit)
 			end
 		end
 	end
 
 	for ai_unit in pairs(inside) do
 		if not inside_this_frame [ai_unit] then
-			self:_leave_func(ai_unit)
-			inside [ai_unit] = nil
+			self:_set_not_inside(inside, ai_unit)
 		end
 	end
 end
@@ -119,7 +114,7 @@ function BuffAreaExtension:_check_players(position)
 		inside_this_frame [unit] = self:_update_by_position(unit)
 	end
 
-	local side = self._side
+	local side = self.side
 	if self._buff_allies then
 		local player_units = side.PLAYER_AND_BOT_UNITS
 		for i = 1, #player_units do
@@ -136,17 +131,16 @@ function BuffAreaExtension:_check_players(position)
 		end
 	end
 
-	local inside = self._inside.by_position
+	local inside = self._buff_area_system:inside_by_area(self).by_position
 	for unit in pairs(inside) do
 		if not inside_this_frame [unit] then
-			self:_leave_func(unit)
-			inside [unit] = nil
+			self:_set_not_inside(inside, unit)
 		end
 	end
 end
 
 function BuffAreaExtension:_update_by_position(unit)
-	local inside = self._inside.by_position
+	local inside = self._buff_area_system:inside_by_area(self).by_position
 
 	local within_distance = false
 	local unit_pos = POSITION_LOOKUP [unit]
@@ -157,12 +151,10 @@ function BuffAreaExtension:_update_by_position(unit)
 		within_distance = distance_squared <= self.radius_squared
 	end
 
-	if within_distance and not inside [unit] then
-		self:_enter_func(unit)
-		inside [unit] = true
-	elseif not within_distance and inside [unit] then
-		self:_leave_func(unit)
-		inside [unit] = nil
+	if within_distance then
+		self:_set_inside(inside, unit)
+	else
+		self:_set_not_inside(inside, unit)
 	end
 	return within_distance
 end
@@ -205,4 +197,28 @@ function BuffAreaExtension:_spawn_los_blocker()
 	Unit.set_local_scale(los_blocker_unit, 0, Vector3(radius, radius, radius))
 
 	self._los_blocker_unit = los_blocker_unit
+end
+
+function BuffAreaExtension:_set_inside(inside_table, unit)
+	local refs = inside_table [unit] or { }
+	inside_table [unit] = refs
+
+	local first_ref = table.is_empty(refs)
+	refs [self] = true
+
+	if first_ref then
+		self:_enter_func(unit)
+	end
+end
+
+function BuffAreaExtension:_set_not_inside(inside_table, unit)
+	local refs = inside_table [unit]
+	if refs and refs [self] then
+		refs [self] = nil
+
+		if table.is_empty(refs) then
+			inside_table [unit] = nil
+			self:_leave_func(unit)
+		end
+	end
 end

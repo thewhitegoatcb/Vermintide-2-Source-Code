@@ -219,6 +219,14 @@ function SimpleHuskInventoryExtension:add_equipment_limited_item(slot_name, item
 	self._equipment.slots [slot_name] = { item_data = item_data, id = slot_name, limited_item_data = { spawner_unit = spawner_unit, id = limited_item_id } }
 end
 
+function SimpleHuskInventoryExtension:destroy_item_by_name(slot_name, item_name)
+
+	local slot_data = self:get_slot_data(slot_name)
+	if slot_data and slot_data.item_data.name == item_name then
+		self:destroy_slot(slot_name)
+	end
+end
+
 function SimpleHuskInventoryExtension:destroy_slot(slot_name)
 	local equipment = self._equipment
 	local slot_data = equipment.slots [slot_name]

@@ -706,7 +706,7 @@ AttackTemplates = {
 	flamethrower = { stagger_value = 2, sound_type = "medium", damage_type = "burn_machinegun", stagger_angle = "stab",
 
 
-		range_dropoff_settings = { dropoff_start = 2, dropoff_end = 10 } },
+		range_modifier_settings = { dropoff_start = 2, dropoff_end = 10 } },
 
 
 
@@ -717,7 +717,7 @@ AttackTemplates = {
 	flame_blast = { stagger_value = 2, sound_type = "medium", damage_type = "burn_shotgun",
 
 
-		range_dropoff_settings = { dropoff_start = 2, dropoff_end = 10 } },
+		range_modifier_settings = { dropoff_start = 2, dropoff_end = 10 } },
 
 
 
@@ -762,7 +762,7 @@ AttackTemplates = {
 	drake_pistol_shot = { stagger_value = 2, sound_type = "light", damage_type = "burn_carbine", stagger_angle = "stab",
 
 
-		range_dropoff_settings = { dropoff_start = 10, dropoff_end = 20 } },
+		range_modifier_settings = { dropoff_start = 10, dropoff_end = 20 } },
 
 
 
@@ -773,7 +773,7 @@ AttackTemplates = {
 	drake_pistol_charged = { stagger_value = 2, sound_type = "medium", damage_type = "burn_shotgun", stagger_angle = "stab", dot_type = "burning_dot",
 
 
-		range_dropoff_settings = { dropoff_start = 3, dropoff_end = 7 } },
+		range_modifier_settings = { dropoff_start = 3, dropoff_end = 7 } },
 
 
 

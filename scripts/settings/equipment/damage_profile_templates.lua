@@ -1134,7 +1134,7 @@ DamageProfileTemplates.crossbow_bolt = { charge_value = "projectile", no_stagger
 
 
 
-		range_dropoff_settings = sniper_dropoff_ranges } }
+		range_modifier_settings = sniper_dropoff_ranges } }
 
 
 
@@ -1173,7 +1173,7 @@ DamageProfileTemplates.longbow_empire = { charge_value = "projectile", no_stagge
 
 
 
-		range_dropoff_settings = sniper_dropoff_ranges } }
+		range_modifier_settings = sniper_dropoff_ranges } }
 
 
 
@@ -1210,7 +1210,7 @@ DamageProfileTemplates.crossbow_bolt_repeating = { charge_value = "projectile", 
 
 
 
-		range_dropoff_settings = carbine_dropoff_ranges } }
+		range_modifier_settings = carbine_dropoff_ranges } }
 
 
 
@@ -1246,7 +1246,7 @@ DamageProfileTemplates.shot_shotgun = { charge_value = "instant_projectile", no_
 
 
 
-		range_dropoff_settings = machinegun_dropoff_ranges } }
+		range_modifier_settings = machinegun_dropoff_ranges } }
 
 
 
@@ -1283,7 +1283,7 @@ DamageProfileTemplates.shot_machinegun = { charge_value = "projectile", no_stagg
 
 
 
-		range_dropoff_settings = machinegun_dropoff_ranges } }
+		range_modifier_settings = machinegun_dropoff_ranges } }
 
 
 
@@ -1319,7 +1319,7 @@ DamageProfileTemplates.shot_machinegun_shotgun = { charge_value = "projectile", 
 
 
 
-		range_dropoff_settings = machinegun_dropoff_ranges } }
+		range_modifier_settings = machinegun_dropoff_ranges } }
 
 
 
@@ -1355,7 +1355,7 @@ DamageProfileTemplates.shot_carbine = { charge_value = "instant_projectile", no_
 
 
 
-		range_dropoff_settings = carbine_dropoff_ranges } }
+		range_modifier_settings = carbine_dropoff_ranges } }
 
 
 
@@ -1391,7 +1391,7 @@ DamageProfileTemplates.shot_carbine_rapier = { charge_value = "instant_projectil
 
 
 
-		range_dropoff_settings = rapier_dropoff_ranges } }
+		range_modifier_settings = rapier_dropoff_ranges } }
 
 
 
@@ -1427,7 +1427,7 @@ DamageProfileTemplates.shot_drakefire = { charge_value = "projectile", dot_balef
 
 
 
-		range_dropoff_settings = carbine_dropoff_ranges } }
+		range_modifier_settings = carbine_dropoff_ranges } }
 
 
 
@@ -1465,7 +1465,7 @@ DamageProfileTemplates.shot_repeating = { charge_value = "instant_projectile", n
 
 
 
-		range_dropoff_settings = carbine_dropoff_ranges } }
+		range_modifier_settings = carbine_dropoff_ranges } }
 
 
 
@@ -1488,7 +1488,7 @@ DamageProfileTemplates.shot_sniper = { charge_value = "instant_projectile", no_s
 
 
 
-	default_target = { headshot_boost_boss = 0.5, boost_curve_coefficient_headshot = 1, boost_curve_type = "smiter_curve", boost_curve_coefficient = 1, attack_template = "shot_sniper",
+	default_target = { boost_curve_coefficient_headshot = 1, headshot_boost_boss = 0.5, boost_curve_type = "smiter_curve", boost_curve_coefficient = 1, attack_template = "shot_sniper",
 
 
 
@@ -1503,7 +1503,7 @@ DamageProfileTemplates.shot_sniper = { charge_value = "instant_projectile", no_s
 
 
 
-		range_dropoff_settings = sniper_dropoff_ranges } }
+		range_modifier_settings = sniper_dropoff_ranges } }
 
 
 
@@ -1533,7 +1533,7 @@ DamageProfileTemplates.shot_sniper_ability = { charge_value = "instant_projectil
 
 
 
-		range_dropoff_settings = sniper_dropoff_ranges } }
+		range_modifier_settings = sniper_dropoff_ranges } }
 
 
 
@@ -1572,7 +1572,7 @@ DamageProfileTemplates.shot_shotgun_ability = { shield_break = true, charge_valu
 
 
 
-		range_dropoff_settings = sniper_dropoff_ranges } }
+		range_modifier_settings = sniper_dropoff_ranges } }
 
 
 
@@ -1612,7 +1612,7 @@ DamageProfileTemplates.arrow_sniper_kruber = { charge_value = "projectile", no_s
 
 
 
-		range_dropoff_settings = sniper_dropoff_ranges } }
+		range_modifier_settings = sniper_dropoff_ranges } }
 
 
 
@@ -1650,7 +1650,7 @@ DamageProfileTemplates.throwing_axe = { charge_value = "projectile", no_stagger_
 
 
 
-		range_dropoff_settings = carbine_dropoff_ranges } }
+		range_modifier_settings = carbine_dropoff_ranges } }
 
 
 
@@ -1687,7 +1687,7 @@ DamageProfileTemplates.throwing_axe_charged = { charge_value = "projectile", no_
 
 
 
-		range_dropoff_settings = carbine_dropoff_ranges } }
+		range_modifier_settings = carbine_dropoff_ranges } }
 
 
 
@@ -1725,7 +1725,7 @@ DamageProfileTemplates.arrow_machinegun = { charge_value = "projectile", no_stag
 
 
 
-		range_dropoff_settings = machinegun_dropoff_ranges } }
+		range_modifier_settings = machinegun_dropoff_ranges } }
 
 
 
@@ -1761,7 +1761,7 @@ DamageProfileTemplates.arrow_carbine = { charge_value = "projectile", no_stagger
 
 
 
-		range_dropoff_settings = carbine_dropoff_ranges } }
+		range_modifier_settings = carbine_dropoff_ranges } }
 
 
 
@@ -1797,7 +1797,7 @@ DamageProfileTemplates.arrow_carbine_shortbow = { charge_value = "projectile", n
 
 
 
-		range_dropoff_settings = carbine_dropoff_ranges } }
+		range_modifier_settings = carbine_dropoff_ranges } }
 
 
 
@@ -1834,7 +1834,7 @@ DamageProfileTemplates.arrow_sniper = { charge_value = "projectile", no_stagger_
 
 
 
-		range_dropoff_settings = sniper_dropoff_ranges } }
+		range_modifier_settings = sniper_dropoff_ranges } }
 
 
 
@@ -1871,7 +1871,7 @@ DamageProfileTemplates.arrow_sniper_trueflight = { charge_value = "projectile", 
 
 
 
-		range_dropoff_settings = sniper_dropoff_ranges } }
+		range_modifier_settings = sniper_dropoff_ranges } }
 
 
 
@@ -1908,7 +1908,7 @@ DamageProfileTemplates.arrow_sniper_ability_piercing = { charge_value = "project
 
 
 
-		range_dropoff_settings = sniper_dropoff_ranges } }
+		range_modifier_settings = sniper_dropoff_ranges } }
 
 
 
@@ -1944,7 +1944,7 @@ DamageProfileTemplates.shortbow_hagbane = { charge_value = "projectile", ignore_
 
 
 
-		range_dropoff_settings = { dropoff_start = 10, dropoff_end = 30 } } }
+		range_modifier_settings = { dropoff_start = 10, dropoff_end = 30 } } }
 
 
 
@@ -1989,7 +1989,7 @@ DamageProfileTemplates.staff_fireball = { charge_value = "projectile", require_d
 
 
 
-		range_dropoff_settings = carbine_dropoff_ranges } }
+		range_modifier_settings = carbine_dropoff_ranges } }
 
 
 
@@ -2027,7 +2027,7 @@ DamageProfileTemplates.fire_spark = { charge_value = "projectile", no_stagger_da
 
 
 
-		range_dropoff_settings = machinegun_dropoff_ranges } }
+		range_modifier_settings = machinegun_dropoff_ranges } }
 
 
 
@@ -2064,7 +2064,7 @@ DamageProfileTemplates.fire_spear = { charge_value = "projectile", no_stagger_da
 
 
 
-		range_dropoff_settings = sniper_dropoff_ranges } }
+		range_modifier_settings = sniper_dropoff_ranges } }
 
 
 
@@ -2100,7 +2100,7 @@ DamageProfileTemplates.fire_spear_2 = { charge_value = "projectile", no_stagger_
 
 
 
-		range_dropoff_settings = sniper_dropoff_ranges } }
+		range_modifier_settings = sniper_dropoff_ranges } }
 
 
 
@@ -2136,7 +2136,7 @@ DamageProfileTemplates.fire_spear_trueflight = { charge_value = "projectile", no
 
 
 
-		range_dropoff_settings = sniper_dropoff_ranges } }
+		range_modifier_settings = sniper_dropoff_ranges } }
 
 
 
@@ -2173,7 +2173,7 @@ DamageProfileTemplates.fire_spear_3 = { charge_value = "projectile", no_stagger_
 
 
 
-		range_dropoff_settings = sniper_dropoff_ranges } }
+		range_modifier_settings = sniper_dropoff_ranges } }
 
 
 
@@ -2191,7 +2191,7 @@ DamageProfileTemplates.staff_fireball_charged = { charge_value = "projectile", n
 
 
 
-	default_target = { dot_balefire_variant = true, dot_template_name = "burning_dot_1tick", boost_curve_type = "ninja_curve", boost_curve_coefficient = 1, attack_template = "fireball",
+	default_target = { dot_template_name = "burning_dot_1tick", dot_balefire_variant = true, boost_curve_type = "ninja_curve", boost_curve_coefficient = 1, attack_template = "fireball",
 
 
 
@@ -2206,7 +2206,7 @@ DamageProfileTemplates.staff_fireball_charged = { charge_value = "projectile", n
 
 
 
-		range_dropoff_settings = shotgun_dropoff_ranges } }
+		range_modifier_settings = shotgun_dropoff_ranges } }
 
 
 
@@ -2242,7 +2242,7 @@ DamageProfileTemplates.flamethrower_spray = { charge_value = "projectile", no_st
 
 
 
-		range_dropoff_settings = flamethrower_dropoff_ranges } }
+		range_modifier_settings = flamethrower_dropoff_ranges } }
 
 
 
@@ -2279,7 +2279,7 @@ DamageProfileTemplates.flamethrower = { charge_value = "projectile", no_stagger_
 
 
 
-		range_dropoff_settings = flamethrower_dropoff_ranges } }
+		range_modifier_settings = flamethrower_dropoff_ranges } }
 
 
 
@@ -2316,7 +2316,7 @@ DamageProfileTemplates.flamethrower_initial = { charge_value = "projectile", no_
 
 
 
-		range_dropoff_settings = flamethrower_dropoff_ranges } }
+		range_modifier_settings = flamethrower_dropoff_ranges } }
 
 
 
@@ -2355,7 +2355,7 @@ DamageProfileTemplates.beam = { charge_value = "projectile", ignore_stagger_redu
 
 
 
-		range_dropoff_settings = sniper_dropoff_ranges } }
+		range_modifier_settings = sniper_dropoff_ranges } }
 
 
 
@@ -2397,7 +2397,7 @@ DamageProfileTemplates.beam_initial = { charge_value = "projectile", no_procs = 
 
 
 
-		range_dropoff_settings = carbine_dropoff_ranges } }
+		range_modifier_settings = carbine_dropoff_ranges } }
 
 
 
@@ -2436,7 +2436,7 @@ DamageProfileTemplates.blast = { charge_value = "projectile", dot_balefire_varia
 
 
 
-		range_dropoff_settings = carbine_dropoff_ranges } }
+		range_modifier_settings = carbine_dropoff_ranges } }
 
 
 
@@ -2476,7 +2476,7 @@ DamageProfileTemplates.beam_shot = { charge_value = "projectile", no_stagger_dam
 
 
 
-		range_dropoff_settings = sniper_dropoff_ranges } }
+		range_modifier_settings = sniper_dropoff_ranges } }
 
 
 

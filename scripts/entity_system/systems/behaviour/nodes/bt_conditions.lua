@@ -503,7 +503,7 @@ function BTConditions.confirmed_enemy_sighting_within_commander(blackboard)
 end
 
 function BTConditions.confirmed_enemy_sighting_within_commander_sticky(blackboard)
-	return ALIVE [blackboard.target_unit] and blackboard.confirmed_enemy_sighting_within_commander or blackboard.attack_locked_in_t and not blackboard.attack_aborted
+	return ALIVE [blackboard.target_unit] and blackboard.confirmed_enemy_sighting_within_commander or blackboard.attack_locked_in_t
 end
 
 function BTConditions.should_teleport_to_commander(blackboard)
@@ -525,7 +525,7 @@ function BTConditions.should_teleport_to_commander(blackboard)
 end
 
 function BTConditions.has_command_attack(blackboard)
-	return blackboard.new_command_attack and (ALIVE [blackboard.target_unit] or blackboard.attack_locked_in_t) and not blackboard.attack_aborted
+	return blackboard.new_command_attack and (ALIVE [blackboard.target_unit] or blackboard.attack_locked_in_t)
 end
 
 function BTConditions.pet_skeleton_is_armored(blackboard)

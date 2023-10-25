@@ -5,6 +5,13 @@ local buff_perk_names = require("scripts/unit_extensions/default_player_unit/buf
 
 script_data.buff_debug = script_data.buff_debug or Development.parameter("buff_debug")
 
+local function debug_sync_print(...)
+	if script_data.debug_synced_buffs then
+		print(...)
+	end
+end
+
+
 BuffExtension = class(BuffExtension)
 
 

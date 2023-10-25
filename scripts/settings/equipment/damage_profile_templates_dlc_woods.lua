@@ -30,7 +30,7 @@ local damage_templates = {
 
 
 
-			range_dropoff_settings = carbine_dropoff_ranges } },
+			range_modifier_settings = carbine_dropoff_ranges } },
 
 
 
@@ -176,7 +176,7 @@ local damage_templates = {
 
 
 
-			range_dropoff_settings = sniper_dropoff_ranges } },
+			range_modifier_settings = sniper_dropoff_ranges } },
 
 
 

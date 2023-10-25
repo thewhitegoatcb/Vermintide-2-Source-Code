@@ -70,7 +70,7 @@ local damage_templates = {
 
 
 
-			range_dropoff_settings = carbine_dropoff_ranges } },
+			range_modifier_settings = carbine_dropoff_ranges } },
 
 
 
@@ -203,7 +203,7 @@ local damage_templates = {
 
 
 
-			range_dropoff_settings = { dropoff_start = 8, dropoff_end = 15 } } },
+			range_modifier_settings = { dropoff_start = 8, dropoff_end = 15 } } },
 
 
 
@@ -313,7 +313,7 @@ local damage_templates = {
 
 
 
-			range_dropoff_settings = machinegun_dropoff_ranges } },
+			range_modifier_settings = machinegun_dropoff_ranges } },
 
 
 
@@ -550,7 +550,7 @@ DamageProfileTemplates.dr_deus_01 = { charge_value = "projectile", no_stagger_da
 
 
 
-		range_dropoff_settings = sniper_dropoff_ranges } }
+		range_modifier_settings = sniper_dropoff_ranges } }
 
 
 

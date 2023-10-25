@@ -671,7 +671,7 @@ local damage_templates = {
 
 
 
-		default_target = { dot_balefire_variant = true, dot_template_name = "burning_dot_1tick", boost_curve_type = "ninja_curve", boost_curve_coefficient = 1, attack_template = "fireball",
+		default_target = { dot_template_name = "burning_dot_1tick", dot_balefire_variant = true, boost_curve_type = "ninja_curve", boost_curve_coefficient = 1, attack_template = "fireball",
 
 
 
@@ -686,7 +686,7 @@ local damage_templates = {
 
 
 
-			range_dropoff_settings = shotgun_dropoff_ranges } },
+			range_modifier_settings = shotgun_dropoff_ranges } },
 
 
 
@@ -710,7 +710,7 @@ local damage_templates = {
 
 
 
-			range_dropoff_settings = shotgun_dropoff_ranges } },
+			range_modifier_settings = shotgun_dropoff_ranges } },
 
 
 
@@ -729,7 +729,7 @@ local damage_templates = {
 
 
 
-		default_target = { dot_balefire_variant = true, dot_template_name = "burning_dot_1tick", boost_curve_type = "ninja_curve", boost_curve_coefficient = 1, attack_template = "fireball",
+		default_target = { dot_template_name = "burning_dot_1tick", dot_balefire_variant = true, boost_curve_type = "ninja_curve", boost_curve_coefficient = 1, attack_template = "fireball",
 
 
 
@@ -744,7 +744,7 @@ local damage_templates = {
 
 
 
-			range_dropoff_settings = shotgun_dropoff_ranges } },
+			range_modifier_settings = shotgun_dropoff_ranges } },
 
 
 
@@ -842,7 +842,7 @@ local damage_templates = {
 
 
 
-			range_dropoff_settings = sniper_dropoff_ranges } },
+			range_modifier_settings = sniper_dropoff_ranges } },
 
 
 
@@ -879,7 +879,7 @@ local damage_templates = {
 
 
 
-			range_dropoff_settings = sniper_dropoff_ranges } },
+			range_modifier_settings = sniper_dropoff_ranges } },
 
 
 
@@ -915,7 +915,7 @@ local damage_templates = {
 
 
 
-			range_dropoff_settings = sniper_dropoff_ranges } },
+			range_modifier_settings = sniper_dropoff_ranges } },
 
 
 
@@ -951,7 +951,7 @@ local damage_templates = {
 
 
 
-			range_dropoff_settings = sniper_dropoff_ranges } },
+			range_modifier_settings = sniper_dropoff_ranges } },
 
 
 
@@ -987,7 +987,7 @@ local damage_templates = {
 
 
 
-			range_dropoff_settings = sniper_dropoff_ranges } },
+			range_modifier_settings = sniper_dropoff_ranges } },
 
 
 
@@ -1120,7 +1120,7 @@ local damage_templates = {
 
 
 
-			range_dropoff_settings = carbine_dropoff_ranges },
+			range_modifier_settings = carbine_dropoff_ranges },
 
 
 
@@ -1135,7 +1135,7 @@ local damage_templates = {
 
 
 
-				range_dropoff_settings = carbine_dropoff_ranges },
+				range_modifier_settings = carbine_dropoff_ranges },
 
 
 
@@ -1149,7 +1149,7 @@ local damage_templates = {
 
 
 
-				range_dropoff_settings = carbine_dropoff_ranges },
+				range_modifier_settings = carbine_dropoff_ranges },
 
 
 
@@ -1163,7 +1163,7 @@ local damage_templates = {
 
 
 
-				range_dropoff_settings = carbine_dropoff_ranges },
+				range_modifier_settings = carbine_dropoff_ranges },
 
 
 
@@ -1177,7 +1177,7 @@ local damage_templates = {
 
 
 
-				range_dropoff_settings = carbine_dropoff_ranges } } },
+				range_modifier_settings = carbine_dropoff_ranges } } },
 
 
 
@@ -1277,7 +1277,7 @@ local damage_templates = {
 
 
 
-			range_dropoff_settings = carbine_dropoff_ranges } },
+			range_modifier_settings = carbine_dropoff_ranges } },
 
 
 
@@ -1317,7 +1317,7 @@ local damage_templates = {
 
 
 
-		default_target = { headshot_boost_boss = 0.5, boost_curve_coefficient_headshot = 1, boost_curve_type = "smiter_curve", boost_curve_coefficient = 1, attack_template = "shot_sniper",
+		default_target = { boost_curve_coefficient_headshot = 1, headshot_boost_boss = 0.5, boost_curve_type = "smiter_curve", boost_curve_coefficient = 1, attack_template = "shot_sniper",
 
 
 
@@ -1332,7 +1332,7 @@ local damage_templates = {
 
 
 
-			range_dropoff_settings = sniper_dropoff_ranges } },
+			range_modifier_settings = sniper_dropoff_ranges } },
 
 
 

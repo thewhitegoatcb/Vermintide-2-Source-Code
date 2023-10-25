@@ -1016,6 +1016,24 @@ function SimpleInventoryExtension:hot_join_sync(sender)
 	GearUtils.hot_join_sync(sender, self._unit, self._equipment, self._additional_items)
 end
 
+function SimpleInventoryExtension:destroy_item_by_name(slot_name, item_name, allow_destroy_weapon, try_requip_from_storage)
+	local slot_data = self:get_slot_data(slot_name)
+	if slot_data and slot_data.item_data.name == item_name then
+		self:destroy_slot(slot_name, allow_destroy_weapon, try_requip_from_storage)
+	else
+		local additional_items = self:get_additional_items(slot_name)
+		if additional_items then
+			for i = #additional_items, 1, -1 do
+				local item_data = additional_items [i]
+				if item_data.name == item_name then
+					self:remove_additional_item(slot_name, item_data)
+					break
+				end
+			end
+		end
+	end
+end
+
 function SimpleInventoryExtension:destroy_slot(slot_name, allow_destroy_weapon, try_requip_from_storage)
 	local equipment = self._equipment
 	local slot_data = equipment.slots [slot_name]
@@ -1627,25 +1645,29 @@ function SimpleInventoryExtension:check_and_drop_pickups(drop_reason, override_p
 					drop_pickup(unit, pickup_data, position, random_direction)
 					i = i + 1
 
-					local additional_items = self:get_additional_items(slot_name)
-					if additional_items then
-						for additional_item_idx = 1, #additional_items do
-							local additional_item_data = additional_items [additional_item_idx]
-							local additional_item_template = BackendUtils.get_item_template(additional_item_data)
-							local additional_pickup_data = additional_item_template.pickup_data
-
-							if additional_pickup_data then
-								local position, random_direction = get_pickup_drop_pos_dir(drop_position, override_dir, i)
-								drop_pickup(unit, additional_pickup_data, position, random_direction)
-								i = i + 1
-							end
-						end
-					end
-
 				elseif slot_name == "slot_level_event" then
 					self:drop_level_event_item(slot_data)
 				end
 
+
+
+				local additional_items = self:get_additional_items(slot_name)
+				if additional_items then
+					for additional_item_idx = #additional_items, 1, -1 do
+						local additional_item_data = additional_items [additional_item_idx]
+						local additional_item_template = BackendUtils.get_item_template(additional_item_data)
+						local additional_pickup_data = additional_item_template.pickup_data
+
+						if additional_pickup_data then
+							local position, random_direction = get_pickup_drop_pos_dir(drop_position, override_dir, i)
+							drop_pickup(unit, additional_pickup_data, position, random_direction)
+							i = i + 1
+						end
+
+						local skip_resync = additional_item_idx > 1
+						self:remove_additional_item(slot_name, additional_item_data, skip_resync)
+					end
+				end
 
 				self:destroy_slot(slot_name)
 

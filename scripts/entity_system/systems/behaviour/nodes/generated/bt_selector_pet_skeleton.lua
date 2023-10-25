@@ -311,8 +311,32 @@ function BTSelector_pet_skeleton:run(unit, blackboard, t, dt)
 
 
 
-	local node_in_combat = children [11]
-	local condition_result = ALIVE [blackboard.target_unit] and blackboard.confirmed_enemy_sighting_within_commander or blackboard.attack_locked_in_t and not blackboard.attack_aborted
+	local node_command_combat = children [11]
+	local condition_result = blackboard.new_command_attack and (ALIVE [blackboard.target_unit] or blackboard.attack_locked_in_t)
+
+	if condition_result then
+		self:set_running_child(unit, blackboard, t, node_command_combat, "aborted")
+
+
+		local result, evaluate = node_command_combat:run(unit, blackboard, t, dt)
+
+		if result ~= "running" then
+			self:set_running_child(unit, blackboard, t, nil, result)
+		end
+
+		if result ~= "failed" then
+			do return result, evaluate end
+		end
+	elseif node_command_combat == child_running then
+		self:set_running_child(unit, blackboard, t, nil, "failed")
+	end
+
+
+
+
+
+	local node_in_combat = children [12]
+	local condition_result = ALIVE [blackboard.target_unit] and blackboard.confirmed_enemy_sighting_within_commander or blackboard.attack_locked_in_t
 
 	if condition_result then
 		self:set_running_child(unit, blackboard, t, node_in_combat, "aborted")
@@ -335,7 +359,7 @@ function BTSelector_pet_skeleton:run(unit, blackboard, t, dt)
 
 
 
-	local node_stand_ground = children [12]
+	local node_stand_ground = children [13]
 	local condition_result = blackboard.command_state == CommandStates.StandingGround
 
 	if condition_result then
@@ -358,7 +382,7 @@ function BTSelector_pet_skeleton:run(unit, blackboard, t, dt)
 
 
 
-	local node_follow = children [13]
+	local node_follow = children [14]
 	self:set_running_child(unit, blackboard, t, node_follow, "aborted")
 
 
@@ -373,6 +397,7 @@ function BTSelector_pet_skeleton:run(unit, blackboard, t, dt)
 		return result, evaluate
 	end
 end
+
 
 
 

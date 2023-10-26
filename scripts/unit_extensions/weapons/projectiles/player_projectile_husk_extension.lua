@@ -44,6 +44,15 @@ function PlayerProjectileHuskExtension:init(extension_init_context, unit, extens
 		end
 	end
 
+
+	if not self._skin_projectile_units_template then
+		local unit_name = Unit.get_data(unit, "unit_name")
+		local projectile_units_template = ProjectileUnitsFromUnitName [unit_name]
+		self._skin_projectile_units_template = projectile_units_template
+	end
+
+
+
 	local item_data = ItemMasterList [item_name]
 	local item_template = BackendUtils.get_item_template(item_data)
 	local item_template_name = extension_init_data.item_template_name

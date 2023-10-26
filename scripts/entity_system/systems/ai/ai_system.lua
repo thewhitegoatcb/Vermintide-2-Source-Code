@@ -1222,7 +1222,8 @@ local function update_blackboard(unit, blackboard, t, dt)
 
 	local is_valid_attacking_target = nil
 	if has_attacking_target then
-		if blackboard.target_unit_status_extension then
+		local target_breed = Unit.get_data(attacking_target, "breed")
+		if target_breed and target_breed.is_player then
 			is_valid_attacking_target = blackboard.side.VALID_ENEMY_TARGETS_PLAYERS_AND_BOTS [attacking_target]
 		else
 			is_valid_attacking_target = HEALTH_ALIVE [attacking_target]

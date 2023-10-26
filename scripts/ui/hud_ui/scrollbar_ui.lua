@@ -127,7 +127,7 @@ function ScrollbarUI:_update_scroller_position(input_service, ui_scenegraph)
 	local end_point = world_pos [2] + size [2]
 
 	local scroller_height = style.scroller.rect_size [2]
-	local input_pos = UIInverseScaleVectorToResolution(cursor_pos [2])
+	local input_pos = UIInverseScaleVectorToResolution(cursor_pos) [2]
 
 	self._progress = math.clamp(1 - math.inv_lerp(start_point + scroller_height * 0.5, end_point - scroller_height * 0.5, input_pos), 0, 1)
 end

@@ -5,28 +5,31 @@ local ACTIONS_SHIELD = BreedActions.pet_skeleton_with_shield
 
 
 
+
+
+
 local COMMAND_COMBAT = { "BTSelector",
 
 
 	{ "BTUtilityNode",
 		{ "BTMeleeOverlapAttackAction", leave_hook = "command_attack_done", name = "running_command_attack", condition = "ask_target_before_attacking",
 			action_data = ACTIONS_ARMORED.running_command_attack }, { "BTMeleeOverlapAttackAction", leave_hook = "command_attack_done", name = "command_attack", condition = "ask_target_before_attacking",
-			action_data = ACTIONS_ARMORED.command_attack }, { "BTClanRatFollowAction", name = "command_follow",
+			action_data = ACTIONS_ARMORED.command_attack }, { "BTClanRatFollowAction", name = "command_follow", condition = "has_target",
 			action_data = ACTIONS_DEFAULT.command_follow }, condition = "pet_skeleton_is_armored", name = "armored_command_combat" },
 	{ "BTUtilityNode",
 		{ "BTMeleeOverlapAttackAction", leave_hook = "command_attack_done", name = "running_command_attack", condition = "ask_target_before_attacking",
 			action_data = ACTIONS_DEFAULT.running_command_attack }, { "BTMeleeOverlapAttackAction", leave_hook = "command_attack_done", name = "command_attack", condition = "ask_target_before_attacking",
-			action_data = ACTIONS_DUAL_WIELD.command_attack }, { "BTClanRatFollowAction", name = "command_follow",
+			action_data = ACTIONS_DUAL_WIELD.command_attack }, { "BTClanRatFollowAction", name = "command_follow", condition = "has_target",
 			action_data = ACTIONS_DEFAULT.command_follow }, condition = "pet_skeleton_is_dual_wield", name = "dual_wield_command_combat" },
 	{ "BTUtilityNode",
 		{ "BTMeleeOverlapAttackAction", leave_hook = "command_attack_done", name = "running_command_attack", condition = "ask_target_before_attacking",
 			action_data = ACTIONS_DEFAULT.running_command_attack }, { "BTMeleeOverlapAttackAction", leave_hook = "command_attack_done", name = "command_attack", condition = "ask_target_before_attacking",
-			action_data = ACTIONS_DEFAULT.command_attack }, { "BTClanRatFollowAction", name = "command_follow",
+			action_data = ACTIONS_DEFAULT.command_attack }, { "BTClanRatFollowAction", name = "command_follow", condition = "has_target",
 			action_data = ACTIONS_DEFAULT.command_follow }, condition = "pet_skeleton_has_shield", name = "shield_command_combat" },
 	{ "BTUtilityNode",
 		{ "BTMeleeOverlapAttackAction", leave_hook = "command_attack_done", name = "running_command_attack", condition = "ask_target_before_attacking",
 			action_data = ACTIONS_DEFAULT.running_command_attack }, { "BTMeleeOverlapAttackAction", leave_hook = "command_attack_done", name = "command_attack", condition = "ask_target_before_attacking",
-			action_data = ACTIONS_DEFAULT.command_attack }, { "BTClanRatFollowAction", name = "command_follow",
+			action_data = ACTIONS_DEFAULT.command_attack }, { "BTClanRatFollowAction", name = "command_follow", condition = "has_target",
 			action_data = ACTIONS_DEFAULT.command_follow }, condition = "pet_skeleton_default", name = "default_command_combat" }, condition = "has_command_attack", name = "command_combat" }
 
 
@@ -42,9 +45,9 @@ local ARMORED_COMBAT = { "BTUtilityNode",
 		{ "BTMeleeOverlapAttackAction", weight = 1, name = "special_attack_sweep", condition = "ask_target_before_attacking",
 			action_data = ACTIONS_ARMORED.special_attack_sweep }, { "BTMeleeOverlapAttackAction", weight = 1, name = "special_attack_cleave", condition = "ask_target_before_attacking",
 			action_data = ACTIONS_ARMORED.special_attack_cleave }, name = "special_attack", action_data = ACTIONS_ARMORED.special_attack },
-	{ "BTStormVerminPushAction", name = "push_attack",
+	{ "BTStormVerminPushAction", name = "push_attack", condition = "has_target",
 		action_data = ACTIONS_ARMORED.push_attack }, { "BTMoveToGoalAction", enter_hook = "start_stand_ground", name = "hold_position", condition = "wants_stand_ground",
-		action_data = ACTIONS_DEFAULT.follow }, { "BTClanRatFollowAction", name = "follow",
+		action_data = ACTIONS_DEFAULT.follow }, { "BTClanRatFollowAction", name = "follow", condition = "has_target",
 		action_data = ACTIONS_DEFAULT.follow }, name = "armored_combat", condition = "pet_skeleton_is_armored", action_data = ACTIONS_DEFAULT.utility_action }
 
 
@@ -53,7 +56,7 @@ local DUAL_WIELD_COMBAT = { "BTUtilityNode",
 	{ "BTMeleeOverlapAttackAction", name = "running_sweep_attack", condition = "ask_target_before_attacking",
 		action_data = ACTIONS_DEFAULT.running_sweep_attack }, { "BTMeleeOverlapAttackAction", name = "sweep_attack", condition = "ask_target_before_attacking",
 		action_data = ACTIONS_DUAL_WIELD.sweep_attack }, { "BTMoveToGoalAction", enter_hook = "start_stand_ground", name = "hold_position", condition = "wants_stand_ground",
-		action_data = ACTIONS_DEFAULT.follow }, { "BTClanRatFollowAction", name = "follow",
+		action_data = ACTIONS_DEFAULT.follow }, { "BTClanRatFollowAction", name = "follow", condition = "has_target",
 		action_data = ACTIONS_DEFAULT.follow }, name = "dual_wield_combat", condition = "pet_skeleton_is_dual_wield", action_data = ACTIONS_DEFAULT.utility_action }
 
 
@@ -66,7 +69,7 @@ local SHIELD_COMBAT = { "BTUtilityNode",
 			action_data = ACTIONS_SHIELD.shield_bash }, name = "special_attack", action_data = ACTIONS_SHIELD.special_attack },
 	{ "BTCombatShoutAction", name = "combat_shout",
 		action_data = ACTIONS_SHIELD.combat_shout }, { "BTMoveToGoalAction", enter_hook = "start_stand_ground", name = "hold_position", condition = "wants_stand_ground",
-		action_data = ACTIONS_DEFAULT.follow }, { "BTClanRatFollowAction", name = "follow",
+		action_data = ACTIONS_DEFAULT.follow }, { "BTClanRatFollowAction", name = "follow", condition = "has_target",
 		action_data = ACTIONS_DEFAULT.follow }, name = "shield_combat", condition = "pet_skeleton_has_shield", action_data = ACTIONS_DEFAULT.utility_action }
 
 
@@ -75,7 +78,7 @@ local DEFAULT_COMBAT = { "BTUtilityNode",
 	{ "BTMeleeOverlapAttackAction", name = "running_sweep_attack", condition = "ask_target_before_attacking",
 		action_data = ACTIONS_DEFAULT.running_sweep_attack }, { "BTMeleeOverlapAttackAction", name = "sweep_attack", condition = "ask_target_before_attacking",
 		action_data = ACTIONS_DEFAULT.sweep_attack }, { "BTMoveToGoalAction", enter_hook = "start_stand_ground", name = "hold_position", condition = "wants_stand_ground",
-		action_data = ACTIONS_DEFAULT.follow }, { "BTClanRatFollowAction", name = "follow",
+		action_data = ACTIONS_DEFAULT.follow }, { "BTClanRatFollowAction", name = "follow", condition = "has_target",
 		action_data = ACTIONS_DEFAULT.follow }, name = "default_combat", condition = "pet_skeleton_default", action_data = ACTIONS_DEFAULT.utility_action }
 
 

@@ -494,7 +494,9 @@ function PassiveAbilityNecromancerCharges:_kill_all_pets_server(is_destroy)
 	local spawned_pets = self._spawned_pets
 	for controlled_unit in pairs(spawned_pets) do
 		self:_remove_unit(controlled_unit)
-		AiUtils.kill_unit(controlled_unit)
+		if HEALTH_ALIVE [controlled_unit] then
+			AiUtils.kill_unit(controlled_unit)
+		end
 	end
 	self._disable_pet_charges = false
 

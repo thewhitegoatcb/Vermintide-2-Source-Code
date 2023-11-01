@@ -1268,7 +1268,7 @@ function BuffExtension:trigger_procs(event, ...)
 		local buff_func_name = buff.buff_func
 		local buff_func = ProcFunctions [buff_func_name]
 
-		local success = buff_func(owner, buff, params, world, ProcEventParams [event])
+		local success = not buff_func or buff_func(owner, buff, params, world, ProcEventParams [event])
 
 		if success and buff.template.remove_on_proc then
 			event_buffs_to_remove [#event_buffs_to_remove + 1] = buff

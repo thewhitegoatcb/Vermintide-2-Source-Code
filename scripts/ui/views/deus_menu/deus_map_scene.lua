@@ -1138,15 +1138,20 @@ function DeusMapScene:highlight_edge(from, to)
 		local deus_run_controller = Managers.mechanism:game_mechanism():get_deus_run_controller()
 		local traversed_nodes = deus_run_controller:get_traversed_nodes()
 		local graph_data = deus_run_controller:get_graph_data()
-		ferror(
-		"edge from<%s> to<%s> doesn't exist! \nself._edges_to_units:%s\ntraversed_nodes:%s\ngraph:%s",
-		from,
-		to,
+
+		printf(
+		"self._edges_to_units:%s\ntraversed_nodes:%s\ngraph:%s",
 		table.tostring(self._edges_to_units),
 		table.tostring(traversed_nodes),
-		table.tostring(graph_data))
-	end
+		table.tostring(graph_data, 2))
 
+
+		ferror(
+		"[DeusMapScene] edge from<%s> to<%s> doesn't exist!",
+		from,
+
+		to)
+	end
 
 	Unit.set_data(unit, "highlighted", true)
 	Unit.flow_event(unit, "update_visuals")
@@ -1160,15 +1165,20 @@ function DeusMapScene:unhighlight_edge(from, to)
 		local deus_run_controller = Managers.mechanism:game_mechanism():get_deus_run_controller()
 		local traversed_nodes = deus_run_controller:get_traversed_nodes()
 		local graph_data = deus_run_controller:get_graph_data()
-		ferror(
-		"edge from<%s> to<%s> doesn't exist! \nself._edges_to_units:%s\ntraversed_nodes:%s\ngraph:%s",
-		from,
-		to,
+
+		printf(
+		"self._edges_to_units:%s\ntraversed_nodes:%s\ngraph:%s",
 		table.tostring(self._edges_to_units),
 		table.tostring(traversed_nodes),
-		table.tostring(graph_data))
-	end
+		table.tostring(graph_data, 2))
 
+
+		ferror(
+		"[DeusMapScene] edge from<%s> to<%s> doesn't exist!",
+		from,
+
+		to)
+	end
 
 	Unit.set_data(unit, "highlighted", false)
 	Unit.flow_event(unit, "update_visuals")

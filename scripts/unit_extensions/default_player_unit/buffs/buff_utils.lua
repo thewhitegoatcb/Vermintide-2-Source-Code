@@ -82,7 +82,7 @@ function BuffUtils.buffs_to_rpc_params(buffs)
 
 		local id = lookup_templates [name]
 		local data_type, value = next(data)
-		local data_type_id = lookup_data_types [data_type]
+		local data_type_id = lookup_data_types [data_type or "n/a"]
 
 		buff_ids [num_buffs] = id
 		buff_data_type_ids [num_buffs] = data_type_id

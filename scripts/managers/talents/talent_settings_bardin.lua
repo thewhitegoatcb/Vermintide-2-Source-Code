@@ -1519,17 +1519,10 @@ TalentBuffTemplates.dwarf_ranger = {
 
 
 
-	bardin_ranger_ability_free_grenade_remove = {
-		buffs = { { event = "on_grenade_use", buff_to_remove = "bardin_ranger_ability_free_grenade_buff", buff_func = "remove_non_stacking_buff" } } },
-
-
-
-
-
-
-
 	bardin_ranger_ability_free_grenade_buff = {
-		buffs = { { max_stacks = 1, icon = "bardin_ranger_ability_free_grenade",
+		buffs = { { event = "on_grenade_use", remove_on_proc = true, max_stacks = 1, icon = "bardin_ranger_ability_free_grenade",
+
+
 
 
 
@@ -2518,9 +2511,7 @@ Talents.dwarf_ranger = { { description = "vanguard_desc", name = "bardin_ironbre
 		description_values = { },
 
 
-		buffs = { "bardin_ranger_ability_free_grenade_remove" } },
-
-
+		buffs = { } },
 
 
 	{ description = "tank_unbalance_desc", name = "bardin_ranger_tank_unbalance", buffer = "server", num_ranks = 1, icon = "bardin_ranger_tank_unbalance",

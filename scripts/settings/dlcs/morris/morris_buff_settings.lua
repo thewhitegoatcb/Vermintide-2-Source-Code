@@ -2219,12 +2219,13 @@ dlc_settings.proc_functions = {
 			local radius = template.max_chain_range
 			local num_chain = template.max_targets - 1
 
+			local owner_side = Managers.state.side.side_by_unit [owner_unit]
+			local broadphase_categories = owner_side and owner_side.enemy_broadphase_categories
+
 			local nearby_enemy_units = FrameTable.alloc_table()
-			local proximity_extension = Managers.state.entity:system("proximity_system")
-			local broadphase = proximity_extension.enemy_broadphase
 			local hit_units = { }
 			for i = 1, num_chain do
-				local num_enemies = Broadphase.query(broadphase, hit_pos, radius, nearby_enemy_units)
+				local num_enemies = AiUtils.broadphase_query(hit_pos, radius, nearby_enemy_units, broadphase_categories)
 				table.sort(nearby_enemy_units, function (a, b)
 					return Vector3.distance_squared(POSITION_LOOKUP [a], hit_pos) < Vector3.distance_squared(POSITION_LOOKUP [b], hit_pos)
 				end)
@@ -2559,18 +2560,19 @@ dlc_settings.proc_functions = {
 
 			local radius = template.max_range
 
+			local owner_side = Managers.state.side.side_by_unit [owner_unit]
+			local broadphase_categories = owner_side and owner_side.enemy_broadphase_categories
+
 			local nearby_enemy_units = FrameTable.alloc_table()
-			local proximity_extension = Managers.state.entity:system("proximity_system")
-			local broadphase = proximity_extension.enemy_broadphase
 			local hit_units = { }
 			for i = 1, 1 do
-				local num_enemies = Broadphase.query(broadphase, hit_pos, radius, nearby_enemy_units)
+				local num_enemies = AiUtils.broadphase_query(hit_pos, radius, nearby_enemy_units, broadphase_categories)
 				table.sort(nearby_enemy_units, function (a, b)
 					return Vector3.distance_squared(POSITION_LOOKUP [a], hit_pos) < Vector3.distance_squared(POSITION_LOOKUP [b], hit_pos)
 				end)
 				for target_id = 1, num_enemies do
 					local target_unit = nearby_enemy_units [target_id]
-					if ALIVE [target_unit] and not hit_units [target_unit] and HEALTH_ALIVE [target_unit] then
+					if HEALTH_ALIVE [target_unit] and not hit_units [target_unit] then
 						hit_units [target_unit] = true
 
 						DamageUtils.add_damage_network(target_unit, owner_unit, damage, "torso", damage_type, nil, Vector3(1, 0, 0), damage_source)
@@ -4616,7 +4618,7 @@ dlc_settings.buff_templates = {
 				duration = MorrisBuffTweakData.pockets_full_of_bombs_potion.duration,
 
 
-				perks = { buff_perks.disable_interactions, buff_perks.free_grenade } },
+				perks = { buff_perks.disable_interactions, buff_perks.free_grenade, buff_perks.rewield_grenade_on_throw } },
 			{ remove_buff_func = "remove_movement_buff", name = "pockets_full_of_bombs_potion_movement_speed", apply_buff_func = "apply_movement_buff",
 
 
@@ -4637,7 +4639,7 @@ dlc_settings.buff_templates = {
 				duration = MorrisBuffTweakData.pockets_full_of_bombs_potion_increased.duration,
 
 
-				perks = { buff_perks.disable_interactions, buff_perks.free_grenade } },
+				perks = { buff_perks.disable_interactions, buff_perks.free_grenade, buff_perks.rewield_grenade_on_throw } },
 			{ name = "pockets_full_of_bombs_potion_movement_speed_increased", remove_buff_func = "remove_movement_buff", apply_buff_func = "apply_movement_buff",
 
 

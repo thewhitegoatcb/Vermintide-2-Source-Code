@@ -255,6 +255,9 @@ weapon_template.buffs = {
 	change_dodge_distance = { external_optional_multiplier = 1.25 },
 	change_dodge_speed = { external_optional_multiplier = 1.25 } }
 
+weapon_template.server_buffs = {
+	we_deus_01_kerillian_critical_bleed_dot_disable = { } }
+
 
 weapon_template.weapon_diagram = {
 	light_attack = {

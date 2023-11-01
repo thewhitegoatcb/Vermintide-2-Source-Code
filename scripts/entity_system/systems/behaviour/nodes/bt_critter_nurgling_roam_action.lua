@@ -32,8 +32,10 @@ function BTCritterNurglingRoamAction:run(unit, blackboard, t)
 
 	if not blackboard.move_pos then
 		local move_pos = self:find_move_pos(blackboard, action)
-		blackboard.move_pos = Vector3Box(move_pos)
-		navigation_extension:move_to(move_pos)
+		if move_pos then
+			blackboard.move_pos = Vector3Box(move_pos)
+			navigation_extension:move_to(move_pos)
+		end
 	end
 
 

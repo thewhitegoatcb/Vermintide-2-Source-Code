@@ -46,6 +46,9 @@ function PlayerProjectileImpactUnitExtension:init(extension_init_context, unit, 
 	self.radius = extension_init_data.radius
 	self.scene_query_height_offset = projectile_info.scene_query_height_offset or 0
 	self.last_position = nil
+
+	local t = Managers.time:time("game")
+	self._friendly_fire_grace_period = t + (projectile_info.friendly_fire_grace_period or 0)
 end
 
 function PlayerProjectileImpactUnitExtension:extensions_ready(world, unit)
@@ -98,17 +101,17 @@ function PlayerProjectileImpactUnitExtension:update_raycast(unit, input, dt, con
 
 
 	if last_position then
-		self:_do_raycast(unit, last_position:unbox(), cached_position, physics_world, collision_filter)
+		self:_do_raycast(unit, last_position:unbox(), cached_position, physics_world, collision_filter, t)
 	else
 		last_position = Vector3Box()
 		self.last_position = last_position
 	end
 	last_position:store(cached_position)
 
-	self:_do_raycast(unit, cached_position, moved_position, physics_world, collision_filter)
+	self:_do_raycast(unit, cached_position, moved_position, physics_world, collision_filter, t)
 end
 
-function PlayerProjectileImpactUnitExtension:_do_raycast(unit, from, to, physics_world, collision_filter)
+function PlayerProjectileImpactUnitExtension:_do_raycast(unit, from, to, physics_world, collision_filter, t)
 	local direction = to - from
 	local length = Vector3.length(direction)
 	direction = Vector3.normalize(direction)
@@ -131,7 +134,7 @@ function PlayerProjectileImpactUnitExtension:_do_raycast(unit, from, to, physics
 		local hit_actor = hit [INDEX_ACTOR]
 
 		local hit_unit = Actor.unit(hit_actor)
-		local valid = self:_valid_target(unit, hit_unit, self._owner_unit)
+		local valid = self:_valid_target(unit, hit_unit, self._owner_unit, t)
 		if valid then
 			local num_actors = Unit.num_actors(hit_unit)
 			local actor_index = nil
@@ -179,7 +182,7 @@ function PlayerProjectileImpactUnitExtension:update_sphere_sweep(unit, input, dt
 			local hit_actor = hit.actor
 
 			local hit_unit = Actor.unit(hit_actor)
-			local valid = self:_valid_target(unit, hit_unit, self.owner_unit)
+			local valid = self:_valid_target(unit, hit_unit, self.owner_unit, t)
 			if valid then
 				local num_actors = Unit.num_actors(hit_unit)
 				local actor_index = nil
@@ -208,12 +211,12 @@ function PlayerProjectileImpactUnitExtension:update_sphere_sweep(unit, input, dt
 
 end
 
-function PlayerProjectileImpactUnitExtension:_valid_target(unit, hit_unit, owner_unit)
+function PlayerProjectileImpactUnitExtension:_valid_target(unit, hit_unit, owner_unit, t)
 	if unit == hit_unit or owner_unit == hit_unit or Unit.is_frozen(hit_unit) then
 		return false
 	end
 
-	if self._dont_target_friendly then
+	if self._dont_target_friendly or t < self._friendly_fire_grace_period then
 		local side_manager = Managers.state.side
 		local has_side = side_manager.side_by_unit [hit_unit]
 		if has_side and not side_manager:is_enemy(self.owner_unit, hit_unit) then

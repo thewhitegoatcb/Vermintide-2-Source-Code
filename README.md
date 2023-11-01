@@ -2,7 +2,7 @@
  
 This is a temporary repository until https://github.com/Aussiemon/Vermintide-2-Source-Code gets updated
 
-Current version is **5.1.3**
+Current version is **5.1.4**
 
 ## NOTES
 * Auto generated lua files are missing

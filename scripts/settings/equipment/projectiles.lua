@@ -247,7 +247,8 @@ Projectiles.necromancer_trapped_soul = { projectile_unit_template_name = "ai_tru
 
 
 
-Projectiles.bw_necromancy_staff = { impact_type = "sphere_sweep", static_impact_type = "raycast", fire_from_muzzle = false, gaze_override_gravity_settings = "gaze_fireball", trajectory_template_name = "throw_trajectory", muzzle_name = "fx_01", radius = 0.15, gravity_settings = "bounty_hunter_shot", projectile_unit_template_name = "player_projectile_unit", projectile_units_template = "necromancer_curse_spirit" }
+Projectiles.bw_necromancy_staff = { impact_type = "sphere_sweep", static_impact_type = "raycast", fire_from_muzzle = false, gaze_override_gravity_settings = "gaze_fireball", trajectory_template_name = "throw_trajectory", muzzle_name = "fx_01", radius = 0.15, friendly_fire_grace_period = 0.05, gravity_settings = "bounty_hunter_shot", projectile_unit_template_name = "player_projectile_unit", projectile_units_template = "necromancer_curse_spirit" }
+
 
 
 

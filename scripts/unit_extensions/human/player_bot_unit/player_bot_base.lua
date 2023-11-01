@@ -236,6 +236,8 @@ function PlayerBotBase:extensions_ready(world, unit)
 	local ai_ext = ScriptUnit.extension(unit, "ai_system")
 	local locomotion_ext = ScriptUnit.extension(unit, "locomotion_system")
 	local career_extension = ScriptUnit.extension(unit, "career_system")
+	local ai_slot_extension = ScriptUnit.extension(unit, "ai_slot_system")
+	local ai_commander_extension = ScriptUnit.extension(unit, "ai_commander_system")
 
 	self._health_extension = health_ext
 	self._status_extension = status_ext
@@ -254,6 +256,8 @@ function PlayerBotBase:extensions_ready(world, unit)
 	blackboard.ai_bot_group_extension = ai_bot_group_ext
 	blackboard.ai_extension = ai_ext
 	blackboard.career_extension = career_extension
+	blackboard.ai_slot_extension = ai_slot_extension
+	blackboard.ai_commander_extension = ai_commander_extension
 	blackboard.side = Managers.state.side.side_by_unit [unit]
 end
 

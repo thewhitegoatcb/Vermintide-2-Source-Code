@@ -750,7 +750,7 @@ local damage_templates = {
 
 
 
-	scythe_discharge = { no_stagger_damage_reduction = true, charge_value = "aoe",
+	scythe_discharge = { no_stagger_damage_reduction = true, charge_value = "heavy_attack",
 		armor_modifier = {
 			attack = { 1, 0.25, 1.5, 1, 0.75, 0 },
 			impact = { 1, 0.75, 1, 1, 0.75, 0 } },

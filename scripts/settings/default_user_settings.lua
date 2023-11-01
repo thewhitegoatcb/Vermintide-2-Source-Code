@@ -190,7 +190,6 @@ local default_render_settings = { lod_scatter_density = 1, local_probes_enabled 
 
 
 
-
 	nv_low_latency_mode = not not reflex_supported }
 
 

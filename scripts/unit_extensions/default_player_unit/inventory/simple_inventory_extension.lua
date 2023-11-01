@@ -167,6 +167,13 @@ function SimpleInventoryExtension:extensions_ready(world, unit)
 		local backend_id = item_data.backend_id
 		local buffs = self:_get_property_and_trait_buffs(backend_id)
 
+
+		if item_template.server_buffs then
+			for buff_name, buff_data in pairs(item_template.server_buffs) do
+				buffs.server [buff_name] = buff_data
+			end
+		end
+
 		self:apply_buffs(buffs, "wield", item_data.name, default_wielded_slot)
 
 		local equipment = self._equipment
@@ -289,6 +296,13 @@ function SimpleInventoryExtension:_send_rpc_add_equipment_buffs(unit_go_id, slot
 	end
 
 	local property_and_trait_buffs = self:_get_property_and_trait_buffs(backend_id)
+	local item_data = BackendUtils.get_item_from_masterlist(backend_id)
+	local item_template = BackendUtils.get_item_template(item_data)
+	if item_template.server_buffs then
+		for buff_name, buff_data in pairs(item_template.server_buffs) do
+			property_and_trait_buffs.server [buff_name] = buff_data
+		end
+	end
 	send_equipment_buffs("rpc_add_equipment_buffs", property_and_trait_buffs)
 
 	local no_wield_required_buffs = self:_get_no_wield_required_property_and_trait_buffs(backend_id)
@@ -548,29 +562,44 @@ function SimpleInventoryExtension:can_wield()
 	return can_wield
 end
 
-function SimpleInventoryExtension:wield_previous_weapon()
-	local slot_name = self._previously_wielded_weapon_slot
-
-	self:wield(slot_name)
-end
-
 function SimpleInventoryExtension:wield_previous_slot()
 	local slot_name = self._previously_wielded_slot
 
-	self:wield(slot_name)
+	local success = self:wield(slot_name)
+	if not success then
+		return self:wield_previous_non_level_slot()
+	end
+
+	return true
 end
 
 function SimpleInventoryExtension:wield_previous_non_level_slot()
 	local slot_name = self._previously_wielded_non_level_slot
 
-	self:wield(slot_name)
+	local success = self:wield(slot_name)
+	if not success then
+		return self:wield_previous_weapon()
+	end
+
+	return true
+end
+
+function SimpleInventoryExtension:wield_previous_weapon()
+	local slot_name = self._previously_wielded_weapon_slot
+
+	local success = self:wield(slot_name)
+	if not success then
+		return self:rewield_wielded_slot()
+	end
+
+	return true
 end
 
 function SimpleInventoryExtension:rewield_wielded_slot()
 	local equipment = self._equipment
 	local wielded_slot = equipment.wielded_slot
 
-	self:wield(wielded_slot)
+	return self:wield(wielded_slot)
 end
 
 function SimpleInventoryExtension:wield(slot_name)
@@ -579,7 +608,7 @@ function SimpleInventoryExtension:wield(slot_name)
 	local slot_data = equipment.slots [slot_name]
 
 	if slot_data == nil then
-		return
+		return false
 	end
 
 	if equipment.wielded_slot ~= slot_name then
@@ -621,6 +650,13 @@ function SimpleInventoryExtension:wield(slot_name)
 	if item_template.buffs then
 		for buff_name, buff_data in pairs(item_template.buffs) do
 			buffs.client [buff_name] = buff_data
+		end
+	end
+
+
+	if item_template.server_buffs then
+		for buff_name, buff_data in pairs(item_template.server_buffs) do
+			buffs.server [buff_name] = buff_data
 		end
 	end
 
@@ -669,6 +705,8 @@ function SimpleInventoryExtension:wield(slot_name)
 	if right_weapon then
 		right_weapon:on_wield("right")
 	end
+
+	return true
 end
 
 function SimpleInventoryExtension:_despawn_attached_units()

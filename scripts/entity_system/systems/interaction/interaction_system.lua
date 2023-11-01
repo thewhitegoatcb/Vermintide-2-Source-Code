@@ -66,7 +66,9 @@ end
 function InteractionSystem:rpc_interaction_denied(channel_id, interactor_go_id)
 	InteractionHelper.printf("rpc_interaction_denied(%s, %s)", channel_id, tostring(interactor_go_id))
 	local interactor_unit = self.unit_storage:unit(interactor_go_id)
-	InteractionHelper:request_denied(interactor_unit)
+	if ALIVE [interactor_unit] then
+		InteractionHelper:request_denied(interactor_unit)
+	end
 end
 
 function InteractionSystem:rpc_interaction_completed(channel_id, interactor_go_id, interaction_result)
@@ -112,6 +114,10 @@ end
 
 function InteractionSystem:rpc_sync_interaction_state(channel_id, unit_id, state_id, interaction_type_id, interactable_unit_id, start_time, duration, is_level_unit)
 	local unit = self.unit_storage:unit(unit_id)
+	if not unit then
+		return
+	end
+
 	local state = NetworkLookup.interaction_states [state_id]
 	local interaction_type = NetworkLookup.interactions [interaction_type_id]
 	local interactable_unit = Managers.state.network:game_object_or_level_unit(interactable_unit_id, is_level_unit)

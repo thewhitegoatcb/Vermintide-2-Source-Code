@@ -308,6 +308,7 @@ function SoundSectorSystem:event_ai_unit_deactivated(unit, breed_name)
 	end
 end
 
+
 function SoundSectorSystem:rpc_enemy_has_target(channel_id, unit_id, has_target)
 	local unit = self.unit_storage:unit(unit_id)
 	if unit == nil then return

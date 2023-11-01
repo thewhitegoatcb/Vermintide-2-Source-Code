@@ -98,18 +98,19 @@ function PassiveAbilityNecromancerCharges:_on_talents_changed(unit, talent_exten
 	self._has_dual_wield = talent_extension:has_talent("sienna_necromancer_6_2")
 	local has_mix = talent_extension:has_talent("sienna_necromancer_6_3")
 
-	if self._has_dual_wield then
-		self._army_definition = table.fill({ }, 6, "pet_skeleton_dual_wield")
-	elseif has_mix then
+
+	if has_mix then
 		self._army_definition = { "pet_skeleton_with_shield", "pet_skeleton_with_shield", "pet_skeleton_with_shield", "pet_skeleton_armored", "pet_skeleton_armored", "pet_skeleton_armored" }
+
+
+
+
+
+
+
+	elseif self._has_dual_wield then
+		self._army_definition = table.fill({ }, 6, "pet_skeleton_dual_wield")
 	else
-
-
-
-
-
-
-
 		self._army_definition = table.fill({ }, 6, "pet_skeleton")
 	end
 

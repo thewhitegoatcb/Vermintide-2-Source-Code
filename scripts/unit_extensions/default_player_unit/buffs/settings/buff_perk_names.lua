@@ -60,6 +60,7 @@ local buff_perk_names = table.enum(
 "potion_duration",
 "power_block",
 "reduced_hit_react",
+"rewield_grenade_on_throw",
 "root",
 "shared_health_pool_damage_only",
 "shield_break",

@@ -182,7 +182,7 @@ function UnitSpawner:update_death_watch_list()
 
 
 
-	local num_alive_and_dead_units = #Managers.state.conflict:spawned_units() + self.unit_death_watch_list_n
+	local num_alive_and_dead_units = Managers.state.conflict:total_num_ai_spawned() + self.unit_death_watch_list_n
 	if max_num_ragdolls < num_alive_and_dead_units then
 		local units_to_remove = math.min(num_alive_and_dead_units - max_num_ragdolls, self.unit_death_watch_list_n)
 		if min_num_ragdolls > self.unit_death_watch_list_n - units_to_remove then

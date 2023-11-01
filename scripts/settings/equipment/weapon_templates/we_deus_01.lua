@@ -318,7 +318,9 @@ weapon_template.default_projectile_action = weapon_template.actions.action_one.d
 weapon_template.dodge_count = 3
 weapon_template.buffs = {
 	change_dodge_distance = { external_optional_multiplier = 1 },
-	change_dodge_speed = { external_optional_multiplier = 1 },
+	change_dodge_speed = { external_optional_multiplier = 1 } }
+
+weapon_template.server_buffs = {
 	we_deus_01_kerillian_critical_bleed_dot_disable = { } }
 
 

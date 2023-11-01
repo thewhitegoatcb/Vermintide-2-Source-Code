@@ -471,6 +471,8 @@ function AISystem:on_add_extension(world, unit, extension_name, extension_init_d
 		end
 		if breed.immediate_threat then
 			AiUtils.activate_unit(extension._blackboard)
+		else
+			AiUtils.deactivate_unit(extension._blackboard)
 		end
 
 		local sync_func = breed.hot_join_sync
@@ -545,6 +547,11 @@ function AISystem:_cleanup_extension(unit, extension_name)
 	if extension.broadphase_id then
 		Broadphase.remove(self.broadphase, extension.broadphase_id)
 		extension.broadphase_id = nil
+	end
+
+	local blackboard = self.blackboards [unit]
+	if blackboard then
+		AiUtils.deactivate_unit(blackboard)
 	end
 
 	self._hot_join_sync_units [unit] = nil
@@ -648,6 +655,8 @@ function AISystem:unfreeze(unit, extension_name, data)
 
 		if breed.immediate_threat then
 			AiUtils.activate_unit(extension._blackboard)
+		else
+			AiUtils.deactivate_unit(extension._blackboard)
 		end
 
 		local sync_func = breed.hot_join_sync

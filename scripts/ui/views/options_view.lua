@@ -1704,63 +1704,66 @@ end
 
 
 function OptionsView:_set_setting_override(content, style, setting_name, forced_value)
-	local current_selection = content.current_selection
 	local options_values = content.options_values
-
 	local forced_index = table.find(options_values, forced_value)
 	fassert(forced_index, "Could not find the forced value %q for setting: %s", forced_value, setting_name)
 
-	if not content.overriden_setting then
-		local wanted_value = nil
+	if self.overriden_settings [setting_name] == nil then
 
-		if forced_index ~= current_selection then
-			wanted_value = options_values [current_selection]
-			self.overriden_settings [setting_name] = wanted_value
+		local current_index = content.current_selection
+		self.overriden_settings [setting_name] = options_values [current_index]
+
+
+		if forced_index ~= current_index then
 			content.current_selection = forced_index
-			content:callback(style, nil, true)
-		else
-			wanted_value = self.overriden_settings [setting_name]
-		end
-
-		if wanted_value then
-			local wanted_index = table.find(options_values, wanted_value)
-			fassert(wanted_index, "Could not find the wanted value %q for setting: %s", wanted_value, setting_name)
-			content.overriden_setting = content.options_texts [wanted_index]
+			local called_from_override = true
+			content:callback(style, nil, called_from_override)
 		end
 	end
 
+
+	local wanted_value = self.overriden_settings [setting_name]
+	local wanted_index = table.find(options_values, wanted_value)
+	fassert(wanted_index, "Could not find the wanted value %q for setting: %s", wanted_value, setting_name)
+	if forced_index ~= wanted_index then
+		content.overriden_setting = content.options_texts [wanted_index]
+	end
 end
 
 function OptionsView:_restore_setting_override(content, style, setting_name)
 	local wanted_value = self.overriden_settings [setting_name]
-	if not wanted_value then
+	if wanted_value == nil then
 		return
 	end
+
 	local wanted_index = table.find(content.options_values, wanted_value)
-	if not wanted_index then
-		wanted_index = content.default_value
-		printf("[OptionsView] Could not find the wanted value %q for setting %q. Using default value %q instead.", wanted_value, setting_name, content.options_values [wanted_index])
+	if wanted_index then
+
+		content.current_selection = wanted_index
+		local called_from_override = true
+		content:callback(style, nil, called_from_override)
+	else
+		printf("[OptionsView] Could not find the wanted value %q for setting %q. Ignored.", wanted_value, setting_name)
 	end
+
 	content.overriden_setting = nil
 	content.overriden_reason = nil
 	self.overriden_settings [setting_name] = nil
-	if wanted_index ~= content.current_selection then
-		content.current_selection = wanted_index
-		content:callback(style, nil, true)
-	end
 end
 
 function OptionsView:_clear_setting_override(content, style, setting_name)
-	if content.overriden_setting then
-		content.overriden_setting = nil
-		self.overriden_settings [setting_name] = nil
-	end
+	content.overriden_setting = nil
 	content.overriden_reason = nil
+	self.overriden_settings [setting_name] = nil
 end
 
-function OptionsView:_set_override_reason(content, reason)
+function OptionsView:_set_override_reason(content, reason, skip_setting_text)
 	if not content.overriden_reason then
-		content.overriden_reason = Localize(content.text) .. "\n" .. Localize("tooltip_overriden_by_setting") .. "\n" .. Localize(reason)
+		if skip_setting_text then
+			content.overriden_reason = Localize(content.text) .. "\n" .. Localize(reason)
+		else
+			content.overriden_reason = Localize(content.text) .. "\n" .. Localize("tooltip_overriden_by_setting") .. "\n" .. Localize(reason)
+		end
 	end
 end
 
@@ -4868,57 +4871,72 @@ function OptionsView:cb_fsr2_enabled(content, style, called_from_graphics_qualit
 	 --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #0 1-7, warpins: 1 --]] local value = content.options_values [content.current_selection]
 	self.changed_user_settings.fsr2_enabled = value --[[ END OF BLOCK #0 --]] slot4 = if value then  else --[[ JUMP TO BLOCK #2 --]] end  --[[ Decompilation error in this vicinity: --]] 
 
-	--[[ BLOCK #1 8-14, warpins: 1 --]] self.changed_render_settings.upscaling_enabled = true
-	self.changed_render_settings.upscaling_mode = "fsr2" --[[ END OF BLOCK #1 --]] --[[ UNCONDITIONAL JUMP --]] --[[ TARGET BLOCK #3; --]]  --[[ Decompilation error in this vicinity: --]] 
+	--[[ BLOCK #1 8-17, warpins: 1 --]] self.changed_render_settings.upscaling_enabled = true
+	self.changed_render_settings.upscaling_mode = "fsr2"
+	self.changed_render_settings.upscaling_quality = "quality" --[[ END OF BLOCK #1 --]] --[[ UNCONDITIONAL JUMP --]] --[[ TARGET BLOCK #3; --]]  --[[ Decompilation error in this vicinity: --]] 
 
-
-	--[[ BLOCK #2 15-23, warpins: 1 --]] self.changed_render_settings.upscaling_enabled = false
+	--[[ BLOCK #2 18-26, warpins: 1 --]] self.changed_render_settings.upscaling_enabled = false
 	self.changed_render_settings.upscaling_mode = "none"
 	self.changed_render_settings.upscaling_quality = "none" --[[ END OF BLOCK #2 --]] --[[ FLOW --]] --[[ TARGET BLOCK #3; --]]  --[[ Decompilation error in this vicinity: --]] 
 
 
-	--[[ BLOCK #3 24-24, warpins: 2 --]] return --[[ END OF BLOCK #3 --]] end function OptionsView:cb_fsr2_enabled_condition(content, style)
-	 --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #0 1-6, warpins: 1 --]] --[[ END OF BLOCK #0 --]] slot3 = if self:_get_current_render_setting("fsr_enabled") then  else --[[ JUMP TO BLOCK #2 --]] end  --[[ Decompilation error in this vicinity: --]] 
-	--[[ BLOCK #1 7-21, warpins: 1 --]] self:_set_setting_override(content, style, "fsr2_enabled", false)
+	--[[ BLOCK #3 27-27, warpins: 2 --]] return --[[ END OF BLOCK #3 --]] end function OptionsView:cb_fsr2_enabled_condition(content, style)
+	 --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #0 1-6, warpins: 1 --]] --[[ END OF BLOCK #0 --]] slot3 = if not Application.render_caps("d3d12") then  else --[[ JUMP TO BLOCK #2 --]] end  --[[ Decompilation error in this vicinity: --]] 
+	--[[ BLOCK #1 7-22, warpins: 1 --]] self:_set_setting_override(content, style, "fsr2_enabled", false)
+	self:_set_override_reason(content, "backend_err_playfab_unsupported_version", true)
+	content.disabled = true --[[ END OF BLOCK #1 --]] --[[ UNCONDITIONAL JUMP --]] --[[ TARGET BLOCK #7; --]]  --[[ Decompilation error in this vicinity: --]] 
+	--[[ BLOCK #2 23-28, warpins: 1 --]] --[[ END OF BLOCK #2 --]] slot3 = if self:_get_current_render_setting("fsr2_enabled") then  else --[[ JUMP TO BLOCK #4 --]] end  --[[ Decompilation error in this vicinity: --]] 
+	--[[ BLOCK #3 29-43, warpins: 1 --]] self:_set_setting_override(content, style, "fsr2_enabled", false)
 	self:_set_override_reason(content, "settings_view_header_fidelityfx_super_resolution")
-	content.disabled = true --[[ END OF BLOCK #1 --]] --[[ UNCONDITIONAL JUMP --]] --[[ TARGET BLOCK #5; --]]  --[[ Decompilation error in this vicinity: --]] 
+	content.disabled = true --[[ END OF BLOCK #3 --]] --[[ UNCONDITIONAL JUMP --]] --[[ TARGET BLOCK #7; --]]  --[[ Decompilation error in this vicinity: --]] 
 
-	--[[ BLOCK #2 22-27, warpins: 1 --]] --[[ END OF BLOCK #2 --]] slot3 = if self:_get_current_user_setting("dlss_enabled") then  else --[[ JUMP TO BLOCK #4 --]] end  --[[ Decompilation error in this vicinity: --]] 
-	--[[ BLOCK #3 28-42, warpins: 1 --]] self:_set_setting_override(content, style, "fsr2_enabled", false)
+	--[[ BLOCK #4 44-49, warpins: 1 --]] --[[ END OF BLOCK #4 --]] slot3 = if self:_get_current_user_setting("dlss_enabled") then  else --[[ JUMP TO BLOCK #6 --]] end  --[[ Decompilation error in this vicinity: --]] 
+	--[[ BLOCK #5 50-64, warpins: 1 --]] self:_set_setting_override(content, style, "fsr2_enabled", false)
 	self:_set_override_reason(content, "menu_settings_dlss_enabled")
-	content.disabled = true --[[ END OF BLOCK #3 --]] --[[ UNCONDITIONAL JUMP --]] --[[ TARGET BLOCK #5; --]]  --[[ Decompilation error in this vicinity: --]] 
+	content.disabled = true --[[ END OF BLOCK #5 --]] --[[ UNCONDITIONAL JUMP --]] --[[ TARGET BLOCK #7; --]]  --[[ Decompilation error in this vicinity: --]] 
 
 
-	--[[ BLOCK #4 43-50, warpins: 1 --]] self:_restore_setting_override(content, style, "fsr2_enabled")
-	content.disabled = false --[[ END OF BLOCK #4 --]] --[[ FLOW --]] --[[ TARGET BLOCK #5; --]]  --[[ Decompilation error in this vicinity: --]] 
+	--[[ BLOCK #6 65-72, warpins: 1 --]] self:_restore_setting_override(content, style, "fsr2_enabled")
+	content.disabled = false --[[ END OF BLOCK #6 --]] --[[ FLOW --]] --[[ TARGET BLOCK #7; --]]  --[[ Decompilation error in this vicinity: --]] 
 
 
-	--[[ BLOCK #5 51-51, warpins: 3 --]] return --[[ END OF BLOCK #5 --]] end
+	--[[ BLOCK #7 73-73, warpins: 4 --]] return --[[ END OF BLOCK #7 --]] end
 local FSR2_QUALITY_LOOKUP = table.mirror_array_inplace({ "quality", "balanced", "performance", "ultra_performance" })
 function OptionsView:cb_fsr2_quality_setup()
-	 --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #0 1-33, warpins: 1 --]] local options = { } options [1] = { value = "quality",
+	 --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #0 1-34, warpins: 1 --]] local options = { } options [1] = { value = "quality",
 		text = Localize("menu_settings_quality") } options [2] = { value = "balanced",
 		text = Localize("menu_settings_balanced") } options [3] = { value = "performance",
 		text = Localize("menu_settings_performance") } options [4] = { value = "ultra_performance",
 		text = Localize("menu_settings_ultra_performance") }
 
 
-	local selected_option = 1 --[[ END OF BLOCK #0 --]]
-	slot3 = if Application.user_setting("render_settings", "upscaling_enabled") then  else --[[ JUMP TO BLOCK #3 --]] end  --[[ Decompilation error in this vicinity: --]] 
-	--[[ BLOCK #1 34-42, warpins: 1 --]] --[[ END OF BLOCK #1 --]] slot2 = if not FSR2_QUALITY_LOOKUP [Application.user_setting("render_settings", "upscaling_quality")] then  else --[[ JUMP TO BLOCK #3 --]] end  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #2 43-43, warpins: 1 --]] selected_option = 1 --[[ END OF BLOCK #2 --]] --[[ FLOW --]] --[[ TARGET BLOCK #3; --]]  --[[ Decompilation error in this vicinity: --]] 
+	local default_option = FSR2_QUALITY_LOOKUP.quality
+	local selected_option = default_option --[[ END OF BLOCK #0 --]]
+	if self:_get_current_render_setting("upscaling_mode") == "fsr2" then  else --[[ JUMP TO BLOCK #4 --]] end  --[[ Decompilation error in this vicinity: --]] 
+	--[[ BLOCK #1 35-42, warpins: 1 --]] local upscaling_quality = self:_get_current_render_setting("upscaling_quality") --[[ END OF BLOCK #1 --]]
+	slot3 = if not FSR2_QUALITY_LOOKUP [upscaling_quality] then  else --[[ JUMP TO BLOCK #3 --]] end  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #2 42-42, warpins: 1 --]] selected_option = selected_option --[[ END OF BLOCK #2 --]] --[[ FLOW --]] --[[ TARGET BLOCK #3; --]]  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #3 43-43, warpins: 2 --]] --[[ END OF BLOCK #3 --]] --[[ UNCONDITIONAL JUMP --]] --[[ TARGET BLOCK #6; --]]  --[[ Decompilation error in this vicinity: --]] 
+
+	--[[ BLOCK #4 44-49, warpins: 1 --]] local upscaling_quality = self.overriden_settings.fsr2_quality --[[ END OF BLOCK #4 --]]
+	slot3 = if not FSR2_QUALITY_LOOKUP [upscaling_quality] then  else --[[ JUMP TO BLOCK #6 --]] end  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #5 49-49, warpins: 1 --]] selected_option = selected_option --[[ END OF BLOCK #5 --]] --[[ FLOW --]] --[[ TARGET BLOCK #6; --]]  --[[ Decompilation error in this vicinity: --]] 
 
 
-	--[[ BLOCK #3 44-55, warpins: 3 --]] local default_option = FSR2_QUALITY_LOOKUP [DefaultUserSettings.get("render_settings", "upscaling_quality")] return selected_option, options, "menu_settings_fsr2_quality", default_option --[[ END OF BLOCK #3 --]]
-end
+	--[[ BLOCK #6 50-54, warpins: 3 --]] return selected_option, options, "menu_settings_fsr2_quality", default_option --[[ END OF BLOCK #6 --]] end
 function OptionsView:cb_fsr2_quality_saved_value(widget)
-	 --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #0 1-9, warpins: 1 --]] local upscaling_quality = self:_get_current_render_setting("upscaling_quality")
-	slot3 = widget.content --[[ END OF BLOCK #0 --]] slot4 = if not FSR2_QUALITY_LOOKUP [upscaling_quality] then  else --[[ JUMP TO BLOCK #2 --]] end  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #1 10-10, warpins: 1 --]] slot4 = 1 --[[ END OF BLOCK #1 --]] --[[ FLOW --]] --[[ TARGET BLOCK #2; --]]  --[[ Decompilation error in this vicinity: --]] 
-	--[[ BLOCK #2 11-12, warpins: 2 --]] slot3.current_selection = slot4 return --[[ END OF BLOCK #2 --]] end
+	 --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #0 1-7, warpins: 1 --]] local upscaling_quality = nil --[[ END OF BLOCK #0 --]]
+	if self:_get_current_render_setting("upscaling_mode") == "fsr2" then  else --[[ JUMP TO BLOCK #2 --]] end  --[[ Decompilation error in this vicinity: --]] 
+	--[[ BLOCK #1 8-13, warpins: 1 --]] upscaling_quality = self:_get_current_render_setting("upscaling_quality") --[[ END OF BLOCK #1 --]] --[[ UNCONDITIONAL JUMP --]] --[[ TARGET BLOCK #3; --]]  --[[ Decompilation error in this vicinity: --]] 
+
+	--[[ BLOCK #2 14-15, warpins: 1 --]] upscaling_quality = self.overriden_settings.fsr2_quality --[[ END OF BLOCK #2 --]] --[[ FLOW --]] --[[ TARGET BLOCK #3; --]]  --[[ Decompilation error in this vicinity: --]] 
+
+	--[[ BLOCK #3 16-20, warpins: 2 --]] slot3 = widget.content --[[ END OF BLOCK #3 --]] slot4 = if not FSR2_QUALITY_LOOKUP [upscaling_quality] then  else --[[ JUMP TO BLOCK #5 --]] end  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #4 21-21, warpins: 1 --]] slot4 = 1 --[[ END OF BLOCK #4 --]] --[[ FLOW --]] --[[ TARGET BLOCK #5; --]]  --[[ Decompilation error in this vicinity: --]] 
+	--[[ BLOCK #5 22-23, warpins: 2 --]] slot3.current_selection = slot4 return --[[ END OF BLOCK #5 --]] end
 function OptionsView:cb_fsr2_quality(content, style, called_from_graphics_quality)
-	 --[[ Decompilation error in this vicinity: --]] 
-	--[[ BLOCK #0 1-6, warpins: 1 --]] local value = content.options_values [content.current_selection] self.changed_render_settings.upscaling_quality = value
-	return --[[ END OF BLOCK #0 --]] end
-function OptionsView:cb_fsr2_quality_condition(content, style)
+	 --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #0 1-9, warpins: 1 --]] local value = content.options_values [content.current_selection] --[[ END OF BLOCK #0 --]]
+	slot5 = if self:_get_current_user_setting("fsr2_enabled") then  else --[[ JUMP TO BLOCK #2 --]] end  --[[ Decompilation error in this vicinity: --]] 
+	--[[ BLOCK #1 10-11, warpins: 1 --]] self.changed_render_settings.upscaling_quality = value --[[ END OF BLOCK #1 --]] --[[ FLOW --]] --[[ TARGET BLOCK #2; --]]  --[[ Decompilation error in this vicinity: --]] 
+
+
+	--[[ BLOCK #2 12-12, warpins: 2 --]] return --[[ END OF BLOCK #2 --]] end function OptionsView:cb_fsr2_quality_condition(content, style)
 	 --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #0 1-6, warpins: 1 --]] --[[ END OF BLOCK #0 --]] slot3 = if not self:_get_current_user_setting("fsr2_enabled") then  else --[[ JUMP TO BLOCK #2 --]] end  --[[ Decompilation error in this vicinity: --]] 
 	--[[ BLOCK #1 7-24, warpins: 1 --]] local value = content.options_values [content.current_selection]
 	self:_set_setting_override(content, style, "fsr2_quality", value)
@@ -4995,19 +5013,25 @@ function OptionsView:cb_dlss_frame_generation(content, style, called_from_graphi
 	--[[ BLOCK #0 1-6, warpins: 1 --]] local value = content.options_values [content.current_selection] self.changed_render_settings.dlss_g_enabled = value
 	return --[[ END OF BLOCK #0 --]] end
 function OptionsView:cb_dlss_frame_generation_condition(content, style)
-	 --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #0 1-6, warpins: 1 --]] --[[ END OF BLOCK #0 --]] slot3 = if not self:_get_current_user_setting("dlss_enabled") then  else --[[ JUMP TO BLOCK #2 --]] end  --[[ Decompilation error in this vicinity: --]] 
-	--[[ BLOCK #1 7-21, warpins: 1 --]] self:_set_setting_override(content, style, "dlss_frame_generation", false)
+	 --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #0 1-6, warpins: 1 --]] --[[ END OF BLOCK #0 --]] slot3 = if not Application.render_caps("dlss_g_supported") then  else --[[ JUMP TO BLOCK #2 --]] end  --[[ Decompilation error in this vicinity: --]] 
+	--[[ BLOCK #1 7-22, warpins: 1 --]] self:_set_setting_override(content, style, "dlss_frame_generation", false)
+	self:_set_override_reason(content, "backend_err_playfab_unsupported_version", true)
+
+
+	content.disabled = true --[[ END OF BLOCK #1 --]] --[[ UNCONDITIONAL JUMP --]] --[[ TARGET BLOCK #5; --]]  --[[ Decompilation error in this vicinity: --]] 
+	--[[ BLOCK #2 23-28, warpins: 1 --]] --[[ END OF BLOCK #2 --]] slot3 = if not self:_get_current_user_setting("dlss_enabled") then  else --[[ JUMP TO BLOCK #4 --]] end  --[[ Decompilation error in this vicinity: --]] 
+	--[[ BLOCK #3 29-43, warpins: 1 --]] self:_set_setting_override(content, style, "dlss_frame_generation", false)
 	self:_set_override_reason(content, "menu_settings_dlss_enabled")
-	content.disabled = true --[[ END OF BLOCK #1 --]] --[[ UNCONDITIONAL JUMP --]] --[[ TARGET BLOCK #3; --]]  --[[ Decompilation error in this vicinity: --]] 
+	content.disabled = true --[[ END OF BLOCK #3 --]] --[[ UNCONDITIONAL JUMP --]] --[[ TARGET BLOCK #5; --]]  --[[ Decompilation error in this vicinity: --]] 
 
-	--[[ BLOCK #2 22-29, warpins: 1 --]] self:_restore_setting_override(content, style, "dlss_frame_generation")
-	content.disabled = false --[[ END OF BLOCK #2 --]] --[[ FLOW --]] --[[ TARGET BLOCK #3; --]]  --[[ Decompilation error in this vicinity: --]] 
+	--[[ BLOCK #4 44-51, warpins: 1 --]] self:_restore_setting_override(content, style, "dlss_frame_generation")
+	content.disabled = false --[[ END OF BLOCK #4 --]] --[[ FLOW --]] --[[ TARGET BLOCK #5; --]]  --[[ Decompilation error in this vicinity: --]] 
 
 
-	--[[ BLOCK #3 30-30, warpins: 2 --]] return --[[ END OF BLOCK #3 --]] end
+	--[[ BLOCK #5 52-52, warpins: 3 --]] return --[[ END OF BLOCK #5 --]] end
 local DLSS_SR_QUALITY_LOOKUP = table.mirror_array_inplace({ "none", "auto", "quality", "balanced", "performance", "ultra_performance", "dlaa" })
 function OptionsView:cb_dlss_super_resolution_setup()
-	 --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #0 1-51, warpins: 1 --]] local options = { } options [1] = { value = "none",
+	 --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #0 1-52, warpins: 1 --]] local options = { } options [1] = { value = "none",
 		text = Localize("menu_settings_off") } options [2] = { value = "auto",
 		text = Localize("menu_settings_auto") } options [3] = { value = "quality",
 		text = Localize("menu_settings_quality") } options [4] = { value = "balanced",
@@ -5017,17 +5041,25 @@ function OptionsView:cb_dlss_super_resolution_setup()
 		text = Localize("menu_settings_dlaa") }
 
 
-	local selected_option = 1 --[[ END OF BLOCK #0 --]]
-	slot3 = if Application.user_setting("render_settings", "upscaling_enabled") then  else --[[ JUMP TO BLOCK #3 --]] end  --[[ Decompilation error in this vicinity: --]] 
-	--[[ BLOCK #1 52-60, warpins: 1 --]] --[[ END OF BLOCK #1 --]] slot2 = if not DLSS_SR_QUALITY_LOOKUP [Application.user_setting("render_settings", "upscaling_quality")] then  else --[[ JUMP TO BLOCK #3 --]] end  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #2 61-61, warpins: 1 --]] selected_option = 1 --[[ END OF BLOCK #2 --]] --[[ FLOW --]] --[[ TARGET BLOCK #3; --]]  --[[ Decompilation error in this vicinity: --]] 
+	local default_option = DLSS_SR_QUALITY_LOOKUP.none
+	local upscaling_quality = nil --[[ END OF BLOCK #0 --]]
+	slot4 = if self:_get_current_user_setting("dlss_enabled") then  else --[[ JUMP TO BLOCK #2 --]] end  --[[ Decompilation error in this vicinity: --]] 
+	--[[ BLOCK #1 53-58, warpins: 1 --]] upscaling_quality = self:_get_current_render_setting("upscaling_quality") --[[ END OF BLOCK #1 --]] --[[ UNCONDITIONAL JUMP --]] --[[ TARGET BLOCK #3; --]]  --[[ Decompilation error in this vicinity: --]] 
 
+	--[[ BLOCK #2 59-59, warpins: 1 --]] upscaling_quality = "none" --[[ END OF BLOCK #2 --]] --[[ FLOW --]] --[[ TARGET BLOCK #3; --]]  --[[ Decompilation error in this vicinity: --]] 
 
-	--[[ BLOCK #3 62-73, warpins: 3 --]] local default_option = DLSS_SR_QUALITY_LOOKUP [DefaultUserSettings.get("render_settings", "upscaling_quality")] return selected_option, options, "menu_settings_dlss_super_resolution", default_option --[[ END OF BLOCK #3 --]]
-end
+	--[[ BLOCK #3 60-63, warpins: 2 --]] --[[ END OF BLOCK #3 --]] slot4 = if not DLSS_SR_QUALITY_LOOKUP [upscaling_quality] then  else --[[ JUMP TO BLOCK #5 --]] end  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #4 64-64, warpins: 1 --]] local selected_option = selected_option --[[ END OF BLOCK #4 --]] --[[ FLOW --]] --[[ TARGET BLOCK #5; --]]  --[[ Decompilation error in this vicinity: --]] 
+
+	--[[ BLOCK #5 65-69, warpins: 2 --]] return selected_option, options, "menu_settings_dlss_super_resolution", default_option --[[ END OF BLOCK #5 --]] end
 function OptionsView:cb_dlss_super_resolution_saved_value(widget)
-	 --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #0 1-9, warpins: 1 --]] local upscaling_quality = self:_get_current_render_setting("upscaling_quality")
-	slot3 = widget.content --[[ END OF BLOCK #0 --]] slot4 = if not DLSS_SR_QUALITY_LOOKUP [upscaling_quality] then  else --[[ JUMP TO BLOCK #2 --]] end  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #1 10-10, warpins: 1 --]] slot4 = 1 --[[ END OF BLOCK #1 --]] --[[ FLOW --]] --[[ TARGET BLOCK #2; --]]  --[[ Decompilation error in this vicinity: --]] 
-	--[[ BLOCK #2 11-12, warpins: 2 --]] slot3.current_selection = slot4 return --[[ END OF BLOCK #2 --]] end
+	 --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #0 1-7, warpins: 1 --]] local upscaling_quality = nil --[[ END OF BLOCK #0 --]]
+	slot3 = if self:_get_current_user_setting("dlss_enabled") then  else --[[ JUMP TO BLOCK #2 --]] end  --[[ Decompilation error in this vicinity: --]] 
+	--[[ BLOCK #1 8-13, warpins: 1 --]] upscaling_quality = self:_get_current_render_setting("upscaling_quality") --[[ END OF BLOCK #1 --]] --[[ UNCONDITIONAL JUMP --]] --[[ TARGET BLOCK #3; --]]  --[[ Decompilation error in this vicinity: --]] 
+
+	--[[ BLOCK #2 14-14, warpins: 1 --]] upscaling_quality = "none" --[[ END OF BLOCK #2 --]] --[[ FLOW --]] --[[ TARGET BLOCK #3; --]]  --[[ Decompilation error in this vicinity: --]] 
+
+	--[[ BLOCK #3 15-19, warpins: 2 --]] slot3 = widget.content --[[ END OF BLOCK #3 --]] slot4 = if not DLSS_SR_QUALITY_LOOKUP [upscaling_quality] then  else --[[ JUMP TO BLOCK #5 --]] end  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #4 20-20, warpins: 1 --]] slot4 = 1 --[[ END OF BLOCK #4 --]] --[[ FLOW --]] --[[ TARGET BLOCK #5; --]]  --[[ Decompilation error in this vicinity: --]] 
+	--[[ BLOCK #5 21-22, warpins: 2 --]] slot3.current_selection = slot4 return --[[ END OF BLOCK #5 --]] end
 function OptionsView:cb_dlss_super_resolution(content, style, called_from_graphics_quality)
 	 --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #0 1-5, warpins: 1 --]] local value = content.options_values [content.current_selection] --[[ END OF BLOCK #0 --]] if value == "none" then  else --[[ JUMP TO BLOCK #2 --]] end  --[[ Decompilation error in this vicinity: --]] 
 
@@ -5091,18 +5123,18 @@ function OptionsView:cb_reflex_low_latency(content, style, called_from_graphics_
 
 
 	--[[ BLOCK #6 27-27, warpins: 2 --]] return --[[ END OF BLOCK #6 --]] end function OptionsView:cb_reflex_low_latency_condition(content, style)
-	 --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #0 1-6, warpins: 1 --]] --[[ END OF BLOCK #0 --]] slot3 = if self:_get_current_render_setting("dlss_g_enabled") then  else --[[ JUMP TO BLOCK #4 --]] end  --[[ Decompilation error in this vicinity: --]] 
-	--[[ BLOCK #1 7-9, warpins: 1 --]] --[[ END OF BLOCK #1 --]] if content.current_selection == 1 then  else --[[ JUMP TO BLOCK #3 --]] end  --[[ Decompilation error in this vicinity: --]] 
-	--[[ BLOCK #2 10-21, warpins: 1 --]] self:_set_setting_override(content, style, "reflex_low_latency", 2)
-	self:_set_override_reason(content, "menu_settings_dlss_frame_generation") --[[ END OF BLOCK #2 --]] --[[ FLOW --]] --[[ TARGET BLOCK #3; --]]  --[[ Decompilation error in this vicinity: --]] 
+	 --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #0 1-6, warpins: 1 --]] --[[ END OF BLOCK #0 --]] slot3 = if self:_get_current_render_setting("dlss_g_enabled") then  else --[[ JUMP TO BLOCK #5 --]] end  --[[ Decompilation error in this vicinity: --]] 
+	--[[ BLOCK #1 7-9, warpins: 1 --]] --[[ END OF BLOCK #1 --]] if content.current_selection ~= 1 then  else --[[ JUMP TO BLOCK #3 --]] end  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #2 10-13, warpins: 1 --]] --[[ END OF BLOCK #2 --]] if self.overriden_settings.reflex_low_latency == 1 then  else --[[ JUMP TO BLOCK #4 --]] end  --[[ Decompilation error in this vicinity: --]] 
+	--[[ BLOCK #3 14-25, warpins: 2 --]] self:_set_setting_override(content, style, "reflex_low_latency", 2)
+	self:_set_override_reason(content, "menu_settings_dlss_frame_generation") --[[ END OF BLOCK #3 --]] --[[ FLOW --]] --[[ TARGET BLOCK #4; --]]  --[[ Decompilation error in this vicinity: --]] 
 
-	--[[ BLOCK #3 22-27, warpins: 2 --]] content.list_content [1].hotspot.disabled = true --[[ END OF BLOCK #3 --]] --[[ UNCONDITIONAL JUMP --]] --[[ TARGET BLOCK #5; --]]  --[[ Decompilation error in this vicinity: --]] 
+	--[[ BLOCK #4 26-31, warpins: 2 --]] content.list_content [1].hotspot.disabled = true --[[ END OF BLOCK #4 --]] --[[ UNCONDITIONAL JUMP --]] --[[ TARGET BLOCK #6; --]]  --[[ Decompilation error in this vicinity: --]] 
 
-	--[[ BLOCK #4 28-38, warpins: 1 --]] self:_restore_setting_override(content, style, "reflex_low_latency")
-	content.list_content [1].hotspot.disabled = false --[[ END OF BLOCK #4 --]] --[[ FLOW --]] --[[ TARGET BLOCK #5; --]]  --[[ Decompilation error in this vicinity: --]] 
+	--[[ BLOCK #5 32-42, warpins: 1 --]] self:_restore_setting_override(content, style, "reflex_low_latency")
+	content.list_content [1].hotspot.disabled = false --[[ END OF BLOCK #5 --]] --[[ FLOW --]] --[[ TARGET BLOCK #6; --]]  --[[ Decompilation error in this vicinity: --]] 
 
 
-	--[[ BLOCK #5 39-39, warpins: 2 --]] return --[[ END OF BLOCK #5 --]] end
+	--[[ BLOCK #6 43-43, warpins: 2 --]] return --[[ END OF BLOCK #6 --]] end
 function OptionsView:cb_reflex_framerate_cap_setup()
 	 --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #0 1-10, warpins: 1 --]] local options = FRAMERATE_CAP_OPTIONS --[[ END OF BLOCK #0 --]]
 	slot2 = if not FRAMERATE_CAP_LOOKUP [Application.user_setting("render_settings", "nv_framerate_cap")] then  else --[[ JUMP TO BLOCK #2 --]] end  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #1 11-11, warpins: 1 --]] local selected_option = 1 --[[ END OF BLOCK #1 --]] --[[ FLOW --]] --[[ TARGET BLOCK #2; --]]  --[[ Decompilation error in this vicinity: --]] 
@@ -5683,29 +5715,31 @@ function OptionsView:cb_sharpen(content, style, called_from_graphics_quality)
 	--[[ BLOCK #2 13-13, warpins: 2 --]] return --[[ END OF BLOCK #2 --]] end
 function OptionsView:cb_sharpen_condition(content, style)
 
-	 --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #0 1-6, warpins: 1 --]] --[[ END OF BLOCK #0 --]] slot3 = if self:_get_current_render_setting("fsr_enabled") then  else --[[ JUMP TO BLOCK #2 --]] end  --[[ Decompilation error in this vicinity: --]] 
-	--[[ BLOCK #1 7-21, warpins: 1 --]] self:_set_setting_override(content, style, "sharpen", false)
-	self:_set_override_reason(content, "settings_view_header_fidelityfx_super_resolution")
-	content.disabled = true --[[ END OF BLOCK #1 --]] --[[ UNCONDITIONAL JUMP --]] --[[ TARGET BLOCK #7; --]]  --[[ Decompilation error in this vicinity: --]] 
-
-	--[[ BLOCK #2 22-27, warpins: 1 --]] --[[ END OF BLOCK #2 --]] slot3 = if self:_get_current_user_setting("fsr2_enabled") then  else --[[ JUMP TO BLOCK #4 --]] end  --[[ Decompilation error in this vicinity: --]] 
-	--[[ BLOCK #3 28-42, warpins: 1 --]] self:_set_setting_override(content, style, "sharpen", false)
-	self:_set_override_reason(content, "menu_settings_fsr2_enabled")
-	content.disabled = true --[[ END OF BLOCK #3 --]] --[[ UNCONDITIONAL JUMP --]] --[[ TARGET BLOCK #7; --]]  --[[ Decompilation error in this vicinity: --]] 
-
-
-	--[[ BLOCK #4 43-48, warpins: 1 --]] --[[ END OF BLOCK #4 --]] slot3 = if self:_get_current_user_setting("dlss_enabled") then  else --[[ JUMP TO BLOCK #6 --]] end  --[[ Decompilation error in this vicinity: --]] 
-	--[[ BLOCK #5 49-63, warpins: 1 --]] self:_set_setting_override(content, style, "sharpen", false)
-	self:_set_override_reason(content, "menu_settings_dlss_enabled")
-	content.disabled = true --[[ END OF BLOCK #5 --]] --[[ UNCONDITIONAL JUMP --]] --[[ TARGET BLOCK #7; --]]  --[[ Decompilation error in this vicinity: --]] 
-
-
-	--[[ BLOCK #6 64-71, warpins: 1 --]] self:_restore_setting_override(content, style, "sharpen")
-	content.disabled = false --[[ END OF BLOCK #6 --]] --[[ FLOW --]] --[[ TARGET BLOCK #7; --]]  --[[ Decompilation error in this vicinity: --]] 
 
 
 
-	--[[ BLOCK #7 72-72, warpins: 4 --]] return --[[ END OF BLOCK #7 --]] end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	 --[[ Decompilation error in this vicinity: --]] 
+	--[[ BLOCK #0 1-1, warpins: 1 --]] return --[[ END OF BLOCK #0 --]] end
 function OptionsView:cb_lens_quality_setup()
 	 --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #0 1-20, warpins: 1 --]] local options = { } options [1] = { value = false,
 		text = Localize("menu_settings_off") } options [2] = { value = true,

@@ -179,6 +179,7 @@ function DeusMapDecisionView:_start()
 
 
 	self._shared_state:set_own(self._shared_state:get_key("vote"), "")
+	print("[DeusMapDecisionView] Self vote defaulted")
 
 	if current_node_key ~= "start" then
 		self._scene:set_zoomed_camera_to(current_node.layout_x, current_node.layout_y)
@@ -359,9 +360,11 @@ function DeusMapDecisionView:_node_pressed(node_key)
 		if Managers.input:is_device_active("gamepad") then
 			self._scene:select_node(current_node_key, SOUND_EVENTS.token_move)
 			self._shared_state:set_own(self._shared_state:get_key("vote"), "")
+			print("[DeusMapDecisionView] Self removed vote")
 		else
 			self._scene:select_node(previous_node_key, SOUND_EVENTS.token_move)
 			self._shared_state:set_own(self._shared_state:get_key("vote"), previous_node_key)
+			print("[DeusMapDecisionView] Self replaced vote")
 
 			for _, next in ipairs(node.next) do
 				self._scene:highlight_edge(previous_node_key, next)
@@ -370,6 +373,7 @@ function DeusMapDecisionView:_node_pressed(node_key)
 	else
 		self._scene:select_node(node_key, SOUND_EVENTS.token_move)
 		self._shared_state:set_own(self._shared_state:get_key("vote"), node_key)
+		print("[DeusMapDecisionView] Self voted for", node_key)
 
 		for _, next in ipairs(node.next) do
 			self._scene:highlight_edge(node_key, next)
@@ -736,6 +740,8 @@ function DeusMapDecisionView:_handle_voting_end()
 			vote_count = vote_count and vote_count + 1 or 1
 			votes [vote] = vote_count
 
+			printf("[DeusMapDecisionView] Voting ended. %s voted for %s.", peer_id, vote)
+
 			if max_vote_count < vote_count then
 				max_vote_count = vote_count
 			end
@@ -822,35 +828,6 @@ function DeusMapDecisionView:_did_everyone_vote()
 	end
 
 	return true
-end
-
-function DeusMapDecisionView:_get_current_votes()
-	local votes = { }
-	for _, peer_id in ipairs(self._deus_run_controller:get_peers()) do
-		local vote = self._shared_state:get_peer(peer_id, self._shared_state:get_key("vote")) or ""
-		votes [peer_id] = vote
-	end
-
-	return votes
-end
-
-function DeusMapDecisionView:_are_votes_different(previous_votes)
-	local prev_vote_count = 0
-	for _, _ in pairs(previous_votes) do
-		prev_vote_count = prev_vote_count + 1
-	end
-
-	local new_vote_count = 0
-	for _, peer_id in ipairs(self._deus_run_controller:get_peers()) do
-		new_vote_count = new_vote_count + 1
-		local vote = self._shared_state:get_peer(peer_id, self._shared_state:get_key("vote")) or ""
-
-		if previous_votes [peer_id] ~= vote then
-			return true
-		end
-	end
-
-	return prev_vote_count ~= new_vote_count
 end
 
 function DeusMapDecisionView:_play_sound(event)

@@ -271,7 +271,7 @@ function ActionUtils.get_power_level(power_type, power_level, damage_profile, ta
 	return scaled_power_level * power_multiplier
 end
 
-function ActionUtils.get_power_level_for_target(target_unit, original_power_level, damage_profile, target_index, is_critical_strike, attacker_unit, hit_zone_name, armor_type_override, damage_source, breed, range_scalar_multiplier, difficulty_level, target_unit_armor, target_unit_primary_armor)
+function ActionUtils.get_power_level_for_target(optional_target_unit, original_power_level, damage_profile, target_index, is_critical_strike, attacker_unit, hit_zone_name, armor_type_override, damage_source, breed, range_scalar_multiplier, difficulty_level, target_unit_armor, target_unit_primary_armor)
 
 	local target_settings = damage_profile.targets and damage_profile.targets [target_index] or damage_profile.default_target
 	local critical_strike_settings = is_critical_strike and damage_profile.critical_strike
@@ -306,13 +306,13 @@ function ActionUtils.get_power_level_for_target(target_unit, original_power_leve
 	local impact_power = ActionUtils.get_power_level("impact", power_level, damage_profile, target_settings, critical_strike_settings, range_scalar_multiplier, attacker_unit, difficulty_level)
 
 	if is_enemy_target then
-		local armor_override = unit_get_data(target_unit, "armor") or nil
+		local armor_override = optional_target_unit and unit_get_data(optional_target_unit, "armor") or nil
 		attack_power = ActionUtils.apply_buffs_to_power_level_on_hit(attacker_unit, attack_power, breed, damage_source, is_critical_strike, armor_override)
 		impact_power = ActionUtils.apply_buffs_to_power_level_on_hit(attacker_unit, impact_power, breed, damage_source, is_critical_strike, armor_override)
 
 		local target_armor = armor_type_override or target_unit_primary_armor or target_unit_armor
-		attack_armor_power_modifer = ActionUtils.apply_buffs_to_armor_power_on_hit(attacker_unit, target_unit, attack_armor_power_modifer, target_armor)
-		impact_armor_power_modifer = ActionUtils.apply_buffs_to_armor_power_on_hit(attacker_unit, target_unit, impact_armor_power_modifer, target_armor)
+		attack_armor_power_modifer = ActionUtils.apply_buffs_to_armor_power_on_hit(attacker_unit, optional_target_unit, attack_armor_power_modifer, target_armor)
+		impact_armor_power_modifer = ActionUtils.apply_buffs_to_armor_power_on_hit(attacker_unit, optional_target_unit, impact_armor_power_modifer, target_armor)
 	end
 
 	attack_power = attack_power * attack_armor_power_modifer
@@ -805,7 +805,7 @@ function ActionUtils.get_critical_strike_chance(unit, action, overrides)
 	local buff_extension = ScriptUnit.extension(unit, "buff_system")
 
 	local base_crit_chance = career_extension:get_base_critical_strike_chance()
-	local additional_crit_chance = overrides.additional_critical_strike_chance or action.additional_critical_strike_chance or 0
+	local additional_crit_chance = overrides and overrides.additional_critical_strike_chance or action.additional_critical_strike_chance or 0
 	local crit_chance = base_crit_chance + additional_crit_chance
 
 	local action_type = action.kind

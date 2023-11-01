@@ -41,7 +41,10 @@ function BuffAreaExtension:destroy()
 		self._los_blocker_unit = nil
 	end
 
-	self:_cleanup_inside_units()
+	local game = Managers.state.network:game()
+	if game then
+		self:_cleanup_inside_units()
+	end
 end
 
 function BuffAreaExtension:_cleanup_inside_units()

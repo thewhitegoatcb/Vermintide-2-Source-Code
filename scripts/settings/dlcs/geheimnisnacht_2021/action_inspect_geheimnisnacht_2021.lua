@@ -13,7 +13,8 @@ local SCREEN_FX_2_NAME = "fx/invisible_screen_distortion_extreme"
 local CURSE_INTERVAL = 0.5
 local CURSE_COVERT_AMOUNT = 5
 
-local immune_careers = { es_questingknight = true, dr_slayer = true, wh_priest = true, we_thornsister = true }
+local immune_careers = { bw_necromancer = true, wh_priest = true, we_thornsister = true, es_questingknight = true, dr_slayer = true }
+
 
 
 

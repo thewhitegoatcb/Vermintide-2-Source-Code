@@ -1129,7 +1129,7 @@ function SpawnZoneBaker:draw_func2(zone, zone_list_index, row, left, row_y, is_c
 			self:_draw_zone(outer [i], Color(55, 200 - ( i - 1 ) * 24, ( i - 1 ) * 24))
 		end
 
-		local spawned_units_by_breed = Managers.state.conflict._spawned_units_by_breed
+		local spawned_units_by_breed = Managers.state.conflict:spawned_units_by_breed_table()
 		s = s .. ConflictUtils.display_number_of_breeds_in_segment("BREEDS: ", spawned_units_by_breed, zone)
 	end
 

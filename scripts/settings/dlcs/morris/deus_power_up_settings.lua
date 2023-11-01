@@ -3157,7 +3157,7 @@ DeusPowerUpExclusionList = DeusPowerUpExclusionList or {
 
 
 
-	es_questingknight = { deus_ammo_pickup_heal = true, talent_3_1 = true, deus_ammo_pickup_give_allies_ammo = true, heal_on_dot_damage_dealt = true, deus_large_ammo_pickup_infinite_ammo = true, talent_3_2 = true, deus_larger_clip = true, talent_4_2 = true, talent_4_1 = true, talent_3_3 = true, deus_timed_block_free_shot = true, talent_4_3 = true } }
+	es_questingknight = { deus_ammo_pickup_heal = true, talent_3_1 = true, deus_ammo_pickup_give_allies_ammo = true, heal_on_dot_damage_dealt = true, deus_large_ammo_pickup_infinite_ammo = true, talent_3_2 = true, deus_larger_clip = true, talent_4_2 = true, talent_4_1 = true, talent_3_3 = true, deus_timed_block_free_shot = true, talent_4_3 = true },
 
 
 
@@ -3166,6 +3166,12 @@ DeusPowerUpExclusionList = DeusPowerUpExclusionList or {
 
 
 
+
+
+
+
+
+	bw_necromancer = { talent_3_1 = true, talent_3_3 = true, talent_3_2 = true, deus_ammo_pickup_heal = true } }
 
 
 

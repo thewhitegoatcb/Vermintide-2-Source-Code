@@ -36,6 +36,10 @@ function UIManager:create_ingame_ui(ingame_ui_context, loading_subtitle_gui)
 	self._ui_enabled = true
 end
 
+function UIManager:create_ui_renderer(world, is_tutorial, is_in_inn, mechanism_key)
+	return self._ingame_ui:create_ui_renderer(world, is_tutorial, is_in_inn, mechanism_key)
+end
+
 
 function UIManager:destroy_ingame_ui()
 	local ingame_ui = self._ingame_ui

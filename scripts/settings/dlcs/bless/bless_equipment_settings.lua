@@ -97,8 +97,7 @@ settings.explosion_templates = {
 
 
 	victor_priest_melee_explosion = {
-		explosion = { always_hurt_players = false, radius = 6, no_prop_damage = true, max_damage_radius = 3, use_attacker_power_level = true, alert_enemies_radius = 15, effect_name = "fx/wp_push", attack_template = "drakegun", alert_enemies = false, damage_profile = "shield_slam_aoe_priest", no_friendly_fire = true } },
-
+		explosion = { no_prop_damage = true, radius = 6, use_attacker_power_level = true, max_damage_radius = 3, alert_enemies_radius = 15, effect_name = "fx/wp_push", attack_template = "drakegun", alert_enemies = false, damage_profile = "shield_slam_aoe_priest", no_friendly_fire = true } },
 
 
 
@@ -115,8 +114,7 @@ settings.explosion_templates = {
 
 
 	victor_priest_passive_explosion = {
-		explosion = { always_hurt_players = false, radius = 8, no_prop_damage = true, max_damage_radius = 2, use_attacker_power_level = true, alert_enemies_radius = 15, sound_event_name = "career_talent_priest_unbreakable_push", attack_template = "drakegun", alert_enemies = false, damage_profile = "ability_push", no_friendly_fire = true } },
-
+		explosion = { no_prop_damage = true, radius = 8, use_attacker_power_level = true, max_damage_radius = 2, alert_enemies_radius = 15, sound_event_name = "career_talent_priest_unbreakable_push", attack_template = "drakegun", alert_enemies = false, damage_profile = "ability_push", no_friendly_fire = true } },
 
 
 
@@ -133,8 +131,7 @@ settings.explosion_templates = {
 
 
 	victor_priest_career_skill_aftershock = {
-		explosion = { always_hurt_players = false, radius = 1, no_prop_damage = true, max_damage_radius = 1, use_attacker_power_level = true, alert_enemies_radius = 15, effect_name = "fx/wp_enemy_explosion", attack_template = "drakegun", alert_enemies = false, damage_profile = "medium_push", no_friendly_fire = true } },
-
+		explosion = { no_prop_damage = true, radius = 1, use_attacker_power_level = true, max_damage_radius = 1, alert_enemies_radius = 15, effect_name = "fx/wp_enemy_explosion", attack_template = "drakegun", alert_enemies = false, damage_profile = "medium_push", no_friendly_fire = true } },
 
 
 
@@ -151,8 +148,7 @@ settings.explosion_templates = {
 
 
 	victor_priest_activated_ability_nuke = {
-		explosion = { use_attacker_power_level = true, radius = 5, alert_enemies = true, max_damage_radius = 3, alert_enemies_radius = 10, attacker_power_level_offset = 0.25, always_hurt_players = false, attack_template = "drakegun", no_friendly_fire = true, damage_profile_glance = "overcharge_explosion_glance_ability", sound_event_name = "career_ability_priest_explosion", damage_profile = "victor_priest_activated_ability_nuke_explosion", ignore_attacker_unit = true, effect_name = "fx/wp_explosion_allies" } } }
-
+		explosion = { use_attacker_power_level = true, radius = 5, alert_enemies = true, max_damage_radius = 3, alert_enemies_radius = 10, attacker_power_level_offset = 0.25, no_friendly_fire = true, attack_template = "drakegun", damage_profile_glance = "overcharge_explosion_glance_ability", sound_event_name = "career_ability_priest_explosion", damage_profile = "victor_priest_activated_ability_nuke_explosion", ignore_attacker_unit = true, effect_name = "fx/wp_explosion_allies" } } }
 
 
 

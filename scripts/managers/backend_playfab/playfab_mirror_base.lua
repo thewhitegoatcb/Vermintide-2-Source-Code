@@ -1703,7 +1703,9 @@ function PlayFabMirrorBase:_commit_status()
 	not commit_data.wait_for_keep_decorations and
 	not commit_data.wait_for_user_data and
 	not commit_data.wait_for_read_only_data and
-	not commit_data.wait_for_win_tracks_data then
+	not commit_data.wait_for_win_tracks_data and
+	not commit_data.wait_for_gotwf_data then
+
 
 		if IS_CONSOLE and not Managers.account:offline_mode() then
 			PlayfabBackendSaveDataUtils.store_online_data(self)
@@ -2558,6 +2560,29 @@ function PlayFabMirrorBase:_commit_internal(queue_id, commit_complete_callbacks)
 	end
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	table.clear(new_data)
 
 	local read_only_data_mirror = self._read_only_data_mirror
@@ -2611,6 +2636,21 @@ function PlayFabMirrorBase:update_current_win_track_cb(commit_id, result)
 	end
 
 	commit.wait_for_win_tracks_data = false
+end
+
+
+
+function PlayFabMirrorBase:update_current_gotwf_cb(commit_id, result)
+	local commit = self._commits [commit_id]
+
+	local function_result = result.FunctionResult
+	local new_read_only_data = function_result.new_read_only_data
+	for key, value in pairs(new_read_only_data) do
+		local encoded_value = cjson.encode(value)
+		self:set_read_only_data(key, encoded_value, true)
+	end
+
+	commit.wait_for_gotwf_data = false
 end
 
 

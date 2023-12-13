@@ -291,7 +291,6 @@ function AiBreedSnippets.on_loot_rat_alerted(unit, blackboard, alerting_unit, en
 
 
 		if not blackboard.confirmed_player_sighting then
-			blackboard.confirmed_player_sighting = true
 			blackboard.target_unit = enemy_unit
 			blackboard.is_alerted = true
 			blackboard.is_fleeing = true

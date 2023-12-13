@@ -46,18 +46,59 @@ local damage_templates = {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	engineer_ability_shot_armor_pierce = { charge_value = "instant_projectile", shield_break = true, friendly_fire_multiplier = 0.2, no_stagger_damage_reduction_ranged = true,
 		critical_strike = {
-			attack_armor_power_modifer = { 1, 1, 1, 1, 1, 0.25 },
-			impact_armor_power_modifer = { 1, 1, 1, 1, 1, 0.25 } },
+			attack_armor_power_modifer = { 1, 1, 1, 1, 1, 0.5 },
+			impact_armor_power_modifer = { 1, 1, 1, 1, 1, 0.5 } },
 
 		armor_modifier_near = {
-			attack = { 1, 1, 1, 1, 0.5, 0.2 },
-			impact = { 1, 1, 1, 1, 1, 0.2 } },
+			attack = { 1, 1, 1, 1, 0.5, 0.4 },
+			impact = { 1, 1, 1, 1, 1, 0.4 } },
 
 		armor_modifier_far = {
-			attack = { 1, 1, 1, 1, 0.5, 0.2 },
-			impact = { 1, 1, 1, 1, 1, 0.2 } },
+			attack = { 1, 1, 1, 1, 0.5, 0.4 },
+			impact = { 1, 1, 1, 1, 1, 0.4 } },
 
 		cleave_distribution = { attack = 0.25, impact = 0.25 },
 
@@ -78,6 +119,7 @@ local damage_templates = {
 
 
 			range_modifier_settings = engineer_ability_shot_dropoff_ranges } },
+
 
 
 

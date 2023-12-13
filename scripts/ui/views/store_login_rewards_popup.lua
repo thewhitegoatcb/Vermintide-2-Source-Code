@@ -75,8 +75,13 @@ function StoreLoginRewardsPopup:_has_claimed_reward(claimed_rewards, day_index)
 end
 
 function StoreLoginRewardsPopup:_setup_rewards_data(login_rewards)
+	if login_rewards.event_type ~= "personal_time_strike" then
+		Managers.ui:handle_transition("close_active", { fade_out_speed = 1, use_fade = true, fade_in_speed = 1 })
+		return
+	end
+
 	local rewards = login_rewards.rewards
-	local reward_index = login_rewards.reward_index
+	local reward_index = login_rewards.total_claims or 0
 	local day_widgets = self._day_widgets
 	local reward_widgets = self._reward_widgets
 	table.clear(reward_widgets)
@@ -88,10 +93,13 @@ function StoreLoginRewardsPopup:_setup_rewards_data(login_rewards)
 	self._cursor_x = cursor_x
 	self._cursor_y = cursor_y
 
-	local calendar_type = login_rewards.type and login_rewards.type or "personal_time_strike"
+	local calendar_type = login_rewards.event_type and login_rewards.event_type or "personal_time_strike"
 	local claimed_rewards = login_rewards.claimed_rewards and login_rewards.claimed_rewards or { }
 
-	local cooldown = login_rewards.next_claim_timestamp - os.time()
+	local now = os.time(os.date("!*t"))
+	local next_claim_timestamp = os.time(os.date("!*t", login_rewards.next_claim_timestamp / 1000))
+
+	local cooldown = next_claim_timestamp - now
 	local is_loop = reward_index == #day_widgets and cooldown <= 0
 
 	for day_index = 1, #day_widgets do
@@ -118,9 +126,16 @@ function StoreLoginRewardsPopup:_setup_rewards_data(login_rewards)
 			reward_widgets [#reward_widgets + 1] = widget
 
 			local reward_item = reward_item_list [item_index]
+			local data = nil
+			if reward_item.reward_type == "currency" then
+				data = BackendUtils.get_fake_currency_item(reward_item.currency_code, reward_item.amount)
+			else
+				data = ItemMasterList [reward_item.item_id]
+			end
+
 			local item = table.merge({
 				backend_id = math.uuid(),
-				data = ItemMasterList [reward_item.item_id] },
+				data = data },
 			reward_item)
 			fassert(item.data, "Reward item %s not found in ItemMasterList", reward_item.item_id)
 			local rarity = item.rarity or item.data and item.data.rarity or "plentiful"
@@ -196,8 +211,13 @@ function StoreLoginRewardsPopup:update(input_service, dt, t)
 
 	local backend_store = self._backend_store
 	local login_rewards = backend_store:get_login_rewards()
-	local cooldown = login_rewards.next_claim_timestamp - os.time()
-	local expiry = login_rewards.end_of_claim_timestamp - os.time()
+
+	local now = os.time(os.date("!*t"))
+	local next_claim_timestamp = os.time(os.date("!*t", login_rewards.next_claim_timestamp / 1000))
+	local end_of_claim_timestamp = os.time(os.date("!*t", login_rewards.end_of_claim_timestamp / 1000))
+
+	local cooldown = next_claim_timestamp - now
+	local expiry = end_of_claim_timestamp - now
 
 	local state = self._state
 	local ui_animator = self._ui_animator
@@ -215,7 +235,7 @@ function StoreLoginRewardsPopup:update(input_service, dt, t)
 	elseif state == STATE.default then
 
 
-		if expiry <= -1 or login_rewards.reward_index >= 8 and cooldown <= -1 then
+		if expiry <= -1 then
 			local cb = callback(self, "_refresh_login_rewards_cb")
 			backend_store:refresh_login_rewards(cb)
 			self._waiting_for_refresh = true
@@ -239,8 +259,12 @@ function StoreLoginRewardsPopup:update(input_service, dt, t)
 			overlay_widgets_by_name.loading_glow.content.visible = false
 			overlay_widgets_by_name.loading_frame.content.visible = false
 			self:_setup_rewards_data(login_rewards)
+			if login_rewards.event_type ~= "personal_time_strike" then
+				return
+			end
 			local rewards = login_rewards.rewards
-			local reward_index = login_rewards.reward_index
+			local total_claims = login_rewards.total_claims or 1
+			local reward_index = total_claims == 0 and #rewards or total_claims
 			self:_present_rewards(rewards [reward_index])
 			self._state = STATE.presenting
 		end
@@ -269,7 +293,23 @@ function StoreLoginRewardsPopup:_present_rewards(rewards)
 	for i = 1, num_rewards do
 		local data = rewards [i]
 		local reward_type = data.reward_type
-		if reward_type == "item" then
+		if reward_type == "item" or reward_type == "crafting_material" then
+			local item_id = data.item_id
+			local item_template = ItemMasterList [item_id]
+			presentation_data [#presentation_data + 1] = { { widget_type = "description",
+
+
+					value = {
+						Localize(item_template.display_name),
+						Localize("achv_menu_reward_claimed_title") } },
+
+				{ widget_type = "loot_chest",
+
+
+					value = item_id } }
+
+
+		elseif reward_type == "loot_chest" then
 			local item_id = data.item_id
 			local item_template = ItemMasterList [item_id]
 			presentation_data [#presentation_data + 1] = { { widget_type = "description",
@@ -295,6 +335,21 @@ function StoreLoginRewardsPopup:_present_rewards(rewards)
 					value = {
 						Localize(item_template.display_name),
 						string.format(Localize("achv_menu_curreny_reward_claimed"), amount) } },
+
+				{ widget_type = "icon",
+
+
+					value = item_template.inventory_icon } }
+
+
+		elseif reward_type == "currency" then
+			local item_template = BackendUtils.get_fake_currency_item(data.currency_code, data.amount)
+			presentation_data [#presentation_data + 1] = { { widget_type = "description",
+
+
+					value = {
+						Localize(item_template.display_name),
+						string.format(Localize("achv_menu_curreny_reward_claimed"), data.amount) } },
 
 				{ widget_type = "icon",
 

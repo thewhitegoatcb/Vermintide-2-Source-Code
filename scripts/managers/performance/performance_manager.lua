@@ -1,10 +1,12 @@
 PerformanceManager = class(PerformanceManager)
 
 
+
+
 function PerformanceManager:init(gui, is_server, level_key)
 	self._gui = gui
 	self._is_server = is_server
-	self._tracked_ai_breeds = { skaven_plague_monk = true, chaos_raider = true, chaos_marauder = true, beastmen_bestigor = true, chaos_berzerker = true, skaven_clan_rat_with_shield = true, chaos_marauder_with_shield = true, chaos_fanatic = true, skaven_slave = true, skaven_clan_rat = true, beastmen_ungor = true, chaos_warrior = true, beastmen_ungor_archer = true, skaven_storm_vermin_commander = true, skaven_storm_vermin = true, beastmen_gor = true, skaven_storm_vermin_with_shield = true }
+	self._tracked_ai_breeds = { chaos_raider = true, skaven_plague_monk = true, skaven_storm_vermin_with_shield = true, beastmen_bestigor = true, chaos_berzerker = true, skaven_clan_rat_with_shield = true, chaos_marauder_with_shield = true, chaos_fanatic = true, skaven_slave = true, skaven_clan_rat = true, beastmen_ungor = true, chaos_warrior = true, beastmen_ungor_archer = true, skaven_storm_vermin_commander = true, skaven_storm_vermin = true, beastmen_gor = true, chaos_marauder = true }
 
 
 
@@ -62,8 +64,7 @@ function PerformanceManager:init(gui, is_server, level_key)
 		end
 	end
 
-	self._events = { ai_unit_activated = "event_ai_unit_activated", ai_unit_despawned = "event_ai_unit_despawned", ai_units_all_destroyed = "event_ai_units_all_destroyed", ai_unit_spawned = "event_ai_unit_spawned", ai_unit_deactivated = "event_ai_unit_deactivated" }
-
+	self._events = { ai_unit_activated = "event_ai_unit_activated", ai_unit_despawned = "event_ai_unit_despawned", ai_unit_deactivated = "event_ai_unit_deactivated", ai_unit_spawned = "event_ai_unit_spawned" }
 
 
 
@@ -84,6 +85,9 @@ function PerformanceManager:init(gui, is_server, level_key)
 	for breed_name, breed in pairs(Breeds) do
 		self._activated_per_breed [breed_name] = 0
 	end
+
+
+
 end
 
 function PerformanceManager:update(dt, t)
@@ -126,9 +130,16 @@ function PerformanceManager:event_ai_unit_spawned(unit, breed_name, side_id, eve
 		return
 	end
 
-	if not side_id == Managers.state.conflict.default_enemy_side_id then
+	if side_id ~= Managers.state.conflict.default_enemy_side_id then
 		return
 	end
+
+
+
+
+
+
+
 
 	self._num_ai_spawned = self._num_ai_spawned + 1
 
@@ -137,22 +148,16 @@ function PerformanceManager:event_ai_unit_spawned(unit, breed_name, side_id, eve
 	end
 end
 
-function PerformanceManager:event_ai_units_all_destroyed()
-	self._num_ai_spawned = 0
-	self._num_event_ai_spawned = 0
-	self._num_ai_active = 0
-	self._num_event_ai_active = 0
-
-	local activated_per_breed = self._activated_per_breed
-	for breed_name, amount in pairs(activated_per_breed) do
-		activated_per_breed [breed_name] = 0
-	end
-end
-
-
 function PerformanceManager:event_ai_unit_activated(unit, breed_name, event_spawned)
-
 	self._activated_per_breed [breed_name] = self._activated_per_breed [breed_name] + 1
+
+
+
+
+
+
+
+
 	if not self._tracked_ai_breeds [breed_name] then
 		return
 	end
@@ -165,14 +170,26 @@ function PerformanceManager:event_ai_unit_activated(unit, breed_name, event_spaw
 end
 
 
-function PerformanceManager:event_ai_unit_deactivated(unit, breed_name)
-	self._activated_per_breed [breed_name] = math.clamp(self._activated_per_breed [breed_name] - 1, 0, 999999)
+function PerformanceManager:event_ai_unit_deactivated(unit, breed_name, event_spawned)
+
+	self._activated_per_breed [breed_name] = self._activated_per_breed [breed_name] - 1
+
+
+
+
+
+
+
 
 	if not self._tracked_ai_breeds [breed_name] then
 		return
 	end
 
-	self._num_ai_active = math.max(self._num_ai_active - 1, 0)
+	self._num_ai_active = self._num_ai_active - 1
+
+	if event_spawned then
+		self._num_event_ai_active = self._num_event_ai_active - 1
+	end
 end
 
 
@@ -181,9 +198,16 @@ function PerformanceManager:event_ai_unit_despawned(unit, breed_name, side_id, e
 		return
 	end
 
-	if not side_id == Managers.state.conflict.default_enemy_side_id then
+	if side_id ~= Managers.state.conflict.default_enemy_side_id then
 		return
 	end
+
+
+
+
+
+
+
 
 	self._num_ai_spawned = self._num_ai_spawned - 1
 
@@ -209,4 +233,6 @@ function PerformanceManager:destroy()
 	for event_name, cb_name in pairs(self._events) do
 		event_manager:unregister(event_name, self)
 	end
+
+
 end

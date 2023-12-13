@@ -3906,8 +3906,7 @@ dlc_settings.proc_functions = {
 dlc_settings.explosion_templates = {
 	stagger_aoe_on_crit = { name = "stagger_aoe_on_crit",
 
-		explosion = { always_hurt_players = false, radius = 5, no_prop_damage = true, max_damage_radius = 2, use_attacker_power_level = true, alert_enemies_radius = 15, attack_template = "drakegun", alert_enemies = true, damage_profile = "ability_push", no_friendly_fire = true } },
-
+		explosion = { no_prop_damage = true, radius = 5, use_attacker_power_level = true, max_damage_radius = 2, alert_enemies_radius = 15, attack_template = "drakegun", alert_enemies = true, damage_profile = "ability_push", no_friendly_fire = true } },
 
 
 
@@ -3935,7 +3934,7 @@ dlc_settings.explosion_templates = {
 	bolt_of_change = { time_to_explode = 3, follow_time = 6,
 
 
-		explosion = { trigger_on_server_only = true, radius = 4, alert_enemies_radius = 20, attack_template = "grenade", alert_enemies = true, always_hurt_players = true, different_power_levels_for_players = true, buildup_effect_time = 1.5, sound_event_name = "Play_mutator_enemy_split_large", damage_profile = "bolt_of_change", power_level = 250, buildup_effect_name = "fx/deus_lightning_strike_02", effect_name = "fx/deus_lightning_strike_01",
+		explosion = { trigger_on_server_only = true, radius = 4, alert_enemies_radius = 20, attack_template = "grenade", alert_enemies = true, allow_friendly_fire_override = true, different_power_levels_for_players = true, buildup_effect_time = 1.5, sound_event_name = "Play_mutator_enemy_split_large", damage_profile = "bolt_of_change", power_level = 250, buildup_effect_name = "fx/deus_lightning_strike_02", effect_name = "fx/deus_lightning_strike_01",
 
 
 
@@ -3966,7 +3965,13 @@ dlc_settings.explosion_templates = {
 
 
 	magma = {
-		aoe = { dot_template_name = "burning_magma_dot", nav_tag_volume_layer = "fire_grenade", dot_balefire_variant = true, create_nav_tag_volume = true, attack_template = "wizard_staff_geiser", sound_event_name = "player_combat_weapon_fire_bw_deus_01_impact", damage_interval = 0.5, duration = 10, area_damage_template = "explosion_template_aoe",
+		aoe = { dot_template_name = "burning_magma_dot", nav_tag_volume_layer = "fire_grenade", dot_balefire_variant = true, create_nav_tag_volume = true, attack_template = "wizard_staff_geiser", sound_event_name = "player_combat_weapon_fire_bw_deus_01_impact", damage_interval = 0.5, duration = 6, area_damage_template = "explosion_template_aoe",
+
+
+
+
+
+
 
 
 
@@ -4004,8 +4009,7 @@ dlc_settings.explosion_templates = {
 
 	blessing_of_isha_stagger = { name = "blessing_of_isha_stagger",
 
-		explosion = { use_attacker_power_level = true, no_friendly_fire = true, no_prop_damage = true, max_damage_radius = 0, damage_profile = "markus_knight_charge", always_hurt_players = false, attack_template = "markus_knight_charge" } },
-
+		explosion = { use_attacker_power_level = true, no_friendly_fire = true, no_prop_damage = true, max_damage_radius = 0, damage_profile = "markus_knight_charge", attack_template = "markus_knight_charge" } },
 
 
 
@@ -4057,7 +4061,7 @@ dlc_settings.explosion_templates = {
 
 	curse_skulls_of_fury_explosion = { time_to_explode = 3,
 
-		explosion = { trigger_on_server_only = true, radius = 4, alert_enemies = true, buildup_effect_name = "fx/deus_curse_skulls_of_fury_timer_01", buildup_effect_time = 3, deletion_timer = 0, alert_enemies_radius = 20, attack_template = "skulls_of_fury", different_power_levels_for_players = true, sound_event_name = "Play_curse_skulls_of_fury_explosion", effect_name = "fx/magic_wind_fire_explosion_01", always_hurt_players = true, max_damage_radius = 4, unit_scale = 1, damage_profile_glance = "curse_skulls_of_fury_explosion_glance", damage_profile = "curse_skulls_of_fury_explosion",
+		explosion = { trigger_on_server_only = true, radius = 4, alert_enemies = true, buildup_effect_name = "fx/deus_curse_skulls_of_fury_timer_01", buildup_effect_time = 3, deletion_timer = 0, alert_enemies_radius = 20, attack_template = "skulls_of_fury", different_power_levels_for_players = true, sound_event_name = "Play_curse_skulls_of_fury_explosion", effect_name = "fx/magic_wind_fire_explosion_01", allow_friendly_fire_override = true, max_damage_radius = 4, unit_scale = 1, damage_profile_glance = "curse_skulls_of_fury_explosion_glance", damage_profile = "curse_skulls_of_fury_explosion",
 
 
 
@@ -4263,8 +4267,7 @@ dlc_settings.explosion_templates = {
 
 	player_disabled_stagger = { name = "stagger_aoe_on_crit",
 
-		explosion = { no_prop_damage = true, radius = 5, effect_name = "fx/cw_enemy_explosion", max_damage_radius = 2, use_attacker_power_level = true, always_hurt_players = false, alert_enemies_radius = 15, attack_template = "drakegun", alert_enemies = true, damage_profile = "ability_push", no_friendly_fire = true } },
-
+		explosion = { no_prop_damage = true, radius = 5, effect_name = "fx/cw_enemy_explosion", max_damage_radius = 2, use_attacker_power_level = true, alert_enemies_radius = 15, attack_template = "drakegun", alert_enemies = true, damage_profile = "ability_push", no_friendly_fire = true } },
 
 
 
@@ -4284,8 +4287,7 @@ dlc_settings.explosion_templates = {
 
 	melee_wave = { name = "melee_wave",
 
-		explosion = { use_attacker_power_level = true, radius = 5, effect_name = "fx/chr_kruber_shockwave", hit_sound_event = "Play_wind_metal_gameplay_mutator_wind_hit", max_damage_radius = 2, no_prop_damage = true, always_hurt_players = false, attack_template = "drakegun", alert_enemies_radius = 15, sound_event_name = "boon_melee_wave", alert_enemies = true, damage_profile = "ability_push", no_friendly_fire = true } },
-
+		explosion = { use_attacker_power_level = true, radius = 5, effect_name = "fx/chr_kruber_shockwave", hit_sound_event = "Play_wind_metal_gameplay_mutator_wind_hit", max_damage_radius = 2, no_prop_damage = true, alert_enemies_radius = 15, attack_template = "drakegun", sound_event_name = "boon_melee_wave", alert_enemies = true, damage_profile = "ability_push", no_friendly_fire = true } },
 
 
 
@@ -4351,8 +4353,7 @@ dlc_settings.explosion_templates = {
 
 	static_charge = { name = "static_charge",
 
-		explosion = { always_hurt_players = false, radius = 3, no_prop_damage = true, max_damage_radius = 2, use_attacker_power_level = true, attack_template = "drakegun", sound_event_name = "boon_orb_static_charge", damage_profile = "static_charge", no_friendly_fire = true } },
-
+		explosion = { use_attacker_power_level = true, radius = 3, no_friendly_fire = true, max_damage_radius = 2, damage_profile = "static_charge", no_prop_damage = true, sound_event_name = "boon_orb_static_charge", attack_template = "drakegun" } },
 
 
 
@@ -4368,8 +4369,7 @@ dlc_settings.explosion_templates = {
 
 	bad_breath = { name = "stagger_aoe_on_crit",
 
-		explosion = { no_prop_damage = true, radius = 5, effect_name = "fx/belakor/blk_smite_01_fx", max_damage_radius = 2, use_attacker_power_level = true, always_hurt_players = false, alert_enemies_radius = 15, attack_template = "drakegun", sound_event_name = "boon_bad_breath", alert_enemies = true, damage_profile = "ability_push", no_friendly_fire = true } },
-
+		explosion = { no_prop_damage = true, radius = 5, effect_name = "fx/belakor/blk_smite_01_fx", max_damage_radius = 2, use_attacker_power_level = true, alert_enemies_radius = 15, sound_event_name = "boon_bad_breath", attack_template = "drakegun", alert_enemies = true, damage_profile = "ability_push", no_friendly_fire = true } },
 
 
 
@@ -5236,7 +5236,12 @@ dlc_settings.buff_templates = {
 
 
 	burning_magma_dot = {
-		buffs = { { duration = 3, name = "burning_magma_dot", max_stacks = 6, refresh_durations = true, apply_buff_func = "start_dot_damage", update_start_delay = 0.75, time_between_dot_damages = 0.75, damage_type = "burninating", damage_profile = "burning_dot", update_func = "apply_dot_damage", reapply_buff_func = "reapply_dot_damage",
+		buffs = { { duration = 2, name = "burning_magma_dot", max_stacks = 5, refresh_durations = true, apply_buff_func = "start_dot_damage", update_start_delay = 0.5, time_between_dot_damages = 0.5, damage_type = "burninating", damage_profile = "burning_dot", update_func = "apply_dot_damage", reapply_buff_func = "reapply_dot_damage",
+
+
+
+
+
 
 
 
@@ -5246,6 +5251,14 @@ dlc_settings.buff_templates = {
 
 
 				perks = { buff_perks.burning } } } },
+
+
+
+
+
+
+
+
 
 
 

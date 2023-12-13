@@ -47,6 +47,11 @@ function DeusChestExtension:init(extension_init_context, unit, extension_init_da
 	self._sound_state = nil
 	self._sound_state_interact = nil
 
+
+
+
+
+
 	self._wwise_world = Managers.world:wwise_world(self.world)
 
 	self:register_rpcs(extension_init_context.network_transmit.network_event_delegate)
@@ -55,7 +60,7 @@ end
 function DeusChestExtension:game_object_initialized(unit, go_id)
 
 	if self._is_server then
-		local server_chest_type = self._deus_run_controller:get_deus_weapon_chest_type()
+		local server_chest_type = self._chest_type_override or self._deus_run_controller:get_deus_weapon_chest_type()
 		self:_set_server_chest_type(server_chest_type)
 	end
 end

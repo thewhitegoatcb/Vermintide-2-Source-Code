@@ -40,6 +40,7 @@ require("scripts/ui/atlas_settings/gui_menus_atlas")
 require("scripts/ui/atlas_settings/gui_country_flags_atlas")
 require("scripts/ui/atlas_settings/gui_mission_selection_atlas")
 
+require("scripts/ui/atlas_settings/gui_lock_test_atlas")
 
 UIAtlasHelper = UIAtlasHelper or { }
 
@@ -436,29 +437,14 @@ local ui_atlas_setting_tables = {
 	gui_menus_atlas = menus_atlas,
 	gui_frames_atlas = frames_atlas,
 	gui_level_images_atlas = level_images_atlas,
-	gui_country_flags_atlas = country_flags_atlas }
+	gui_country_flags_atlas = country_flags_atlas,
 
 
 
-
-local masked_materials = { gui_achievement_icons_atlas = "gui_achievement_icons_atlas_masked", gui_settings_atlas = "gui_settings_atlas_masked", gui_chat_atlas = "gui_chat_atlas_masked", gui_hud_atlas = "gui_hud_atlas_masked", gui_start_screen_atlas = "gui_start_screen_atlas_masked", gui_level_images_atlas = "gui_level_images_atlas_masked", gui_frames_atlas = "gui_frames_atlas_masked", gui_menu_buttons_atlas = "gui_menu_buttons_atlas_masked", gui_menus_atlas = "gui_menus_atlas_masked", gui_season_emblems_atlas = "gui_season_emblems_atlas_masked", gui_country_flags_atlas = "gui_country_flags_atlas_masked", gui_icons_atlas = "gui_icons_atlas_masked", gui_items_atlas = "gui_items_atlas_masked" }
-
+	gui_lock_test_atlas = lock_test_atlas }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-local saturated_materials = { gui_level_images_atlas = "gui_level_images_atlas_saturated", gui_frames_atlas = "gui_frames_atlas_saturated", gui_hud_atlas = "gui_hud_atlas_saturated", gui_achievement_icons_atlas = "gui_achievement_icons_atlas_saturated", gui_menu_buttons_atlas = "gui_menu_buttons_atlas_saturated", gui_menus_atlas = "gui_menus_atlas_saturated", gui_icons_atlas = "gui_icons_atlas_saturated", gui_items_atlas = "gui_items_atlas_saturated", gui_mission_selection_atlas = "gui_mission_selection_atlas_saturated" }
+local masked_materials = { gui_achievement_icons_atlas = "gui_achievement_icons_atlas_masked", gui_settings_atlas = "gui_settings_atlas_masked", gui_chat_atlas = "gui_chat_atlas_masked", gui_hud_atlas = "gui_hud_atlas_masked", gui_start_screen_atlas = "gui_start_screen_atlas_masked", gui_level_images_atlas = "gui_level_images_atlas_masked", gui_frames_atlas = "gui_frames_atlas_masked", gui_menu_buttons_atlas = "gui_menu_buttons_atlas_masked", gui_menus_atlas = "gui_menus_atlas_masked", gui_lock_test_atlas = "gui_lock_test_atlas_masked", gui_season_emblems_atlas = "gui_season_emblems_atlas_masked", gui_country_flags_atlas = "gui_country_flags_atlas_masked", gui_icons_atlas = "gui_icons_atlas_masked", gui_items_atlas = "gui_items_atlas_masked" }
 
 
 
@@ -470,7 +456,30 @@ local saturated_materials = { gui_level_images_atlas = "gui_level_images_atlas_s
 
 
 
-local masked_saturated_materials = { gui_achievement_icons_atlas = "gui_achievement_icons_atlas_masked_saturated", gui_hud_atlas = "gui_hud_atlas_point_sample_masked_saturated", gui_icons_atlas = "gui_icons_atlas_masked_saturated", gui_items_atlas = "gui_items_atlas_masked_saturated", gui_level_images_atlas = "gui_level_images_atlas_masked_saturated" }
+
+
+
+
+
+
+
+local saturated_materials = { gui_level_images_atlas = "gui_level_images_atlas_saturated", gui_frames_atlas = "gui_frames_atlas_saturated", gui_lock_test_atlas = "gui_lock_test_atlas_saturated", gui_hud_atlas = "gui_hud_atlas_saturated", gui_achievement_icons_atlas = "gui_achievement_icons_atlas_saturated", gui_menu_buttons_atlas = "gui_menu_buttons_atlas_saturated", gui_menus_atlas = "gui_menus_atlas_saturated", gui_icons_atlas = "gui_icons_atlas_saturated", gui_items_atlas = "gui_items_atlas_saturated", gui_mission_selection_atlas = "gui_mission_selection_atlas_saturated" }
+
+
+
+
+
+
+
+
+
+
+
+
+
+local masked_saturated_materials = { gui_achievement_icons_atlas = "gui_achievement_icons_atlas_masked_saturated", gui_lock_test_atlas = "gui_lock_test_atlas_masked_saturated", gui_hud_atlas = "gui_hud_atlas_point_sample_masked_saturated", gui_icons_atlas = "gui_icons_atlas_masked_saturated", gui_items_atlas = "gui_items_atlas_masked_saturated", gui_level_images_atlas = "gui_level_images_atlas_masked_saturated" }
+
+
 
 
 
@@ -482,7 +491,7 @@ if not IS_WINDOWS then
 	saturated_materials.gui_map_console_atlas = "gui_map_console_atlas_saturated"
 end
 
-local masked_point_sample_materials = { gui_achievement_icons_atlas = "gui_achievement_icons_atlas_point_sample_masked", gui_settings_atlas = "gui_settings_atlas_point_sample_masked", gui_chat_atlas = "gui_chat_atlas_point_sample_masked", gui_hud_atlas = "gui_hud_atlas_point_sample_masked", gui_start_screen_atlas = "gui_start_screen_atlas_point_sample_masked", gui_frames_atlas = "gui_frames_atlas_point_sample_masked", gui_menus_atlas = "gui_menus_atlas_point_sample_masked", gui_season_emblems_atlas = "gui_season_emblems_atlas_point_sample_masked", gui_icons_atlas = "gui_icons_atlas_point_sample_masked", gui_items_atlas = "gui_items_atlas_point_sample_masked" }
+local masked_point_sample_materials = { gui_achievement_icons_atlas = "gui_achievement_icons_atlas_point_sample_masked", gui_settings_atlas = "gui_settings_atlas_point_sample_masked", gui_chat_atlas = "gui_chat_atlas_point_sample_masked", gui_hud_atlas = "gui_hud_atlas_point_sample_masked", gui_start_screen_atlas = "gui_start_screen_atlas_point_sample_masked", gui_lock_test_atlas = "gui_lock_test_atlas_point_sample_masked", gui_frames_atlas = "gui_frames_atlas_point_sample_masked", gui_menus_atlas = "gui_menus_atlas_point_sample_masked", gui_season_emblems_atlas = "gui_season_emblems_atlas_point_sample_masked", gui_icons_atlas = "gui_icons_atlas_point_sample_masked", gui_items_atlas = "gui_items_atlas_point_sample_masked" }
 
 
 
@@ -496,13 +505,19 @@ local masked_point_sample_materials = { gui_achievement_icons_atlas = "gui_achie
 
 
 
-local masked_saturated_point_sample_materials = { gui_icons_atlas = "gui_icons_atlas_point_sample_masked_saturated", gui_hud_atlas = "gui_hud_atlas_point_sample_masked_saturated" }
+
+
+local masked_saturated_point_sample_materials = { gui_lock_test_atlas = "gui_lock_test_atlas_point_sample_masked_saturated", gui_icons_atlas = "gui_icons_atlas_point_sample_masked_saturated", gui_hud_atlas = "gui_hud_atlas_point_sample_masked_saturated" }
 
 
 
 
 
-local point_sample_materials = { controller_image_xb1 = "controller_image_xb1_point_sample", gui_settings_atlas = "gui_settings_atlas_point_sample", gui_voice_chat_atlas = "gui_voice_chat_atlas_point_sample", overchargecircle_fill = "overchargecircle_fill_point_sample", gui_start_screen_atlas = "gui_start_screen_atlas_point_sample", gui_season_emblems_atlas = "gui_season_emblems_atlas_point_sample", gui_achievement_icons_atlas = "gui_achievement_icons_atlas_point_sample", gui_level_images_atlas = "gui_level_images_atlas_point_sample", gui_menus_atlas = "gui_menus_atlas_point_sample", loading_screen_default = "loading_screen_default_point_sample", overchargecircle_sidefade = "overchargecircle_fill_point_sample", loading_screen = "loading_screen_point_sample", end_screen_banner_victory = "end_screen_banner_victory_point_sample", gui_icons_atlas = "gui_icons_atlas_point_sample", end_screen_effect_victory_1 = "end_screen_effect_victory_1_point_sample", end_screen_effect_victory_2 = "end_screen_effect_victory_2_point_sample", end_screen_banner_defeat = "end_screen_banner_defeat_point_sample", gui_chat_atlas = "gui_chat_atlas_point_sample", gui_hud_atlas = "gui_hud_atlas_point_sample", gui_popup_atlas = "gui_popup_atlas_point_sample", controller_hold_bar = "controller_hold_bar_point_sample", gui_frames_atlas = "gui_frames_atlas_point_sample", gui_menu_buttons_atlas = "gui_menu_buttons_atlas_point_sample", vermintide_2_logo_tutorial = "vermintide_2_logo_tutorial_point_sample", gui_loading_atlas = "gui_loading_atlas_point_sample", gui_startup_settings_atlas = "gui_startup_settings_atlas_point_sample", controller_image_ps4 = "controller_image_ps4_point_sample", gui_items_atlas = "gui_items_atlas_point_sample", gui_splash_atlas = "gui_splash_atlas_point_sample" }
+
+
+local point_sample_materials = { controller_image_xb1 = "controller_image_xb1_point_sample", gui_settings_atlas = "gui_settings_atlas_point_sample", gui_voice_chat_atlas = "gui_voice_chat_atlas_point_sample", overchargecircle_fill = "overchargecircle_fill_point_sample", gui_start_screen_atlas = "gui_start_screen_atlas_point_sample", gui_season_emblems_atlas = "gui_season_emblems_atlas_point_sample", gui_achievement_icons_atlas = "gui_achievement_icons_atlas_point_sample", gui_level_images_atlas = "gui_level_images_atlas_point_sample", gui_menus_atlas = "gui_menus_atlas_point_sample", loading_screen_default = "loading_screen_default_point_sample", overchargecircle_sidefade = "overchargecircle_fill_point_sample", loading_screen = "loading_screen_point_sample", end_screen_banner_victory = "end_screen_banner_victory_point_sample", gui_icons_atlas = "gui_icons_atlas_point_sample", end_screen_effect_victory_1 = "end_screen_effect_victory_1_point_sample", end_screen_effect_victory_2 = "end_screen_effect_victory_2_point_sample", end_screen_banner_defeat = "end_screen_banner_defeat_point_sample", gui_chat_atlas = "gui_chat_atlas_point_sample", gui_hud_atlas = "gui_hud_atlas_point_sample", gui_popup_atlas = "gui_popup_atlas_point_sample", controller_hold_bar = "controller_hold_bar_point_sample", gui_frames_atlas = "gui_frames_atlas_point_sample", gui_menu_buttons_atlas = "gui_menu_buttons_atlas_point_sample", vermintide_2_logo_tutorial = "vermintide_2_logo_tutorial_point_sample", gui_loading_atlas = "gui_loading_atlas_point_sample", gui_startup_settings_atlas = "gui_startup_settings_atlas_point_sample", controller_image_ps4 = "controller_image_ps4_point_sample", gui_lock_test_atlas = "gui_lock_test_atlas_point_sample", gui_items_atlas = "gui_items_atlas_point_sample", gui_splash_atlas = "gui_splash_atlas_point_sample" }
+
+
 
 
 
@@ -612,6 +627,10 @@ local saturated_offscreen_materials = { gui_items_atlas = "gui_items_atlas_satur
 
 
 
+local viewport_mask_materials = { gui_lock_test_atlas = "gui_lock_test_viewport_mask" }
+
+
+
 
 
 
@@ -638,6 +657,8 @@ for material, material_settings in pairs(ui_atlas_setting_tables) do
 		settings.masked_point_sample_offscreen_material_name = masked_point_sample_offscreen_materials [material]
 		settings.point_sample_offscreen_material_name = point_sample_offscreen_materials [material]
 		settings.saturated_offscreen_material_name = saturated_offscreen_materials [material]
+
+		settings.viewport_mask_material_name = viewport_mask_materials [material]
 
 		local existing_material_name = ui_atlas_settings [texture_name] and ui_atlas_settings [texture_name].material_name
 
@@ -686,6 +707,8 @@ for name, dlc in pairs(DLCSettings) do
 					settings.masked_point_sample_offscreen_material_name = material_settings.masked_point_sample_offscreen_material_name
 					settings.point_sample_offscreen_material_name = material_settings.point_sample_offscreen_material_name
 					settings.saturated_offscreen_material_name = material_settings.saturated_offscreen_material_name
+
+					settings.viewport_mask_material_name = material_settings.viewport_mask_material_name
 
 					local existing_material_name = ui_atlas_settings [texture_name] and ui_atlas_settings [texture_name].material_name
 

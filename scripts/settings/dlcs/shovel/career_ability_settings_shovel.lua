@@ -2,7 +2,7 @@ require("scripts/unit_extensions/default_player_unit/careers/career_ability_bw_n
 require("scripts/settings/dlcs/shovel/passive_ability_necromancer_charges")
 require("scripts/settings/dlcs/shovel/passive_ability_necromancer")
 require("scripts/unit_extensions/default_player_unit/careers/career_ability_bw_necromancer_command")
-require("scripts/settings/dlcs/shovel/shovel_constants")
+require("scripts/settings/profiles/career_constants")
 
 
 
@@ -54,12 +54,12 @@ PassiveAbilitySettings.bw_necromancer = { description = "career_passive_desc_bw_
 
 		{ description = "career_passive_desc_bw_necromancer_b", display_name = "career_passive_name_bw_necromancer_b",
 			description_values = { { value_type = "percent",
-					value = NecromancerConstants.passive_dot_duration } } },
+					value = CareerConstants.bw_necromancer.passive_dot_duration } } },
 		{ description = "career_passive_desc_bw_necromancer_c", display_name = "career_passive_name_bw_necromancer_c",
 			description_values = { { value_type = "percent",
-					value = NecromancerConstants.lifetaker_bonus }, {
-					value = NecromancerConstants.lifetaker_duration }, {
-					value = NecromancerConstants.lifetaker_max_stacks } } } },
+					value = CareerConstants.bw_necromancer.lifetaker_bonus }, {
+					value = CareerConstants.bw_necromancer.lifetaker_duration }, {
+					value = CareerConstants.bw_necromancer.lifetaker_max_stacks } } } },
 
 
 	passive_ability_classes = { { name = "bw_necromancer",

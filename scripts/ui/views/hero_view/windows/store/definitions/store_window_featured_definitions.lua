@@ -619,7 +619,8 @@ local widgets = {
 	skull_back_right = UIWidgets.create_simple_uv_texture("store_fence_skulls_back", { { 0, 0 }, { 1, 1 } }, "skull_back_right"),
 	skull_back_left = UIWidgets.create_simple_uv_texture("store_fence_skulls_back", { { 1, 0 }, { 0, 1 } }, "skull_back_left"),
 
-	login_rewards_button = create_login_rewards_button("login_rewards") }
+	login_rewards_button = create_login_rewards_button("login_rewards"),
+	gotwf_rewards_button = create_login_rewards_button("login_rewards") }
 
 
 local animation_definitions = {
@@ -707,14 +708,11 @@ local generic_input_actions = {
 
 
 
-		{ input_action = "special_1", priority = 5, description_text = "store_login_claim_reward_title",
+		{ input_action = "special_1", priority = 5, description_text = "store_login_claim_reward_title" } } }
 
 
 
 
-			content_check_function = function ()
-				return not GameSettingsDevelopment.use_offline_backend
-			end } } }
 
 
 

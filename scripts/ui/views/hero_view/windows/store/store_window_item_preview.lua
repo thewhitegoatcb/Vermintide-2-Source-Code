@@ -888,6 +888,7 @@ function StoreWindowItemPreview:_sync_presentation_item(force_update)
 
 		if reset_presentation then
 			self._delayed_item_unit_presentation_delay = nil
+			self._show_loading_overlay = false
 
 			self:_destroy_previewers()
 
@@ -903,7 +904,6 @@ function StoreWindowItemPreview:_sync_presentation_item(force_update)
 				end
 
 			elseif product_type == "dlc" then
-				self._show_loading_overlay = false
 				local dlc_settings = selected_product.dlc_settings
 				self:_present_dlc(dlc_settings, product_id)
 				unlock_button_width_offset = -49

@@ -221,7 +221,7 @@ weapon_template.actions = {
 
 
 
-		light_attack_left = { damage_window_start = 0.53, anim_end_event = "attack_finished", range_mod = 1.5, kind = "sweep", first_person_hit_anim = "shake_hit", impact_sound_event = "slashing_hit", sweep_z_offset = 0.1, no_damage_impact_sound_event = "slashing_hit_armour", additional_critical_strike_chance = 0, use_precision_sweep = false, hit_effect = "melee_hit_sword_2h", damage_profile = "medium_slashing_linesman", damage_window_end = 0.8, forced_interpolation = 0.008333333333333333, dedicated_target_range = 3, uninterruptible = true, anim_event = "attack_swing_left_diagonal", hit_stop_anim = "attack_hit", total_time = 1.8,
+		light_attack_left = { damage_window_start = 0.53, anim_end_event = "attack_finished", range_mod = 1.5, kind = "sweep", first_person_hit_anim = "shake_hit", impact_sound_event = "slashing_hit", sweep_z_offset = 0.1, no_damage_impact_sound_event = "slashing_hit_armour", additional_critical_strike_chance = 0, use_precision_sweep = false, hit_effect = "melee_hit_sword_2h", damage_profile = "medium_slashing_linesman_2h", damage_window_end = 0.8, forced_interpolation = 0.008333333333333333, dedicated_target_range = 3, uninterruptible = true, anim_event = "attack_swing_left_diagonal", hit_stop_anim = "attack_hit", total_time = 1.8,
 
 
 
@@ -271,6 +271,11 @@ weapon_template.actions = {
 
 
 
+
+
+
+
+
 			baked_sweep = { { 0.4966666666666667, 0.4021339416503906, 0.2898683547973633, 0.030147790908813477, -0.48356983065605164, -0.30989235639572144, 0.4391093850135803, -0.6908761858940125 },
 				{ 0.5527777777777778, 0.3244915008544922, 0.37606239318847656, -0.002364516258239746, -0.2578868567943573, -0.40595710277557373, 0.3075695335865021, -0.8210324048995972 },
 				{ 0.6088888888888889, 0.16967010498046875, 0.5173740386962891, -0.022518396377563477, 0.015656959265470505, -0.4101688265800476, 0.023640627041459084, -0.9115687012672424 },
@@ -282,7 +287,7 @@ weapon_template.actions = {
 
 
 
-		light_attack_right = { damage_window_start = 0.5, range_mod = 1.5, kind = "sweep", first_person_hit_anim = "shake_hit", no_damage_impact_sound_event = "slashing_hit_armour", sweep_z_offset = 0.1, additional_critical_strike_chance = 0, use_precision_sweep = false, damage_profile = "medium_slashing_linesman", hit_effect = "melee_hit_sword_2h", damage_window_end = 0.8, impact_sound_event = "slashing_hit", anim_end_event = "attack_finished", dedicated_target_range = 3, uninterruptible = true, anim_event = "attack_swing_right_diagonal", hit_stop_anim = "attack_hit", total_time = 1.86,
+		light_attack_right = { damage_window_start = 0.5, range_mod = 1.5, kind = "sweep", first_person_hit_anim = "shake_hit", no_damage_impact_sound_event = "slashing_hit_armour", sweep_z_offset = 0.1, additional_critical_strike_chance = 0, use_precision_sweep = false, damage_profile = "medium_slashing_linesman_2h", hit_effect = "melee_hit_sword_2h", damage_window_end = 0.8, impact_sound_event = "slashing_hit", anim_end_event = "attack_finished", dedicated_target_range = 3, uninterruptible = true, anim_event = "attack_swing_right_diagonal", hit_stop_anim = "attack_hit", total_time = 1.86,
 
 
 
@@ -331,6 +336,11 @@ weapon_template.actions = {
 
 
 
+
+
+
+
+
 			baked_sweep = { { 0.4666666666666667, -0.27582263946533203, 0.17136430740356445, -0.011824488639831543, -0.4425011873245239, 0.37471580505371094, -0.623542308807373, -0.5243812799453735 },
 				{ 0.5277777777777778, -0.2415447235107422, 0.35687923431396484, -0.007171154022216797, -0.4529234766960144, 0.39192238450050354, -0.479362815618515, -0.6414581537246704 },
 				{ 0.5888888888888889, -0.11064434051513672, 0.5012903213500977, -0.036751389503479004, -0.23956990242004395, 0.42699792981147766, -0.1524783819913864, -0.8585041761398315 },
@@ -342,7 +352,7 @@ weapon_template.actions = {
 
 
 
-		light_attack_bopp = { damage_window_start = 0.32, range_mod = 1.5, kind = "sweep", first_person_hit_anim = "shake_hit", sweep_z_offset = 0.1, width_mod = 30, no_damage_impact_sound_event = "slashing_hit_armour", additional_critical_strike_chance = 0, hit_effect = "melee_hit_sword_2h", use_precision_sweep = false, damage_profile = "medium_slashing_smiter_2h", damage_window_end = 0.4, impact_sound_event = "slashing_hit", anim_end_event = "attack_finished", dedicated_target_range = 3, uninterruptible = true, anim_event = "attack_swing_down_right", hit_stop_anim = "attack_hit", total_time = 1.86,
+		light_attack_bopp = { damage_window_start = 0.32, range_mod = 1.5, kind = "sweep", first_person_hit_anim = "shake_hit", sweep_z_offset = 0.1, width_mod = 30, no_damage_impact_sound_event = "slashing_hit_armour", additional_critical_strike_chance = 0, hit_effect = "melee_hit_sword_2h", use_precision_sweep = false, damage_profile = "heavy_slashing_smiter", damage_window_end = 0.4, impact_sound_event = "slashing_hit", anim_end_event = "attack_finished", dedicated_target_range = 3, uninterruptible = true, anim_event = "attack_swing_down_right", hit_stop_anim = "attack_hit", total_time = 1.86,
 
 
 
@@ -387,6 +397,11 @@ weapon_template.actions = {
 
 
 			hit_mass_count = LINESMAN_HIT_MASS_COUNT,
+
+
+
+
+
 
 
 

@@ -268,8 +268,7 @@ settings.explosion_templates = {
 
 
 	we_thornsister_career_skill_stagger_spell = {
-		explosion = { use_attacker_power_level = true, radius = 10, only_line_of_sight = true, max_damage_radius = 2, no_friendly_fire = true, no_prop_damage = true, always_hurt_players = false, attack_template = "drakegun", alert_enemies_radius = 15, alert_enemies = true, damage_profile = "ability_push", ignore_attacker_unit = true, explosion_cone_angle = 90 } },
-
+		explosion = { use_attacker_power_level = true, radius = 10, only_line_of_sight = true, max_damage_radius = 2, no_friendly_fire = true, no_prop_damage = true, alert_enemies_radius = 15, attack_template = "drakegun", alert_enemies = true, damage_profile = "ability_push", ignore_attacker_unit = true, explosion_cone_angle = 90 } },
 
 
 
@@ -287,8 +286,7 @@ settings.explosion_templates = {
 
 
 	overcharge_explosion_sott = {
-		explosion = { always_hurt_players = false, radius = 5, alert_enemies_radius = 10, max_damage_radius = 4, alert_enemies = true, attack_template = "drakegun", damage_profile_glance = "overcharge_explosion_glance", sound_event_name = "player_combat_weapon_staff_overcharge_explosion", damage_profile = "overcharge_explosion", power_level = 500, ignore_attacker_unit = true, effect_name = "fx/thornsister_overcharge_explosion" } },
-
+		explosion = { alert_enemies = true, radius = 5, alert_enemies_radius = 10, max_damage_radius = 4, attack_template = "drakegun", damage_profile_glance = "overcharge_explosion_glance", sound_event_name = "player_combat_weapon_staff_overcharge_explosion", damage_profile = "overcharge_explosion", power_level = 500, ignore_attacker_unit = true, effect_name = "fx/thornsister_overcharge_explosion" } },
 
 
 

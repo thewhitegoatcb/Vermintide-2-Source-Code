@@ -16,7 +16,7 @@ settings.attack_template_files_names = { "scripts/settings/equipment/attack_temp
 
 settings.explosion_templates = {
 	loot_rat_explosion = {
-		explosion = { radius = 4, dot_template_name = "burning_dot_1tick", max_damage_radius = 1.5, catapult_players = true, alert_enemies_radius = 10, always_hurt_players = true, attack_template = "loot_rat_explosion", catapult_force_z = 5, alert_enemies = true, sound_event_name = "Play_enemy_combat_warpfire_backpack_explode", damage_profile = "loot_rat_explosion", catapult_force = 10, effect_name = "fx/mutator_warp_explosion_01",
+		explosion = { radius = 4, dot_template_name = "burning_dot_1tick", max_damage_radius = 1.5, catapult_players = true, alert_enemies_radius = 10, allow_friendly_fire_override = true, attack_template = "loot_rat_explosion", catapult_force_z = 5, alert_enemies = true, sound_event_name = "Play_enemy_combat_warpfire_backpack_explode", damage_profile = "loot_rat_explosion", catapult_force = 10, effect_name = "fx/mutator_warp_explosion_01",
 
 
 
@@ -59,7 +59,7 @@ settings.explosion_templates = {
 
 
 	mutator_statue_explosion_01 = {
-		explosion = { radius = 6, attack_template = "mutator_statue_explosion_01", alert_enemies = true, effect_name = "fx/ticking_bomb_explosion_01", alert_enemies_radius = 10, sound_event_name = "Play_mutator_ticking_bomb_explosion", catapult_force = 10, ignore_attacker_unit = true, level_unit_damage = true, always_hurt_players = true, max_damage_radius = 2, catapult_players = true, dot_template_name = "burning_dot_1tick", catapult_force_z = 5, damage_profile = "mutator_statue_explosion_01",
+		explosion = { radius = 6, allow_friendly_fire = true, attack_template = "mutator_statue_explosion_01", alert_enemies = true, effect_name = "fx/ticking_bomb_explosion_01", alert_enemies_radius = 10, sound_event_name = "Play_mutator_ticking_bomb_explosion", catapult_force = 10, ignore_attacker_unit = true, level_unit_damage = true, max_damage_radius = 2, catapult_players = true, dot_template_name = "burning_dot_1tick", catapult_force_z = 5, damage_profile = "mutator_statue_explosion_01",
 
 
 

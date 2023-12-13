@@ -195,11 +195,26 @@ local damage_templates = {
 
 
 
-			power_distribution_near = { attack = 0.2, impact = 0.25 },
 
 
 
-			power_distribution_far = { attack = 0.1, impact = 0.1 },
+
+
+
+
+
+
+
+
+
+
+
+
+			power_distribution_near = { attack = 0.16, impact = 0.2 },
+
+
+
+			power_distribution_far = { attack = 0.07, impact = 0.07 },
 
 
 
@@ -212,7 +227,9 @@ local damage_templates = {
 
 
 
-	geiser_magma = { dot_template_name = "burning_magma_dot", charge_value = "aoe", dot_balefire_variant = true, no_stagger_damage_reduction_ranged = true, attack_template = "wizard_staff_geiser_magma", no_stagger = true,
+
+
+	geiser_magma = { charge_value = "aoe", dot_balefire_variant = true, no_stagger = true, no_stagger_damage_reduction_ranged = true, attack_template = "wizard_staff_geiser_magma",
 
 		critical_strike = {
 			attack_armor_power_modifer = { 1, 0.5, 1, 1, 1, 0.25 },
@@ -254,6 +271,7 @@ local damage_templates = {
 
 
 				power_distribution = { attack = 0.125, impact = 0.35 } } } },
+
 
 
 

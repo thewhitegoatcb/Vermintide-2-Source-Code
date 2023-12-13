@@ -9,7 +9,7 @@ settings.attack_template_files_names = { "scripts/settings/equipment/attack_temp
 
 settings.explosion_templates = {
 	ticking_bomb_explosion = {
-		explosion = { radius = 6, alert_enemies = true, alert_enemies_radius = 10, attack_template = "ticking_bomb_explosion", sound_event_name = "Play_mutator_ticking_bomb_explosion", catapult_force = 10, ignore_attacker_unit = true, effect_name = "fx/ticking_bomb_explosion_01", always_hurt_players = true, max_damage_radius = 2, catapult_players = true, dot_template_name = "burning_dot_1tick", catapult_force_z = 5, bot_damage_profile = "ticking_bomb_explosion_bot", damage_profile = "ticking_bomb_explosion",
+		explosion = { radius = 6, alert_enemies_radius = 10, alert_enemies = true, allow_friendly_fire_override = true, attack_template = "ticking_bomb_explosion", sound_event_name = "Play_mutator_ticking_bomb_explosion", catapult_force = 10, ignore_attacker_unit = true, effect_name = "fx/ticking_bomb_explosion_01", max_damage_radius = 2, catapult_players = true, dot_template_name = "burning_dot_1tick", catapult_force_z = 5, bot_damage_profile = "ticking_bomb_explosion_bot", damage_profile = "ticking_bomb_explosion",
 
 
 

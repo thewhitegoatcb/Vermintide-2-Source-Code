@@ -826,6 +826,7 @@ UISettings.slot_icons = { crafting_material = "tabs_icon_crafting_material", mel
 
 
 
+
 UISettings.item_type_store_icons = { weapon_skin = "store_tag_icon_weapon", skin = "store_tag_icon_skin", hat = "store_tag_icon_hat", bundle = "store_tag_icon_bundle" }
 
 
@@ -1258,7 +1259,16 @@ UISettings.dlc_order_data = { { dlc = "pre_order", display_name = "gift_popup_te
 
 
 
-	{ dlc = "shovel_upgrade", display_name = "store_shovel_upgrade_title" } }
+	{ dlc = "shovel_upgrade", display_name = "store_shovel_upgrade_title" },
+	{ dlc = "slayer_bundle_0002", display_name = "display_name_slayer_bundle_0002" },
+
+
+
+	{ dlc = "waywatcher_bundle_0001", display_name = "display_name_waywatcher_bundle_0001" },
+	{ dlc = "mercenary_bundle_0002", display_name = "display_name_mercenary_bundle_0002" },
+	{ dlc = "scholar_bundle_0003", display_name = "display_name_scholar_bundle_0003" },
+	{ dlc = "witchhunter_bundle_0001", display_name = "display_name_witchhunter_bundle_0001" },
+	{ dlc = "five_career_bundle_0007", display_name = "display_name_five_career_bundle_0007" } }
 
 
 
@@ -1481,6 +1491,18 @@ local button_mapping = {
 		y = { texture = "ps4_button_icon_triangle",
 			size = { 34, 34 } },
 
+		cross = { texture = "ps4_button_icon_cross",
+			size = { 34, 34 } },
+
+		circle = { texture = "ps4_button_icon_circle",
+			size = { 34, 34 } },
+
+		square = { texture = "ps4_button_icon_square",
+			size = { 34, 34 } },
+
+		triangle = { texture = "ps4_button_icon_triangle",
+			size = { 34, 34 } },
+
 		d_up = { texture = "ps4_button_icon_d_pad_up",
 			size = { 33, 33 } },
 
@@ -1548,7 +1570,10 @@ local button_mapping = {
 			size = { 44, 33 } },
 
 		back = { texture = "ps4_button_icon_share",
-			size = { 44, 33 } } } }
+			size = { 44, 33 } },
+
+		touch = { texture = "ps4_button_icon_touchpad",
+			size = { 42, 28 } } } }
 
 
 
@@ -1556,9 +1581,22 @@ local button_mapping = {
 UISettings.gamepad_button_texture_data = button_mapping
 
 function ButtonTextureByName(button_name, platform)
-	if platform == "xb1" and UISettings.use_ps4_input_icons then
+	local use_ps4_input_icons = UISettings.use_ps4_input_icons
+
+
+	local input_device = Managers.input and Managers.input:get_most_recent_device()
+	if input_device then
+		local device_type = input_device.type()
+		local is_ps_pad = device_type == "sce_pad"
+		use_ps4_input_icons = is_ps_pad or use_ps4_input_icons
+	end
+
+
+
+	if IS_WINDOWS and (platform == "xb1" or platform == "ps_pad") and use_ps4_input_icons then
 		platform = "win32_ps4"
 	end
+
 	local data = button_mapping [platform] [button_name]
 	if not data and platform == "win32" then
 		data = pc_button_icon
@@ -1622,7 +1660,16 @@ function UISettings.get_gamepad_input_texture_data(input_service, input_action, 
 	button_name or "ERROR"
 
 
-	if UISettings.use_ps4_input_icons and IS_WINDOWS and device_type == "gamepad" then
+	local use_ps4_input_icons = UISettings.use_ps4_input_icons
+
+
+	local input_device = Managers.input:get_most_recent_device()
+	local device_type = input_device.type()
+	local is_ps_pad = device_type == "sce_pad"
+	use_ps4_input_icons = is_ps_pad or use_ps4_input_icons
+
+
+	if use_ps4_input_icons and IS_WINDOWS and device_type == "gamepad" then
 		platform = "win32_ps4"
 	end
 

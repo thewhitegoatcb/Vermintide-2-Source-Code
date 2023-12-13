@@ -421,7 +421,7 @@ weapon_template.actions = {
 
 
 
-		light_attack_last = { damage_window_start = 0.38, range_mod = 1.2, kind = "sweep", first_person_hit_anim = "shake_hit", no_damage_impact_sound_event = "blunt_hit_armour", additional_critical_strike_chance = 0.1, use_precision_sweep = false, damage_profile = "light_slashing_smiter_flat", hit_effect = "melee_hit_axes_1h", damage_window_end = 0.5, impact_sound_event = "axe_1h_hit", anim_end_event = "attack_finished", dedicated_target_range = 3, anim_event = "attack_swing_left", hit_stop_anim = "attack_hit", total_time = 2.1,
+		light_attack_last = { damage_window_start = 0.38, range_mod = 1.2, kind = "sweep", first_person_hit_anim = "shake_hit", no_damage_impact_sound_event = "blunt_hit_armour", additional_critical_strike_chance = 0.1, use_precision_sweep = false, damage_profile = "light_slashing_smiter_diag", hit_effect = "melee_hit_axes_1h", damage_window_end = 0.5, impact_sound_event = "axe_1h_hit", anim_end_event = "attack_finished", dedicated_target_range = 3, anim_event = "attack_swing_left", hit_stop_anim = "attack_hit", total_time = 2.1,
 
 
 			anim_end_event_condition_func = function (unit, end_reason)
@@ -447,6 +447,11 @@ weapon_template.actions = {
 				{ sub_action = "default", start_time = 1.25, action = "action_one", input = "action_one" },
 				{ sub_action = "default", start_time = 0, action = "action_two", input = "action_two_hold" },
 				{ sub_action = "default", start_time = 0.5, action = "action_wield", input = "action_wield" } },
+
+
+
+
+
 
 
 
@@ -543,7 +548,7 @@ weapon_template.actions = {
 
 
 
-		push = { damage_window_start = 0.05, anim_end_event = "attack_finished", outer_push_angle = 180, kind = "push_stagger", damage_profile_outer = "light_push", weapon_action_hand = "right", push_angle = 100, hit_effect = "melee_hit_sword_1h", damage_window_end = 0.2, impact_sound_event = "slashing_hit", charge_value = "action_push", no_damage_impact_sound_event = "slashing_hit_armour", dedicated_target_range = 2, anim_event = "attack_push", damage_profile_inner = "medium_push", total_time = 0.8,
+		push = { damage_window_start = 0.05, anim_end_event = "attack_finished", outer_push_angle = 180, kind = "push_stagger", damage_profile_outer = "light_push", fatigue_cost = "action_stun_push", weapon_action_hand = "right", push_angle = 100, hit_effect = "melee_hit_sword_1h", damage_window_end = 0.2, impact_sound_event = "slashing_hit", charge_value = "action_push", no_damage_impact_sound_event = "slashing_hit_armour", dedicated_target_range = 2, anim_event = "attack_push", damage_profile_inner = "medium_push", total_time = 0.8,
 
 
 			anim_end_event_condition_func = function (unit, end_reason)
@@ -585,6 +590,8 @@ weapon_template.actions = {
 
 				return not status_extension:fatigued()
 			end } },
+
+
 
 
 

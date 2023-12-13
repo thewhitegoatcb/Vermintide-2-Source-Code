@@ -64,6 +64,14 @@ function MenuWorldPreviewer:init(ingame_ui_context, optional_camera_character_po
 	self._requested_unit_spawn_queue = { }
 end
 
+function MenuWorldPreviewer:set_default_position(default_position)
+	self._camera_default_position = default_position
+end
+
+function MenuWorldPreviewer:set_lookat_target(lookat_target)
+	self._lookat_target = lookat_target
+end
+
 function MenuWorldPreviewer:destroy()
 	MenuWorldPreviewer.super.destroy(self)
 	Renderer.set_automatic_streaming(true)
@@ -190,7 +198,7 @@ function MenuWorldPreviewer:update(dt, t, input_disabled)
 	camera_position_new.y = camera_default_position.y
 	camera_position_new.z = camera_default_position.z
 
-	local lookat_target = Vector3(0, 0, 0.9)
+	local lookat_target = self._lookat_target and self._lookat_target:unbox() or Vector3(0, 0, 0.9)
 	local direction = Vector3.normalize(lookat_target - camera_position_new)
 
 	local camera_rotation_animation_data = self._camera_rotation_animation_data

@@ -1454,7 +1454,7 @@ function CharacterSelectionStateCharacter:_set_hero_info(hero_name, career_name,
 	local widgets_by_name = self._widgets_by_name
 	widgets_by_name.info_hero_name.content.text = hero_name
 	widgets_by_name.info_career_name.content.text = career_name
-	widgets_by_name.info_hero_level.content.text = level
+	widgets_by_name.info_hero_level.content.text = tostring(level)
 end
 
 function CharacterSelectionStateCharacter:_set_select_button_enabled(enabled, required_dlc_name, dlc_name)

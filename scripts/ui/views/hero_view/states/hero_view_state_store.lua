@@ -94,6 +94,7 @@ function HeroViewStateStore:on_enter(params)
 
 	self._unseen_product_reward_queue = { }
 	self.tab_cat = { }
+	self._layout_renderers = { }
 
 	if IS_WINDOWS then
 		self._friends_component_ui = FriendsUIComponent:new(ingame_ui_context)
@@ -241,7 +242,7 @@ function HeroViewStateStore:_has_unseen_items_tab_cat()
 	return false
 end
 
-function HeroViewStateStore:change_generic_actions(wanted_input_actions)
+function HeroViewStateStore:change_generic_actions(wanted_input_actions, skip_mark_all_as_seen)
 	local menu_input_description = self._menu_input_description
 
 	if wanted_input_actions == "default" then
@@ -249,7 +250,7 @@ function HeroViewStateStore:change_generic_actions(wanted_input_actions)
 	end
 
 	local input_actions = wanted_input_actions
-	if self:_has_unseen_items_tab_cat() then
+	if self:_has_unseen_items_tab_cat() and not skip_mark_all_as_seen then
 		input_actions = { { input_action = "refresh", priority = 20, description_text = "mark_all_as_seen" } }
 
 
@@ -464,6 +465,26 @@ function HeroViewStateStore:_change_window(window_index, window_name)
 	active_windows [window_index] = window
 end
 
+function HeroViewStateStore:create_layout_renderer(layout_name, world, is_tutorial, is_in_inn, mechanism_key)
+	print("[HeroViewStateStore] Creating layout renderer: " .. layout_name)
+	self._layout_renderers [layout_name] = Managers.ui:create_ui_renderer(world, is_tutorial, is_in_inn, mechanism_key)
+end
+
+function HeroViewStateStore:get_layout_renderer(layout_name)
+	local layout_name = layout_name or self:get_layout_name()
+	return self._layout_renderers [layout_name]
+end
+
+function HeroViewStateStore:destroy_layout_renderer(layout_name)
+	local layout_name = layout_name or self:get_layout_name()
+	local layout_renderer = self._layout_renderers [layout_name]
+	if layout_renderer then
+		print("[HeroViewStateStore] Destroying layout renderer: " .. layout_name)
+		UIRenderer.destroy(layout_renderer)
+		self._layout_renderers [layout_name] = nil
+	end
+end
+
 function HeroViewStateStore:get_layout_name()
 	local index = self._selected_layout_index
 
@@ -497,6 +518,8 @@ function HeroViewStateStore:set_layout(index)
 	if sound_event_enter then
 		self:play_sound(sound_event_enter)
 	end
+
+	self:destroy_layout_renderer()
 
 	self._close_on_exit = close_on_exit
 
@@ -1344,6 +1367,13 @@ function HeroViewStateStore:open_login_rewards_popup()
 
 	self:block_input()
 end
+
+
+function HeroViewStateStore:open_gotwf_rewards()
+	self:play_sound("Play_hud_store_buy_window")
+	self:set_layout_by_name("gotwf_overview")
+end
+
 
 function HeroViewStateStore:enqueue_acquired_product(product)
 	local queue = self._unseen_product_reward_queue

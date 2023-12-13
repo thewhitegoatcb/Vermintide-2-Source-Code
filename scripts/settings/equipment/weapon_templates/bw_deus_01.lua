@@ -5,7 +5,7 @@ local weapon_template = {
 
 	actions = {
 		action_one = {
-			default = { spell_proc_time = 0.4, alert_sound_range_fire = 12, is_spell = true, fire_at_gaze_setting = "tobii_fire_at_gaze_fireball", kind = "magma_projectile", alert_sound_range_hit = 2, num_layers_spread = 2, aim_assist_max_ramp_multiplier = 0.8, aim_assist_ramp_decay_delay = 0.3, apply_recoil = true, hit_effect = "magma_impact", bullseye = false, anim_time_scale = 0.9, range = 100, fire_sound_event = "player_combat_weapon_bw_deus_01_fireball_fire", overcharge_type = "magma_basic", charge_value = "light_attack", fire_time = 0.27, fire_sound_on_husk = true, shot_count = 12, damage_profile = "staff_magma", speed = 7000, aim_assist_ramp_multiplier = 0.4, anim_event = "attack_shoot_fireball", total_time = 1,
+			default = { spell_proc_time = 0.4, alert_sound_range_fire = 12, is_spell = true, fire_at_gaze_setting = "tobii_fire_at_gaze_fireball", kind = "magma_projectile", alert_sound_range_hit = 2, num_layers_spread = 2, aim_assist_max_ramp_multiplier = 0.8, aim_assist_ramp_decay_delay = 0.3, apply_recoil = true, hit_effect = "magma_impact", bullseye = false, anim_time_scale = 0.9, range = 100, fire_sound_event = "player_combat_weapon_bw_deus_01_fireball_fire", overcharge_type = "magma_basic", charge_value = "light_attack", fire_time = 0.27, fire_sound_on_husk = true, shot_count = 9, damage_profile = "staff_magma", speed = 7000, aim_assist_ramp_multiplier = 0.4, anim_event = "attack_shoot_fireball", total_time = 1,
 
 
 
@@ -48,6 +48,8 @@ local weapon_template = {
 
 					climb_function = math.easeInCubic,
 					restore_function = math.ease_out_quad } },
+
+
 
 
 

@@ -1,6 +1,7 @@
 require("scripts/settings/dlcs/lake/passive_ability_questing_knight")
 
-ActivatedAbilitySettings.es_4 = { { description = "career_active_desc_markus_questingknight", action_name = "action_career_es_4", display_name = "career_active_name_markus_questingknight", cooldown = 40, icon = "markus_questing_knight_activated_ability", weapon_name = "markus_questingknight_career_skill_weapon" } }
+ActivatedAbilitySettings.es_4 = { { description = "career_active_desc_markus_questingknight", action_name = "action_career_es_4", display_name = "career_active_name_markus_questingknight", cooldown = 60, icon = "markus_questing_knight_activated_ability", weapon_name = "markus_questingknight_career_skill_weapon" } }
+
 
 
 

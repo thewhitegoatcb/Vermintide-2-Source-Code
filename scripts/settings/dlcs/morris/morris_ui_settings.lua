@@ -313,7 +313,12 @@ settings.controller_settings = {
 			hotkey_deus_inventory = { "gamepad", "d_down", "pressed" } },
 
 		ps4 = {
-			hotkey_deus_inventory = { "gamepad", "down", "pressed" } } } }
+			hotkey_deus_inventory = { "gamepad", "down", "pressed" } },
+
+
+		ps_pad = {
+			hotkey_deus_inventory = { "ps_pad", "down", "pressed" } } } }
+
 
 
 

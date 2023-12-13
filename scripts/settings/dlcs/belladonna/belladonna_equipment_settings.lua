@@ -50,7 +50,7 @@ settings.damage_profile_template_files_names = { "scripts/settings/equipment/dam
 
 settings.explosion_templates = {
 	standard_bearer_explosion = {
-		explosion = { radius = 7, sound_event_name = "Play_enemy_combat_warpfire_backpack_explode", max_damage_radius = 4, catapult_players = true, player_push_speed = 10, alert_enemies_radius = 20, attack_template = "loot_rat_explosion", catapult_force = 7, always_hurt_players = false, alert_enemies = false, damage_profile = "standard_bearer_explosion", effect_name = "fx/chr_beastmen_standard_bearer_start_01",
+		explosion = { radius = 7, sound_event_name = "Play_enemy_combat_warpfire_backpack_explode", max_damage_radius = 4, catapult_players = true, player_push_speed = 10, alert_enemies_radius = 20, attack_template = "loot_rat_explosion", catapult_force = 7, alert_enemies = false, damage_profile = "standard_bearer_explosion", effect_name = "fx/chr_beastmen_standard_bearer_start_01",
 
 
 
@@ -64,7 +64,6 @@ settings.explosion_templates = {
 				cataclysm = { power_level_glance = 800, power_level = 800 },
 				cataclysm_2 = { power_level_glance = 800, power_level = 800 },
 				cataclysm_3 = { power_level_glance = 800, power_level = 800 } },
-
 
 
 
@@ -92,7 +91,7 @@ settings.explosion_templates = {
 
 
 	standard_death_explosion = {
-		explosion = { radius = 4, sound_event_name = "Play_enemy_combat_warpfire_backpack_explode", max_damage_radius = 3, alert_enemies_radius = 10, player_push_speed = 10, always_hurt_players = false, attack_template = "loot_rat_explosion", alert_enemies = false, damage_profile = "standard_death_explosion", effect_name = "fx/chr_beastmen_standard_bearer_end_01",
+		explosion = { radius = 4, sound_event_name = "Play_enemy_combat_warpfire_backpack_explode", max_damage_radius = 3, alert_enemies_radius = 10, player_push_speed = 10, attack_template = "loot_rat_explosion", alert_enemies = false, damage_profile = "standard_death_explosion", effect_name = "fx/chr_beastmen_standard_bearer_end_01",
 
 
 
@@ -106,7 +105,6 @@ settings.explosion_templates = {
 				cataclysm = { power_level_glance = 800, power_level = 800 },
 				cataclysm_2 = { power_level_glance = 800, power_level = 800 },
 				cataclysm_3 = { power_level_glance = 800, power_level = 800 } },
-
 
 
 

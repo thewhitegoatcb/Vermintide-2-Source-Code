@@ -1,6 +1,6 @@
 local buff_perks = require("scripts/unit_extensions/default_player_unit/buffs/settings/buff_perk_names")
 require("scripts/entity_system/systems/buff/buff_sync_type")
-require("scripts/settings/dlcs/shovel/shovel_constants")
+require("scripts/settings/profiles/career_constants")
 
 SHOVEL_BUFF_TWEAK_DATA = {
 
@@ -8,7 +8,7 @@ SHOVEL_BUFF_TWEAK_DATA = {
 
 
 	sienna_necromancer_perk_dot_duration = {
-		multiplier = NecromancerConstants.passive_dot_duration },
+		multiplier = CareerConstants.bw_necromancer.passive_dot_duration },
 
 	sienna_necromancer_ability_cooldown_on_hit = { bonus = 0.25 },
 
@@ -54,7 +54,8 @@ SHOVEL_BUFF_TWEAK_DATA = {
 	sienna_necromancer_5_2_buff = { multiplier = -0.8 },
 
 
-	sienna_necromancer_5_3 = { overcharge_threshold = 0.2 },
+	sienna_necromancer_5_3 = { overcharge_threshold = 0.12 },
+
 
 
 
@@ -774,12 +775,14 @@ local talents = { { description = "reaper_desc", name = "sienna_necromancer_1_1"
 
 
 
-	{ description = "sienna_necromancer_6_1_desc", name = "sienna_necromancer_6_1", buffer = "both", num_ranks = 1, icon = "sienna_necromancer_6_1",
+	{ description = "sienna_necromancer_6_1_desc_b", name = "sienna_necromancer_6_1", buffer = "both", num_ranks = 1, icon = "sienna_necromancer_6_1",
 
 
 
 
-		description_values = { { value = 20 } },
+
+		description_values = { { value = 6 },
+			{ value = 20 } },
 
 
 

@@ -10,6 +10,7 @@ function ProjectileLinearSphereSweepImpactUnitExtension:init(extension_init_cont
 	self.only_one_impact = extension_init_data.only_one_impact
 	self.owner_unit = extension_init_data.owner_unit
 	self._dont_target_friendly = extension_init_data.dont_target_friendly
+	self._dont_target_patrols = extension_init_data.dont_target_patrols
 
 	self._next_check_t = 0
 
@@ -110,6 +111,10 @@ function ProjectileLinearSphereSweepImpactUnitExtension:_valid_target(unit, hit_
 		if has_side and not side_manager:is_enemy(self.owner_unit, hit_unit) then
 			return false
 		end
+	end
+
+	if self._dont_target_patrols and AiUtils.is_part_of_patrol(unit) and not AiUtils.is_aggroed(unit) then
+		return false
 	end
 
 	return true

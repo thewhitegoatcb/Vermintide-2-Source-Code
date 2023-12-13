@@ -299,7 +299,7 @@ function SoundSectorSystem:event_ai_unit_activated(unit, breed_name, event_spawn
 end
 
 
-function SoundSectorSystem:event_ai_unit_deactivated(unit, breed_name)
+function SoundSectorSystem:event_ai_unit_deactivated(unit, breed_name, event_spawned)
 	local go_id = self.unit_storage:go_id(unit)
 	local sound_sector_extension = self._extensions [unit]
 	if sound_sector_extension then

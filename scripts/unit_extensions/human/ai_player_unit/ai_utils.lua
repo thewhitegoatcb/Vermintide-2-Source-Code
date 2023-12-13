@@ -56,10 +56,19 @@ function AiUtils.aggro_unit_of_enemy(unit, enemy_unit)
 end
 
 function AiUtils.activate_unit(blackboard)
+	if blackboard.activation_lock then
+
+		return
+	end
+
 	local breed = blackboard.breed
 	if not blackboard.confirmed_player_sighting and not breed.ignore_activate_unit then
 		local unit = blackboard.unit
-		Managers.state.event:trigger("ai_unit_activated", unit, breed.name, blackboard.event_spawned)
+		if not HEALTH_ALIVE [unit] then
+			return
+		end
+
+		Managers.state.event:trigger("ai_unit_activated", unit, breed.name, blackboard.master_event_id)
 		blackboard.confirmed_player_sighting = true
 		blackboard.activated = true
 	end
@@ -69,7 +78,7 @@ function AiUtils.deactivate_unit(blackboard)
 	if blackboard.confirmed_player_sighting then
 		local breed = blackboard.breed
 		local unit = blackboard.unit
-		Managers.state.event:trigger("ai_unit_deactivated", unit, breed.name)
+		Managers.state.event:trigger("ai_unit_deactivated", unit, breed.name, blackboard.master_event_id)
 		blackboard.confirmed_player_sighting = false
 		blackboard.activated = false
 	end
@@ -1822,4 +1831,14 @@ function AiUtils.magic_entrance_optional_spawned_func(unit, breed, optional_data
 		local t = Managers.time:time("game")
 		AiUtils.stagger(unit, blackboard, unit, direction, distance, stagger_type, stun_duration, nil, t)
 	end
+end
+
+function AiUtils.is_part_of_patrol(unit)
+	local blackboard = BLACKBOARDS [unit]
+	return blackboard and blackboard.patrolling
+end
+
+function AiUtils.is_aggroed(unit)
+	local blackboard = BLACKBOARDS [unit]
+	return blackboard and blackboard.target_unit
 end

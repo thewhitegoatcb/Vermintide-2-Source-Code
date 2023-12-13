@@ -193,7 +193,7 @@ ExplosionTemplates = {
 
 
 	explosive_barrel = {
-		explosion = { radius = 6, dot_template_name = "burning_dot_1tick", max_damage_radius = 1.75, alert_enemies = true, alert_enemies_radius = 10, always_hurt_players = true, attack_template = "drakegun", sound_event_name = "player_combat_weapon_grenade_explosion", damage_profile = "explosive_barrel", effect_name = "fx/wpnfx_barrel_explosion",
+		explosion = { radius = 6, dot_template_name = "burning_dot_1tick", max_damage_radius = 1.75, alert_enemies = true, alert_enemies_radius = 10, allow_friendly_fire_override = true, attack_template = "drakegun", sound_event_name = "player_combat_weapon_grenade_explosion", damage_profile = "explosive_barrel", effect_name = "fx/wpnfx_barrel_explosion",
 
 
 
@@ -224,7 +224,7 @@ ExplosionTemplates = {
 
 
 	lamp_oil = {
-		explosion = { radius = 3, dot_template_name = "burning_dot_3tick", max_damage_radius = 1.5, alert_enemies_radius = 15, sound_event_name = "fireball_big_hit", always_hurt_players = true, attack_template = "fire_grenade_explosion", alert_enemies = true, damage_profile = "explosive_barrel", effect_name = "fx/wpnfx_fire_grenade_impact",
+		explosion = { radius = 3, dot_template_name = "burning_dot_3tick", max_damage_radius = 1.5, alert_enemies_radius = 15, sound_event_name = "fireball_big_hit", allow_friendly_fire_override = true, attack_template = "fire_grenade_explosion", alert_enemies = true, damage_profile = "explosive_barrel", effect_name = "fx/wpnfx_fire_grenade_impact",
 
 
 
@@ -277,7 +277,7 @@ ExplosionTemplates = {
 
 
 	warpfire_explosion = {
-		explosion = { radius = 5, alert_enemies = true, max_damage_radius = 2.5, always_hurt_players = true, alert_enemies_radius = 15, sound_event_name = "Play_enemy_combat_warpfire_backpack_explode", damage_profile = "warpfire_thrower_explosion", effect_name = "fx/chr_warp_fire_explosion_01",
+		explosion = { radius = 5, alert_enemies = true, max_damage_radius = 2.5, allow_friendly_fire_override = true, alert_enemies_radius = 15, sound_event_name = "Play_enemy_combat_warpfire_backpack_explode", damage_profile = "warpfire_thrower_explosion", effect_name = "fx/chr_warp_fire_explosion_01",
 
 
 			difficulty_power_level = {
@@ -330,8 +330,7 @@ ExplosionTemplates = {
 
 
 	overcharge_explosion_dwarf = {
-		explosion = { always_hurt_players = false, radius = 5, alert_enemies_radius = 10, max_damage_radius = 4, alert_enemies = true, attack_template = "drakegun", damage_profile_glance = "overcharge_explosion_glance", sound_event_name = "emitter_dwarf_bomb_explosion", damage_profile = "overcharge_explosion", power_level = 500, ignore_attacker_unit = true, effect_name = "fx/chr_overcharge_explosion_dwarf" } },
-
+		explosion = { alert_enemies = true, radius = 5, alert_enemies_radius = 10, max_damage_radius = 4, attack_template = "drakegun", damage_profile_glance = "overcharge_explosion_glance", sound_event_name = "emitter_dwarf_bomb_explosion", damage_profile = "overcharge_explosion", power_level = 500, ignore_attacker_unit = true, effect_name = "fx/chr_overcharge_explosion_dwarf" } },
 
 
 
@@ -352,8 +351,7 @@ ExplosionTemplates = {
 
 
 	overcharge_explosion_brw = {
-		explosion = { always_hurt_players = false, radius = 5, alert_enemies_radius = 10, max_damage_radius = 4, alert_enemies = true, attack_template = "drakegun", damage_profile_glance = "overcharge_explosion_glance", sound_event_name = "player_combat_weapon_staff_overcharge_explosion", damage_profile = "overcharge_explosion", power_level = 500, ignore_attacker_unit = true, effect_name = "fx/wpnfx_staff_geiser_fire_large" } } }
-
+		explosion = { alert_enemies = true, radius = 5, alert_enemies_radius = 10, max_damage_radius = 4, attack_template = "drakegun", damage_profile_glance = "overcharge_explosion_glance", sound_event_name = "player_combat_weapon_staff_overcharge_explosion", damage_profile = "overcharge_explosion", power_level = 500, ignore_attacker_unit = true, effect_name = "fx/wpnfx_staff_geiser_fire_large" } } }
 
 
 
@@ -379,8 +377,7 @@ ExplosionTemplates.overcharge_explosion_necromancer.explosion.effect_name = "fx/
 
 
 ExplosionTemplates.explosion_bw_unchained_ability = {
-	explosion = { use_attacker_power_level = true, radius = 5, alert_enemies = true, max_damage_radius = 3, alert_enemies_radius = 10, attacker_power_level_offset = 0.25, always_hurt_players = false, attack_template = "drakegun", no_friendly_fire = true, damage_profile_glance = "overcharge_explosion_glance_ability", sound_event_name = "player_combat_weapon_staff_overcharge_explosion", damage_profile = "overcharge_explosion_ability", ignore_attacker_unit = true, effect_name = "fx/chr_unchained_living_bomb_3p" } }
-
+	explosion = { use_attacker_power_level = true, radius = 5, alert_enemies = true, max_damage_radius = 3, alert_enemies_radius = 10, attacker_power_level_offset = 0.25, no_friendly_fire = true, attack_template = "drakegun", damage_profile_glance = "overcharge_explosion_glance_ability", sound_event_name = "player_combat_weapon_staff_overcharge_explosion", damage_profile = "overcharge_explosion_ability", ignore_attacker_unit = true, effect_name = "fx/chr_unchained_living_bomb_3p" } }
 
 
 
@@ -403,8 +400,7 @@ ExplosionTemplates.explosion_bw_unchained_ability = {
 
 
 ExplosionTemplates.explosion_bw_unchained_ability_increased_radius = {
-	explosion = { use_attacker_power_level = true, radius = 5, alert_enemies = true, max_damage_radius = 3, alert_enemies_radius = 15, attacker_power_level_offset = 0.25, no_friendly_fire = true, attack_template = "drakegun", always_hurt_players = false, sound_event_name = "player_combat_weapon_staff_overcharge_explosion", damage_profile = "overcharge_explosion_strong_ability", ignore_attacker_unit = true, effect_name = "fx/chr_unchained_living_bomb_3p" } }
-
+	explosion = { use_attacker_power_level = true, radius = 5, alert_enemies = true, max_damage_radius = 3, alert_enemies_radius = 15, attacker_power_level_offset = 0.25, no_friendly_fire = true, attack_template = "drakegun", sound_event_name = "player_combat_weapon_staff_overcharge_explosion", damage_profile = "overcharge_explosion_strong_ability", ignore_attacker_unit = true, effect_name = "fx/chr_unchained_living_bomb_3p" } }
 
 
 
@@ -559,7 +555,7 @@ ExplosionTemplates.conflag = {
 
 
 ExplosionTemplates.portal_transformer = {
-	explosion = { always_hurt_players = true, radius = 5, max_damage_radius = 2, player_push_speed = 5, damage_profile_glance = "default", alert_enemies = false, damage_profile = "default", power_level = 500, level_unit_damage = true } }
+	explosion = { radius = 5, allow_friendly_fire_override = true, max_damage_radius = 2, player_push_speed = 5, damage_profile_glance = "default", alert_enemies = false, damage_profile = "default", power_level = 500, level_unit_damage = true } }
 
 
 
@@ -575,8 +571,7 @@ ExplosionTemplates.portal_transformer = {
 
 
 ExplosionTemplates.elven_ruins_finish = {
-	explosion = { always_hurt_players = false, radius = 50, no_aggro = true, player_push_speed = 5, collision_filter = "filter_simple_explosion_overlap", alert_enemies = false, damage_profile = "elven_ruins_finish", power_level = 2000, level_unit_damage = true } }
-
+	explosion = { no_aggro = true, radius = 50, player_push_speed = 5, alert_enemies = false, damage_profile = "elven_ruins_finish", power_level = 2000, level_unit_damage = true, collision_filter = "filter_simple_explosion_overlap" } }
 
 
 
@@ -591,8 +586,7 @@ ExplosionTemplates.elven_ruins_finish = {
 
 
 ExplosionTemplates.military_finish = {
-	explosion = { always_hurt_players = false, radius = 300, no_aggro = true, player_push_speed = 5, collision_filter = "filter_simple_explosion_overlap", alert_enemies = false, damage_profile = "military_finish", power_level = 1000, level_unit_damage = true } }
-
+	explosion = { no_aggro = true, radius = 300, player_push_speed = 5, alert_enemies = false, damage_profile = "military_finish", power_level = 1000, level_unit_damage = true, collision_filter = "filter_simple_explosion_overlap" } }
 
 
 
@@ -607,8 +601,7 @@ ExplosionTemplates.military_finish = {
 
 
 ExplosionTemplates.bardin_slayer_activated_ability_landing_stagger = {
-	explosion = { no_prop_damage = true, radius = 4, use_attacker_power_level = true, max_damage_radius = 2, always_hurt_players = false, attacker_power_level_offset = 0.25, alert_enemies_radius = 15, attack_template = "drakegun", alert_enemies = true, damage_profile = "slayer_leap_landing", ignore_attacker_unit = true, no_friendly_fire = true } }
-
+	explosion = { no_prop_damage = true, radius = 4, use_attacker_power_level = true, max_damage_radius = 2, alert_enemies_radius = 15, attacker_power_level_offset = 0.25, attack_template = "drakegun", alert_enemies = true, damage_profile = "slayer_leap_landing", ignore_attacker_unit = true, no_friendly_fire = true } }
 
 
 
@@ -631,8 +624,7 @@ ExplosionTemplates.bardin_slayer_activated_ability_landing_stagger_impact.explos
 ExplosionTemplates.bardin_slayer_activated_ability_landing_stagger_impact.explosion.damage_profile = "slayer_leap_landing_impact"
 
 ExplosionTemplates.cannon_ball_throw = {
-	explosion = { always_hurt_players = false, radius = 10, no_prop_damage = true, max_damage_radius = 5, effect_name = "fx/wpnfx_frag_grenade_impact", attack_template = "drakegun", sound_event_name = "player_combat_weapon_grenade_explosion", damage_profile = "cannonball_impact", power_level = 300, ignore_attacker_unit = true, level_unit_damage = true,
-
+	explosion = { no_prop_damage = true, radius = 10, effect_name = "fx/wpnfx_frag_grenade_impact", max_damage_radius = 5, attack_template = "drakegun", sound_event_name = "player_combat_weapon_grenade_explosion", damage_profile = "cannonball_impact", power_level = 300, ignore_attacker_unit = true, level_unit_damage = true,
 
 
 
@@ -697,8 +689,7 @@ ExplosionTemplates.cannon_ball_throw = {
 
 
 ExplosionTemplates.victor_captain_activated_ability_stagger = {
-	explosion = { always_hurt_players = false, radius = 10, no_prop_damage = true, max_damage_radius = 2, use_attacker_power_level = true, alert_enemies_radius = 15, attack_template = "drakegun", alert_enemies = true, damage_profile = "ability_push", ignore_attacker_unit = true, no_friendly_fire = true } }
-
+	explosion = { no_prop_damage = true, radius = 10, use_attacker_power_level = true, max_damage_radius = 2, alert_enemies_radius = 15, attack_template = "drakegun", alert_enemies = true, damage_profile = "ability_push", ignore_attacker_unit = true, no_friendly_fire = true } }
 
 
 
@@ -715,7 +706,7 @@ ExplosionTemplates.victor_captain_activated_ability_stagger = {
 
 
 ExplosionTemplates.victor_captain_activated_ability_stagger_ping_debuff = {
-	explosion = { no_prop_damage = true, radius = 10, use_attacker_power_level = true, max_damage_radius = 2, always_hurt_players = false, alert_enemies_radius = 15, attack_template = "drakegun", alert_enemies = true, damage_profile = "ability_push", ignore_attacker_unit = true, no_friendly_fire = true,
+	explosion = { no_prop_damage = true, radius = 10, use_attacker_power_level = true, max_damage_radius = 2, alert_enemies_radius = 15, attack_template = "drakegun", alert_enemies = true, damage_profile = "ability_push", ignore_attacker_unit = true, no_friendly_fire = true,
 
 
 
@@ -733,9 +724,8 @@ ExplosionTemplates.victor_captain_activated_ability_stagger_ping_debuff = {
 
 
 
-
 ExplosionTemplates.victor_captain_activated_ability_stagger_ping_debuff_improved = {
-	explosion = { no_prop_damage = true, radius = 10, use_attacker_power_level = true, max_damage_radius = 2, always_hurt_players = false, alert_enemies_radius = 15, attack_template = "drakegun", alert_enemies = true, damage_profile = "ability_push", ignore_attacker_unit = true, no_friendly_fire = true,
+	explosion = { no_prop_damage = true, radius = 10, use_attacker_power_level = true, max_damage_radius = 2, alert_enemies_radius = 15, attack_template = "drakegun", alert_enemies = true, damage_profile = "ability_push", ignore_attacker_unit = true, no_friendly_fire = true,
 
 
 
@@ -753,10 +743,8 @@ ExplosionTemplates.victor_captain_activated_ability_stagger_ping_debuff_improved
 
 
 
-
 ExplosionTemplates.sienna_adept_activated_ability_start_stagger = {
-	explosion = { use_attacker_power_level = true, radius = 3, dot_template_name = "burning_dot_1tick", max_damage_radius = 1.5, effect_name = "fx/wpnfx_fireball_charged_impact", always_hurt_players = false, alert_enemies_radius = 15, attack_template = "drakegun", alert_enemies = true, damage_profile = "ability_push", ignore_attacker_unit = true, no_friendly_fire = true } }
-
+	explosion = { use_attacker_power_level = true, radius = 3, dot_template_name = "burning_dot_1tick", max_damage_radius = 1.5, effect_name = "fx/wpnfx_fireball_charged_impact", alert_enemies_radius = 15, attack_template = "drakegun", alert_enemies = true, damage_profile = "ability_push", ignore_attacker_unit = true, no_friendly_fire = true } }
 
 
 
@@ -776,8 +764,7 @@ ExplosionTemplates.sienna_adept_activated_ability_start_stagger = {
 
 
 ExplosionTemplates.sienna_adept_activated_ability_step_stagger = {
-	explosion = { use_attacker_power_level = true, radius = 4, dot_template_name = "burning_dot_1tick", max_damage_radius = 2, effect_name = "fx/brw_adept_skill_03", always_hurt_players = false, alert_enemies_radius = 15, attack_template = "drakegun", alert_enemies = true, damage_profile = "ability_push", ignore_attacker_unit = true, no_friendly_fire = true } }
-
+	explosion = { use_attacker_power_level = true, radius = 4, dot_template_name = "burning_dot_1tick", max_damage_radius = 2, effect_name = "fx/brw_adept_skill_03", alert_enemies_radius = 15, attack_template = "drakegun", alert_enemies = true, damage_profile = "ability_push", ignore_attacker_unit = true, no_friendly_fire = true } }
 
 
 
@@ -797,8 +784,7 @@ ExplosionTemplates.sienna_adept_activated_ability_step_stagger = {
 
 
 ExplosionTemplates.sienna_adept_activated_ability_end_stagger = {
-	explosion = { use_attacker_power_level = true, radius = 4, dot_template_name = "burning_dot_1tick", max_damage_radius = 2, effect_name = "fx/brw_adept_skill_01", always_hurt_players = false, alert_enemies_radius = 15, attack_template = "drakegun", alert_enemies = true, damage_profile = "ability_push", ignore_attacker_unit = true, no_friendly_fire = true } }
-
+	explosion = { use_attacker_power_level = true, radius = 4, dot_template_name = "burning_dot_1tick", max_damage_radius = 2, effect_name = "fx/brw_adept_skill_01", alert_enemies_radius = 15, attack_template = "drakegun", alert_enemies = true, damage_profile = "ability_push", ignore_attacker_unit = true, no_friendly_fire = true } }
 
 
 
@@ -818,8 +804,7 @@ ExplosionTemplates.sienna_adept_activated_ability_end_stagger = {
 
 
 ExplosionTemplates.sienna_adept_activated_ability_end_stagger_improved = {
-	explosion = { use_attacker_power_level = true, radius = 5, dot_template_name = "burning_dot", max_damage_radius = 3, effect_name = "fx/brw_adept_skill_01", always_hurt_players = false, alert_enemies_radius = 15, attack_template = "drakegun", alert_enemies = true, damage_profile = "ability_push", ignore_attacker_unit = true, no_friendly_fire = true } }
-
+	explosion = { use_attacker_power_level = true, radius = 5, dot_template_name = "burning_dot", max_damage_radius = 3, effect_name = "fx/brw_adept_skill_01", alert_enemies_radius = 15, attack_template = "drakegun", alert_enemies = true, damage_profile = "ability_push", ignore_attacker_unit = true, no_friendly_fire = true } }
 
 
 
@@ -839,8 +824,7 @@ ExplosionTemplates.sienna_adept_activated_ability_end_stagger_improved = {
 
 
 ExplosionTemplates.kruber_mercenary_activated_ability_stagger = {
-	explosion = { always_hurt_players = false, radius = 10, no_prop_damage = true, max_damage_radius = 3, use_attacker_power_level = true, attacker_power_level_offset = 0.01, alert_enemies_radius = 15, alert_enemies = true, damage_profile = "ability_push", no_friendly_fire = true } }
-
+	explosion = { no_prop_damage = true, radius = 10, use_attacker_power_level = true, max_damage_radius = 3, attacker_power_level_offset = 0.01, alert_enemies_radius = 15, alert_enemies = true, damage_profile = "ability_push", no_friendly_fire = true } }
 
 
 
@@ -856,8 +840,7 @@ ExplosionTemplates.kruber_mercenary_activated_ability_stagger = {
 
 
 ExplosionTemplates.bardin_ranger_activated_ability_stagger = {
-	explosion = { use_attacker_power_level = true, radius = 7, no_friendly_fire = true, max_damage_radius = 2, no_prop_damage = true, always_hurt_players = false, alert_enemies = true, attack_template = "drakegun", alert_enemies_radius = 15, sound_event_name = "Play_bardin_ranger_smoke_grenade_ability", damage_profile = "ability_push", effect_name = "fx/wpnfx_smoke_grenade_impact" } }
-
+	explosion = { use_attacker_power_level = true, radius = 7, no_friendly_fire = true, max_damage_radius = 2, no_prop_damage = true, alert_enemies = true, alert_enemies_radius = 15, attack_template = "drakegun", sound_event_name = "Play_bardin_ranger_smoke_grenade_ability", damage_profile = "ability_push", effect_name = "fx/wpnfx_smoke_grenade_impact" } }
 
 
 
@@ -877,8 +860,7 @@ ExplosionTemplates.bardin_ranger_activated_ability_stagger = {
 
 
 ExplosionTemplates.bardin_ranger_activated_ability_upgraded_stagger = {
-	explosion = { always_hurt_players = false, radius = 10, no_prop_damage = true, max_damage_radius = 3, use_attacker_power_level = true, attacker_power_level_offset = 0.01, alert_enemies_radius = 15, alert_enemies = true, damage_profile = "ability_push", no_friendly_fire = true } }
-
+	explosion = { no_prop_damage = true, radius = 10, use_attacker_power_level = true, max_damage_radius = 3, attacker_power_level_offset = 0.01, alert_enemies_radius = 15, alert_enemies = true, damage_profile = "ability_push", no_friendly_fire = true } }
 
 
 
@@ -894,8 +876,7 @@ ExplosionTemplates.bardin_ranger_activated_ability_upgraded_stagger = {
 
 
 ExplosionTemplates.bardin_ironbreaker_gromril_stagger = {
-	explosion = { always_hurt_players = false, radius = 5, no_prop_damage = true, max_damage_radius = 2, use_attacker_power_level = true, alert_enemies_radius = 15, attack_template = "drakegun", alert_enemies = false, damage_profile = "ability_push", no_friendly_fire = true } }
-
+	explosion = { no_prop_damage = true, radius = 5, use_attacker_power_level = true, max_damage_radius = 2, alert_enemies_radius = 15, attack_template = "drakegun", alert_enemies = false, damage_profile = "ability_push", no_friendly_fire = true } }
 
 
 
@@ -912,8 +893,7 @@ ExplosionTemplates.bardin_ironbreaker_gromril_stagger = {
 
 
 ExplosionTemplates.bardin_slayer_push_on_dodge = {
-	explosion = { always_hurt_players = false, radius = 1.5, no_prop_damage = true, max_damage_radius = 1.5, use_attacker_power_level = true, alert_enemies_radius = 15, attack_template = "drakegun", alert_enemies = false, damage_profile = "light_push", no_friendly_fire = true } }
-
+	explosion = { no_prop_damage = true, radius = 1.5, use_attacker_power_level = true, max_damage_radius = 1.5, alert_enemies_radius = 15, attack_template = "drakegun", alert_enemies = false, damage_profile = "light_push", no_friendly_fire = true } }
 
 
 
@@ -930,7 +910,7 @@ ExplosionTemplates.bardin_slayer_push_on_dodge = {
 
 
 ExplosionTemplates.chaos_zombie_explosion = {
-	explosion = { always_hurt_players = true, radius = 3.2, alert_enemies_radius = 20, alert_enemies = true, dot_template_name = "chaos_zombie_explosion", max_damage_radius_min = 0.5, attack_template = "chaos_zombie_explosion", max_damage_radius_max = 2, sound_event_name = "Play_enemy_chaos_warrior_transform_explode", damage_interval = 0, power_level = 500, effect_name = "fx/chr_nurgle_explosion_01",
+	explosion = { alert_enemies = true, radius = 3.2, alert_enemies_radius = 20, allow_friendly_fire_override = true, dot_template_name = "chaos_zombie_explosion", max_damage_radius_min = 0.5, attack_template = "chaos_zombie_explosion", max_damage_radius_max = 2, sound_event_name = "Play_enemy_chaos_warrior_transform_explode", damage_interval = 0, power_level = 500, effect_name = "fx/chr_nurgle_explosion_01",
 
 
 
@@ -953,8 +933,7 @@ ExplosionTemplates.chaos_zombie_explosion = {
 
 
 ExplosionTemplates.generic_mutator_explosion = {
-	explosion = { always_hurt_players = false, radius = 3.2, alert_enemies_radius = 20, alert_enemies = false, dot_template_name = "chaos_zombie_explosion", max_damage_radius_min = 0.5, attack_template = "chaos_zombie_explosion", max_damage_radius_max = 2, sound_event_name = "Play_mutator_enemy_split_small", damage_interval = 0, power_level = 0, effect_name = "fx/mutator_death_01",
-
+	explosion = { alert_enemies = false, radius = 3.2, alert_enemies_radius = 20, dot_template_name = "chaos_zombie_explosion", max_damage_radius_min = 0.5, attack_template = "chaos_zombie_explosion", max_damage_radius_max = 2, sound_event_name = "Play_mutator_enemy_split_small", damage_interval = 0, power_level = 0, effect_name = "fx/mutator_death_01",
 
 
 
@@ -975,9 +954,7 @@ ExplosionTemplates.generic_mutator_explosion = {
 
 
 ExplosionTemplates.generic_mutator_explosion_medium = {
-	explosion = { always_hurt_players = false, radius = 3.2, alert_enemies_radius = 20, alert_enemies = false, dot_template_name = "chaos_zombie_explosion", max_damage_radius_min = 0.5, attack_template = "chaos_zombie_explosion", max_damage_radius_max = 2, sound_event_name = "Play_mutator_enemy_split_medium", damage_interval = 0, power_level = 0, effect_name = "fx/mutator_death_02",
-
-
+	explosion = { alert_enemies = false, radius = 3.2, alert_enemies_radius = 20, dot_template_name = "chaos_zombie_explosion", max_damage_radius_min = 0.5, attack_template = "chaos_zombie_explosion", max_damage_radius_max = 2, sound_event_name = "Play_mutator_enemy_split_medium", damage_interval = 0, power_level = 0, effect_name = "fx/mutator_death_02",
 
 
 
@@ -998,9 +975,7 @@ ExplosionTemplates.generic_mutator_explosion_medium = {
 
 
 ExplosionTemplates.generic_mutator_explosion_large = {
-	explosion = { always_hurt_players = false, radius = 3.2, alert_enemies_radius = 20, alert_enemies = false, dot_template_name = "chaos_zombie_explosion", max_damage_radius_min = 0.5, attack_template = "chaos_zombie_explosion", max_damage_radius_max = 2, sound_event_name = "Play_mutator_enemy_split_large", damage_interval = 0, power_level = 0, effect_name = "fx/mutator_death_03",
-
-
+	explosion = { alert_enemies = false, radius = 3.2, alert_enemies_radius = 20, dot_template_name = "chaos_zombie_explosion", max_damage_radius_min = 0.5, attack_template = "chaos_zombie_explosion", max_damage_radius_max = 2, sound_event_name = "Play_mutator_enemy_split_large", damage_interval = 0, power_level = 0, effect_name = "fx/mutator_death_03",
 
 
 
@@ -1021,7 +996,7 @@ ExplosionTemplates.generic_mutator_explosion_large = {
 
 
 ExplosionTemplates.chaos_magic_missile = {
-	explosion = { always_hurt_players = true, radius = 3.2, alert_enemies = false, max_damage_radius_min = 0.5, attack_template = "chaos_magic_missile", max_damage_radius_max = 1, sound_event_name = "fireball_big_hit", damage_interval = 0, power_level = 500, effect_name = "fx/wpnfx_fireball_charged_impact",
+	explosion = { alert_enemies = false, radius = 3.2, allow_friendly_fire_override = true, max_damage_radius_min = 0.5, attack_template = "chaos_magic_missile", max_damage_radius_max = 1, sound_event_name = "fireball_big_hit", damage_interval = 0, power_level = 500, effect_name = "fx/wpnfx_fireball_charged_impact",
 
 
 
@@ -1042,7 +1017,7 @@ ExplosionTemplates.chaos_magic_missile = {
 
 
 ExplosionTemplates.chaos_strike_missile_impact = {
-	explosion = { radius = 2, alert_enemies = false, always_hurt_players = true, max_damage_radius_min = 0.5, attack_template = "chaos_magic_missile", max_damage_radius_max = 1, sound_event_name = "fireball_big_hit", damage_interval = 0, effect_name = "fx/chr_chaos_sorcerer_boss_strike_missile_impact",
+	explosion = { radius = 2, alert_enemies = false, allow_friendly_fire_override = true, max_damage_radius_min = 0.5, attack_template = "chaos_magic_missile", max_damage_radius_max = 1, sound_event_name = "fireball_big_hit", damage_interval = 0, effect_name = "fx/chr_chaos_sorcerer_boss_strike_missile_impact",
 
 
 
@@ -1070,7 +1045,7 @@ ExplosionTemplates.chaos_strike_missile_impact = {
 
 
 ExplosionTemplates.chaos_drachenfels_strike_missile_impact = {
-	explosion = { radius = 2, damage_profile = "nurgle_ball", alert_enemies = false, always_hurt_players = true, max_damage_radius_min = 0.5, attack_template = "chaos_magic_missile", max_damage_radius_max = 1, sound_event_name = "fireball_big_hit", damage_interval = 0, effect_name = "fx/drachenfels_gas_projectile_impact",
+	explosion = { radius = 2, damage_profile = "nurgle_ball", alert_enemies = false, allow_friendly_fire_override = true, max_damage_radius_min = 0.5, attack_template = "chaos_magic_missile", max_damage_radius_max = 1, sound_event_name = "fireball_big_hit", damage_interval = 0, effect_name = "fx/drachenfels_gas_projectile_impact",
 
 
 
@@ -1100,7 +1075,7 @@ ExplosionTemplates.chaos_drachenfels_strike_missile_impact = {
 
 
 ExplosionTemplates.chaos_slow_bomb_missile_missed = {
-	explosion = { always_hurt_players = true, radius = 3.2, alert_enemies = false, max_damage_radius_min = 0.5, attack_template = "chaos_magic_missile", max_damage_radius_max = 1, sound_event_name = "Play_enemy_boss_sorcerer_slow_bomb_hit", damage_interval = 0, power_level = 500, effect_name = "fx/chr_chaos_sorcerer_boss_projectile_flies_impact",
+	explosion = { alert_enemies = false, radius = 3.2, allow_friendly_fire_override = true, max_damage_radius_min = 0.5, attack_template = "chaos_magic_missile", max_damage_radius_max = 1, sound_event_name = "Play_enemy_boss_sorcerer_slow_bomb_hit", damage_interval = 0, power_level = 500, effect_name = "fx/chr_chaos_sorcerer_boss_projectile_flies_impact",
 
 
 
@@ -1121,7 +1096,7 @@ ExplosionTemplates.chaos_slow_bomb_missile_missed = {
 
 
 ExplosionTemplates.chaos_slow_bomb_missile_missed_new = {
-	explosion = { always_hurt_players = true, radius = 3.2, alert_enemies = false, max_damage_radius_min = 0.5, attack_template = "chaos_magic_missile", max_damage_radius_max = 1, sound_event_name = "Play_enemy_boss_sorcerer_slow_bomb_hit", damage_interval = 0, power_level = 500, effect_name = "fx/drachenfels_flies_impact",
+	explosion = { alert_enemies = false, radius = 3.2, allow_friendly_fire_override = true, max_damage_radius_min = 0.5, attack_template = "chaos_magic_missile", max_damage_radius_max = 1, sound_event_name = "Play_enemy_boss_sorcerer_slow_bomb_hit", damage_interval = 0, power_level = 500, effect_name = "fx/drachenfels_flies_impact",
 
 
 
@@ -1141,7 +1116,7 @@ ExplosionTemplates.chaos_slow_bomb_missile_missed_new = {
 
 
 ExplosionTemplates.grey_seer_warp_lightning_impact = {
-	explosion = { always_hurt_players = true, radius = 3.2, alert_enemies = false, max_damage_radius_min = 0.5, attack_template = "chaos_magic_missile", max_damage_radius_max = 1, sound_event_name = "fireball_big_hit", damage_interval = 0, power_level = 500, effect_name = "fx/warp_lightning_bolt_impact",
+	explosion = { alert_enemies = false, radius = 3.2, allow_friendly_fire_override = true, max_damage_radius_min = 0.5, attack_template = "chaos_magic_missile", max_damage_radius_max = 1, sound_event_name = "fireball_big_hit", damage_interval = 0, power_level = 500, effect_name = "fx/warp_lightning_bolt_impact",
 
 
 
@@ -1228,7 +1203,7 @@ ExplosionTemplates.chaos_slow_bomb_missile_new = {
 
 
 ExplosionTemplates.chaos_vortex_dummy_missile = {
-	explosion = { always_hurt_players = true, radius = 0.1, alert_enemies_radius = 20, max_damage_radius_min = 0.1, attack_template = "chaos_magic_missile", max_damage_radius_max = 0.1, alert_enemies = false, damage_interval = 0, power_level = 0 } }
+	explosion = { alert_enemies_radius = 20, radius = 0.1, allow_friendly_fire_override = true, max_damage_radius_min = 0.1, attack_template = "chaos_magic_missile", max_damage_radius_max = 0.1, alert_enemies = false, damage_interval = 0, power_level = 0 } }
 
 
 
@@ -1247,7 +1222,7 @@ ExplosionTemplates.chaos_vortex_dummy_missile = {
 
 ExplosionTemplates.corpse_explosion_default = { time_to_explode = 1,
 
-	explosion = { always_hurt_players = true, radius = 3.2, alert_enemies = true, damage_profile = "corpse_explosion_default", max_damage_radius_min = 0.5, alert_enemies_radius = 20, max_damage_radius_max = 2, sound_event_name = "Play_enemy_chaos_warrior_transform_explode", damage_interval = 0, power_level = 500, effect_name = "fx/chr_nurgle_explosion_01",
+	explosion = { damage_profile = "corpse_explosion_default", radius = 3.2, alert_enemies = true, allow_friendly_fire_override = true, max_damage_radius_min = 0.5, alert_enemies_radius = 20, max_damage_radius_max = 2, sound_event_name = "Play_enemy_chaos_warrior_transform_explode", damage_interval = 0, power_level = 500, effect_name = "fx/chr_nurgle_explosion_01",
 
 
 
@@ -1270,7 +1245,7 @@ ExplosionTemplates.corpse_explosion_default = { time_to_explode = 1,
 
 
 ExplosionTemplates.lightning_strike = {
-	explosion = { trigger_on_server_only = true, radius = 4, damage_interval = 0, alert_enemies_radius = 20, attack_template = "grenade", sound_event_name = "Play_mutator_enemy_split_large", always_hurt_players = true, buildup_effect_time = 1.5, wind_mutator = true, different_power_levels_for_players = true, alert_enemies = true, damage_profile = "heavens_lightning_strike", buildup_effect_name = "fx/magic_wind_heavens_lightning_strike_02", effect_name = "fx/magic_wind_heavens_lightning_strike_01",
+	explosion = { trigger_on_server_only = true, radius = 4, damage_interval = 0, alert_enemies_radius = 20, attack_template = "grenade", sound_event_name = "Play_mutator_enemy_split_large", allow_friendly_fire_override = true, buildup_effect_time = 1.5, wind_mutator = true, different_power_levels_for_players = true, alert_enemies = true, damage_profile = "heavens_lightning_strike", buildup_effect_name = "fx/magic_wind_heavens_lightning_strike_02", effect_name = "fx/magic_wind_heavens_lightning_strike_01",
 
 
 
@@ -1303,7 +1278,7 @@ ExplosionTemplates.lightning_strike = {
 ExplosionTemplates.lightning_strike_twitch = { time_to_explode = 5, follow_time = 5,
 
 
-	explosion = { trigger_on_server_only = true, radius = 4, alert_enemies = true, alert_enemies_radius = 20, attack_template = "grenade", damage_interval = 0, always_hurt_players = true, buildup_effect_time = 1.5, sound_event_name = "Play_mutator_enemy_split_large", damage_profile = "heavens_lightning_strike", power_level = 250, buildup_effect_name = "fx/magic_wind_heavens_lightning_strike_02", effect_name = "fx/magic_wind_heavens_lightning_strike_01",
+	explosion = { trigger_on_server_only = true, radius = 4, alert_enemies = true, alert_enemies_radius = 20, attack_template = "grenade", damage_interval = 0, allow_friendly_fire_override = true, buildup_effect_time = 1.5, sound_event_name = "Play_mutator_enemy_split_large", damage_profile = "heavens_lightning_strike", power_level = 250, buildup_effect_name = "fx/magic_wind_heavens_lightning_strike_02", effect_name = "fx/magic_wind_heavens_lightning_strike_01",
 
 
 
@@ -1357,7 +1332,7 @@ ExplosionTemplates.bastion_light_spirit = {
 
 
 ExplosionTemplates.light_pulse = {
-	explosion = { always_hurt_players = true, buff_to_apply = "mutator_light_cleansing_curse_buff", radius = 5, trigger_on_server_only = true, power_level = 0, wind_mutator = true, effect_name = "fx/magic_wind_light_beacon_01",
+	explosion = { trigger_on_server_only = true, allow_friendly_fire_override = true, buff_to_apply = "mutator_light_cleansing_curse_buff", radius = 5, power_level = 0, wind_mutator = true, effect_name = "fx/magic_wind_light_beacon_01",
 
 
 
@@ -1382,7 +1357,7 @@ ExplosionTemplates.metal_mutator_blade_dance = {
 
 
 ExplosionTemplates.fire_bomb = {
-	explosion = { always_hurt_players = true, radius = 1, bot_damage_profile = "ticking_bomb_explosion_bot", dot_template_name = "burning_dot_1tick", alert_enemies_radius = 10, sound_event_name = "Play_mutator_ticking_bomb_explosion", attack_template = "ticking_bomb_explosion", alert_enemies = true, damage_profile = "ticking_bomb_explosion", effect_name = "fx/magic_wind_fire_explosion_01",
+	explosion = { sound_event_name = "Play_mutator_ticking_bomb_explosion", radius = 1, bot_damage_profile = "ticking_bomb_explosion_bot", dot_template_name = "burning_dot_1tick", alert_enemies_radius = 10, allow_friendly_fire_override = true, attack_template = "ticking_bomb_explosion", alert_enemies = true, damage_profile = "ticking_bomb_explosion", effect_name = "fx/magic_wind_fire_explosion_01",
 
 
 
@@ -1409,8 +1384,7 @@ ExplosionTemplates.fire_bomb = {
 
 
 ExplosionTemplates.twitch_pulse_explosion = {
-	explosion = { no_prop_damage = true, radius = 10, no_friendly_fire = true, max_damage_radius = 3, always_hurt_players = false, alert_enemies = true, alert_enemies_radius = 15, sound_event_name = "Play_mutator_ticking_bomb_explosion", damage_profile = "ability_push", power_level = 600, effect_name = "fx/chr_kruber_shockwave" } }
-
+	explosion = { no_prop_damage = true, radius = 10, no_friendly_fire = true, max_damage_radius = 3, alert_enemies = true, alert_enemies_radius = 15, sound_event_name = "Play_mutator_ticking_bomb_explosion", damage_profile = "ability_push", power_level = 600, effect_name = "fx/chr_kruber_shockwave" } }
 
 
 
@@ -1429,7 +1403,7 @@ ExplosionTemplates.twitch_pulse_explosion = {
 
 
 ExplosionTemplates.suicide_blast = {
-	explosion = { radius = 4, dot_template_name = "burning_3W_dot", max_damage_radius = 4, alert_enemies_radius = 15, sound_event_name = "fireball_big_hit", always_hurt_players = true, attack_template = "fire_grenade_explosion", alert_enemies = true, damage_profile = "explosive_barrel", effect_name = "fx/wpnfx_fire_grenade_impact",
+	explosion = { radius = 4, dot_template_name = "burning_3W_dot", max_damage_radius = 4, alert_enemies_radius = 15, sound_event_name = "fireball_big_hit", allow_friendly_fire_override = true, attack_template = "fire_grenade_explosion", alert_enemies = true, damage_profile = "explosive_barrel", effect_name = "fx/wpnfx_fire_grenade_impact",
 
 
 
@@ -1509,8 +1483,7 @@ ExplosionTemplates.shadow_flare = {
 
 
 ExplosionTemplates.tower_wipe = {
-	explosion = { always_hurt_players = false, radius = 300, no_aggro = true, player_push_speed = 5, collision_filter = "filter_simple_explosion_overlap", alert_enemies = false, damage_profile = "tower_wipe", power_level = 1000, level_unit_damage = true } }
-
+	explosion = { no_aggro = true, radius = 300, player_push_speed = 5, alert_enemies = false, damage_profile = "tower_wipe", power_level = 1000, level_unit_damage = true, collision_filter = "filter_simple_explosion_overlap" } }
 
 
 
@@ -1526,7 +1499,7 @@ ExplosionTemplates.tower_wipe = {
 
 
 ExplosionTemplates.claw_explosion_dwarf = {
-	explosion = { always_hurt_players = true, radius = 5, alert_enemies_radius = 30, max_damage_radius = 50, alert_enemies = true, level_unit_damage = true, attack_template = "drakegun", damage_profile_glance = "overcharge_explosion_glance", sound_event_name = "emitter_dwarf_bomb_explosion", damage_profile = "overcharge_explosion", power_level = 1000, ignore_attacker_unit = true, effect_name = "fx/chr_warp_fire_explosion_01" } }
+	explosion = { alert_enemies = true, radius = 5, alert_enemies_radius = 30, max_damage_radius = 50, allow_friendly_fire_override = true, level_unit_damage = true, attack_template = "drakegun", damage_profile_glance = "overcharge_explosion_glance", sound_event_name = "emitter_dwarf_bomb_explosion", damage_profile = "overcharge_explosion", power_level = 1000, ignore_attacker_unit = true, effect_name = "fx/chr_warp_fire_explosion_01" } }
 
 
 

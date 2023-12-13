@@ -533,8 +533,9 @@ end
 
 function HeroWindowPanelConsole:_handle_gamepad_activity()
 	local gamepad_active = Managers.input:is_device_active("gamepad")
+	local most_recent_device = Managers.input:get_most_recent_device()
 
-	local force_update = self.gamepad_active_last_frame == nil
+	local force_update = self.gamepad_active_last_frame == nil or gamepad_active and most_recent_device ~= self._most_recent_device
 
 	if gamepad_active then
 		if not self.gamepad_active_last_frame or force_update then
@@ -542,10 +543,13 @@ function HeroWindowPanelConsole:_handle_gamepad_activity()
 
 
 			local widgets_by_name = self._widgets_by_name
-			widgets_by_name.panel_input_area_1.content.visible = true
-			widgets_by_name.panel_input_area_2.content.visible = true
+			local show_selection_buttons = self.is_in_inn and not self.force_ingame_menu or false
+			widgets_by_name.panel_input_area_1.content.visible = show_selection_buttons
+			widgets_by_name.panel_input_area_2.content.visible = show_selection_buttons
 			widgets_by_name.back_button.content.visible = false
 			widgets_by_name.close_button.content.visible = false
+
+			self:_setup_input_buttons()
 		end
 
 	elseif self.gamepad_active_last_frame or force_update then
@@ -558,6 +562,8 @@ function HeroWindowPanelConsole:_handle_gamepad_activity()
 		widgets_by_name.close_button.content.visible = true
 	end
 
+
+	self._most_recent_device = most_recent_device
 end
 
 function HeroWindowPanelConsole:_setup_text_buttons_width()

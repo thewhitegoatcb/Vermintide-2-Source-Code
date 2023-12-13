@@ -2,8 +2,7 @@
 
 
 
-local RPCS = { "rpc_necromancer_passive_spawn_pet", "rpc_necromancer_respawn_all_pets", "rpc_necromancer_passive_stragglify_pets", "rpc_necromancer_stragglify_client_pet" }
-
+local RPCS = { "rpc_necromancer_passive_spawn_pet", "rpc_necromancer_respawn_all_pets", "rpc_necromancer_passive_stragglify_pets" }
 
 
 
@@ -22,14 +21,7 @@ function PassiveAbilityNecromancerCharges:init(extension_init_context, unit, ext
 	self._nav_world = Managers.state.entity:system("ai_system"):nav_world()
 
 
-	self._army_definition = { "pet_skeleton", "pet_skeleton", "pet_skeleton", "pet_skeleton", "pet_skeleton", "pet_skeleton" }
-
-
-
-
-
-
-
+	self._army_definition = { }
 
 
 	self._spawn_queue = { }
@@ -114,6 +106,8 @@ function PassiveAbilityNecromancerCharges:_on_talents_changed(unit, talent_exten
 		self._army_definition = table.fill({ }, 6, "pet_skeleton")
 	end
 
+	self._extra_army_skeletons = self._has_army and table.fill({ }, 6, "pet_skeleton")
+
 	local is_in_inn_level = Managers.level_transition_handler:in_hub_level()
 
 
@@ -191,15 +185,35 @@ for i = 1, num_positions do
 	relative_raise_positions [#relative_raise_positions + 1] = relative_pos
 end
 
-function PassiveAbilityNecromancerCharges:spawn_army_pet(optional_last_index, optional_position, optional_position_mode)
+
+function PassiveAbilityNecromancerCharges:spawn_army_pet(spawn_index, optional_position, optional_position_mode)
 	local army_def = self._army_definition
-	local index = math.index_wrapper(( optional_last_index or 0 ) + 1, #army_def)
 	local template_name = "necromancer_pet_charges"
-	local breed_name = army_def [index]
+	local breed_name = army_def [spawn_index]
 
-	self:spawn_pet(template_name, breed_name, optional_position, optional_position_mode)
+	local num_army = #army_def
+	local done = spawn_index >= num_army
 
-	return index
+
+	local extra_skeletons = self._extra_army_skeletons
+	if done and extra_skeletons then
+		done = false
+
+		if not breed_name then
+			spawn_index = spawn_index - num_army
+			breed_name = extra_skeletons [spawn_index]
+			template_name = "necromancer_pet_straggler"
+
+			done = spawn_index >= #extra_skeletons
+		end
+	end
+
+
+	if breed_name then
+		self:spawn_pet(template_name, breed_name, optional_position, optional_position_mode)
+	end
+
+	return done
 end
 
 function PassiveAbilityNecromancerCharges:spawn_pet(template_name, breed_name, optional_position, optional_position_mode)
@@ -259,11 +273,6 @@ function PassiveAbilityNecromancerCharges:is_ready()
 	return not has_buff
 end
 
-function PassiveAbilityNecromancerCharges:rpc_necromancer_stragglify_client_pet(channel_id, game_object_id)
-	local pet_unit = self._unit_storage:unit(game_object_id)
-	self._commander_extension:set_controlled_unit_template(pet_unit, "necromancer_pet_straggler_client")
-end
-
 
 
 
@@ -305,13 +314,20 @@ function PassiveAbilityNecromancerCharges:stragglify_pets(peer_id)
 		for pet_unit in pairs(self._spawned_pets) do
 			if HEALTH_ALIVE [pet_unit] then
 				local template = commander_ext:controlled_unit_template(pet_unit)
-				if template.name ~= "necromancer_pet_straggler" then
-					commander_ext:set_controlled_unit_template(pet_unit, "necromancer_pet_straggler", true, t)
+				local straggler_template = "necromancer_pet_straggler"
+				if template.name ~= straggler_template then
 
-					if peer_id then
-						local game_object_id = self._unit_storage:go_id(pet_unit)
-						self._network_transmit:send_rpc("rpc_necromancer_stragglify_client_pet", peer_id, game_object_id)
-					end
+
+
+
+
+
+
+
+
+
+
+					AiUtils.kill_unit(pet_unit)
 				end
 			end
 		end

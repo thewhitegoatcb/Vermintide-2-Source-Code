@@ -3,4 +3,4 @@
 
 
 
-VersionSettings = { version = "5.1.1" }
+VersionSettings = { version = "5.2.0" }

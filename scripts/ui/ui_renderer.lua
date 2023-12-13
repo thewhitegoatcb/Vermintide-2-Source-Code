@@ -67,8 +67,7 @@ end
 
 
 
-function UIRenderer.script_draw_bitmap(gui, render_settings, material, gui_position, gui_size, color, masked, saturated, retained_id, point_sample)
-
+function UIRenderer.script_draw_bitmap(gui, render_settings, material, gui_position, gui_size, color, masked, saturated, retained_id, point_sample, viewport_mask)
 
 
 	local snap_pixel_positions = render_settings and render_settings.snap_pixel_positions
@@ -109,6 +108,8 @@ function UIRenderer.script_draw_bitmap(gui, render_settings, material, gui_posit
 				material_name = texture_settings.saturated_material_name
 			elseif point_sample then
 				material_name = texture_settings.point_sample_material_name
+			elseif viewport_mask then
+				material_name = texture_settings.viewport_mask_material_name
 			else
 				material_name = texture_settings.material_name
 			end
@@ -139,7 +140,7 @@ function UIRenderer.script_draw_bitmap(gui, render_settings, material, gui_posit
 
 end
 
-function UIRenderer.script_draw_bitmap_uv(gui, render_settings, material, uvs, gui_position, gui_size, color, masked, saturated, retained_id)
+function UIRenderer.script_draw_bitmap_uv(gui, render_settings, material, uvs, gui_position, gui_size, color, masked, saturated, retained_id, point_sample, viewport_mask)
 
 	local snap_pixel_positions = render_settings and render_settings.snap_pixel_positions
 	if snap_pixel_positions == nil then
@@ -173,6 +174,8 @@ function UIRenderer.script_draw_bitmap_uv(gui, render_settings, material, uvs, g
 			material_name = texture_settings.masked_material_name
 		elseif saturated then
 			material_name = texture_settings.saturated_material_name
+		elseif viewport_mask then
+			material_name = texture_settings.viewport_mask_material_name
 		else
 			material_name = texture_settings.material_name
 		end
@@ -424,7 +427,7 @@ function UIRenderer:draw_all_widgets(widget_list)
 	render_settings.alpha_multiplier = base_alpha_multiplier
 end
 
-
+local Profiler_start = Profiler.start local Profiler_stop = Profiler.stop
 
 
 
@@ -802,7 +805,7 @@ function UIRenderer:draw_texture_flip_horizontal(material, lower_left_corner, si
 	return UIRenderer.script_draw_bitmap_uv(self.gui, self.render_settings, material, uvs_draw_texture_flip_horizontal, gui_position, size, color, masked, saturated)
 end
 
-function UIRenderer:draw_texture(material, position, size, color, masked, saturated, retained_id, point_sample)
+function UIRenderer:draw_texture(material, position, size, color, masked, saturated, retained_id, point_sample, viewport_mask)
 	local gui = self.gui
 	if retained_id then
 		gui = self.gui_retained
@@ -814,11 +817,11 @@ function UIRenderer:draw_texture(material, position, size, color, masked, satura
 	return UIRenderer.script_draw_bitmap(gui, self.render_settings, material,
 	Vector3(position [1] * scale, position [2] * scale, position [3] or 0),
 	Vector3(size [1] * scale, size [2] * scale, size [3] or 0),
-	color, masked, saturated, retained_id,
-	point_sample)
+	color, masked, saturated, retained_id, point_sample,
+	viewport_mask)
 end
 
-function UIRenderer:draw_texture_uv(material, lower_left_corner, size, uvs, color, masked, saturated, retained_id)
+function UIRenderer:draw_texture_uv(material, lower_left_corner, size, uvs, color, masked, saturated, retained_id, point_sample, viewport_mask)
 	if script_data.ui_debug_draw_texture and Keyboard.button(Keyboard.button_index("v")) > 0 then
 		debug_draw_texture(self, lower_left_corner, size, material)
 	end
@@ -826,11 +829,11 @@ function UIRenderer:draw_texture_uv(material, lower_left_corner, size, uvs, colo
 	size = UIScaleVectorToResolution(size)
 
 	if retained_id == true then
-		return UIRenderer.script_draw_bitmap_uv(self.gui_retained, self.render_settings, material, uvs, gui_position, size, color, masked, saturated, nil)
+		return UIRenderer.script_draw_bitmap_uv(self.gui_retained, self.render_settings, material, uvs, gui_position, size, color, masked, saturated, nil, point_sample, viewport_mask)
 	elseif retained_id then
-		return UIRenderer.script_draw_bitmap_uv(self.gui_retained, self.render_settings, material, uvs, gui_position, size, color, masked, saturated, retained_id)
+		return UIRenderer.script_draw_bitmap_uv(self.gui_retained, self.render_settings, material, uvs, gui_position, size, color, masked, saturated, retained_id, point_sample, viewport_mask)
 	else
-		return UIRenderer.script_draw_bitmap_uv(self.gui, self.render_settings, material, uvs, gui_position, size, color, masked, saturated)
+		return UIRenderer.script_draw_bitmap_uv(self.gui, self.render_settings, material, uvs, gui_position, size, color, masked, saturated, nil, point_sample, viewport_mask)
 	end
 end
 
@@ -1482,8 +1485,9 @@ local uvs_u = { { 0, 0 },
 
 
 
-function UIRenderer:draw_texture_frame(position, size, texture_id, texture_size, texture_sizes, color, masked, saturated, only_corners, use_tiling, mirrored_tiling, skip_background)
+function UIRenderer:draw_texture_frame(position, size, texture_id, texture_size, texture_sizes, color, masked, saturated, only_corners, use_tiling, mirrored_tiling, skip_background, retained_ids)
 	local gui = self.gui
+	local gui_retained = self.gui_retained
 
 	position = UIScaleVectorToResolution(position)
 	size = UIScaleVectorToResolution(size)
@@ -1500,32 +1504,76 @@ function UIRenderer:draw_texture_frame(position, size, texture_id, texture_size,
 	local texture_size_x = texture_size [1] local texture_size_y = texture_size [2]
 	local x_size = size.x local y_size = size.y
 
+	local retained_id_index = 1
+	local new_retained_ids = nil
+	if retained_ids == true then
+		new_retained_ids = { }
+	end
+
 
 	local corner_uv_size_x = corner_size_x / texture_size_x local corner_uv_size_y = corner_size_y / texture_size_y
 	uvs [1] [1] = 0
 	uvs [1] [2] = 1 - corner_uv_size_y
 	uvs [2] [1] = corner_uv_size_x
 	uvs [2] [2] = 1
-	UIRenderer.script_draw_bitmap_uv(gui, self.render_settings, texture_id, uvs, Vector3(x_pos, y_pos, layer), corner_size_vec, color, masked, saturated)
+
+	if retained_ids == true then
+		new_retained_ids [#new_retained_ids + 1] = UIRenderer.script_draw_bitmap_uv(gui_retained, self.render_settings, texture_id, uvs, Vector3(x_pos, y_pos, layer), corner_size_vec, color, masked, saturated, nil)
+	elseif retained_ids then
+		local retained_id = retained_ids [retained_id_index]
+		UIRenderer.script_draw_bitmap_uv(gui_retained, self.render_settings, texture_id, uvs, Vector3(x_pos, y_pos, layer), corner_size_vec, color, masked, saturated, retained_id)
+		retained_id_index = retained_id_index + 1
+	else
+		UIRenderer.script_draw_bitmap_uv(gui, self.render_settings, texture_id, uvs, Vector3(x_pos, y_pos, layer), corner_size_vec, color, masked, saturated)
+	end
+
 
 	uvs [1] [1] = 0
 	uvs [1] [2] = 0
 	uvs [2] [1] = corner_uv_size_x
 	uvs [2] [2] = corner_uv_size_y
-	UIRenderer.script_draw_bitmap_uv(gui, self.render_settings, texture_id, uvs, Vector3(x_pos, y_pos + y_size - corner_size_y, layer), corner_size_vec, color, masked, saturated)
+
+	if retained_ids == true then
+		new_retained_ids [#new_retained_ids + 1] = UIRenderer.script_draw_bitmap_uv(gui_retained, self.render_settings, texture_id, uvs, Vector3(x_pos, y_pos + y_size - corner_size_y, layer), corner_size_vec, color, masked, saturated, nil)
+	elseif retained_ids then
+		local retained_id = retained_ids [retained_id_index]
+		UIRenderer.script_draw_bitmap_uv(gui_retained, self.render_settings, texture_id, uvs, Vector3(x_pos, y_pos + y_size - corner_size_y, layer), corner_size_vec, color, masked, saturated, retained_id)
+		retained_id_index = retained_id_index + 1
+	else
+		UIRenderer.script_draw_bitmap_uv(gui, self.render_settings, texture_id, uvs, Vector3(x_pos, y_pos + y_size - corner_size_y, layer), corner_size_vec, color, masked, saturated)
+	end
+
 
 	uvs [1] [1] = 1 - corner_uv_size_x
 	uvs [1] [2] = 0
 	uvs [2] [1] = 1
 	uvs [2] [2] = corner_uv_size_y
-	UIRenderer.script_draw_bitmap_uv(gui, self.render_settings, texture_id, uvs, Vector3(x_pos + x_size - corner_size_x, y_pos + y_size - corner_size_y, layer), corner_size_vec, color, masked, saturated)
+
+	if retained_ids == true then
+		new_retained_ids [#new_retained_ids + 1] = UIRenderer.script_draw_bitmap_uv(gui_retained, self.render_settings, texture_id, uvs, Vector3(x_pos + x_size - corner_size_x, y_pos + y_size - corner_size_y, layer), corner_size_vec, color, masked, saturated, nil)
+	elseif retained_ids then
+		local retained_id = retained_ids [retained_id_index]
+		UIRenderer.script_draw_bitmap_uv(gui_retained, self.render_settings, texture_id, uvs, Vector3(x_pos + x_size - corner_size_x, y_pos + y_size - corner_size_y, layer), corner_size_vec, color, masked, saturated, retained_id)
+		retained_id_index = retained_id_index + 1
+	else
+		UIRenderer.script_draw_bitmap_uv(gui, self.render_settings, texture_id, uvs, Vector3(x_pos + x_size - corner_size_x, y_pos + y_size - corner_size_y, layer), corner_size_vec, color, masked, saturated)
+	end
+
 
 	uvs [1] [1] = 1 - corner_uv_size_x
 	uvs [1] [2] = 1 - corner_uv_size_y
 	uvs [2] [1] = 1
 	uvs [2] [2] = 1
-	UIRenderer.script_draw_bitmap_uv(gui, self.render_settings, texture_id, uvs, Vector3(x_pos + x_size - corner_size_x, y_pos, layer), corner_size_vec, color, masked, saturated)
 
+	if retained_ids == true then
+		new_retained_ids [#new_retained_ids + 1] = UIRenderer.script_draw_bitmap_uv(gui_retained, self.render_settings, texture_id, uvs, Vector3(x_pos + x_size - corner_size_x, y_pos, layer), corner_size_vec, color, masked, saturated, nil)
+	elseif retained_ids then
+		local retained_id = retained_ids [retained_id_index]
+		UIRenderer.script_draw_bitmap_uv(gui_retained, self.render_settings, texture_id, uvs, Vector3(x_pos + x_size - corner_size_x, y_pos, layer), corner_size_vec, color, masked, saturated, retained_id)
+		retained_id_index = retained_id_index + 1
+	else
+		UIRenderer.script_draw_bitmap_uv(gui, self.render_settings, texture_id, uvs, Vector3(x_pos + x_size - corner_size_x, y_pos, layer), corner_size_vec, color, masked, saturated)
+	end
 
 	if not skip_background then
 
@@ -1533,7 +1581,16 @@ function UIRenderer:draw_texture_frame(position, size, texture_id, texture_size,
 		uvs [1] [2] = corner_uv_size_y
 		uvs [2] [1] = 1 - corner_uv_size_x
 		uvs [2] [2] = 1 - corner_uv_size_y
-		UIRenderer.script_draw_bitmap_uv(gui, self.render_settings, texture_id, uvs, Vector3(x_pos + corner_size_x, y_pos + corner_size_y, layer), size - corner_size_vec * 2, color, masked, saturated)
+
+		if retained_ids == true then
+			new_retained_ids [#new_retained_ids + 1] = UIRenderer.script_draw_bitmap_uv(gui_retained, self.render_settings, texture_id, uvs, Vector3(x_pos + corner_size_x, y_pos + corner_size_y, layer), size - corner_size_vec * 2, color, masked, saturated, nil)
+		elseif retained_ids then
+			local retained_id = retained_ids [retained_id_index]
+			UIRenderer.script_draw_bitmap_uv(gui_retained, self.render_settings, texture_id, uvs, Vector3(x_pos + corner_size_x, y_pos + corner_size_y, layer), size - corner_size_vec * 2, color, masked, saturated, retained_id)
+			retained_id_index = retained_id_index + 1
+		else
+			UIRenderer.script_draw_bitmap_uv(gui, self.render_settings, texture_id, uvs, Vector3(x_pos + corner_size_x, y_pos + corner_size_y, layer), size - corner_size_vec * 2, color, masked, saturated)
+		end
 	end
 
 
@@ -1580,9 +1637,26 @@ function UIRenderer:draw_texture_frame(position, size, texture_id, texture_size,
 			tile_vertical_size_vec [2] = segment_size * tile_vertical_size_y
 
 
-			UIRenderer.script_draw_bitmap_uv(gui, self.render_settings, texture_id, uvs, Vector3(x_pos, tile_pos_y, layer), tile_vertical_size_vec, color, masked, saturated)
+			if retained_ids == true then
+				new_retained_ids [#new_retained_ids + 1] = UIRenderer.script_draw_bitmap_uv(gui_retained, self.render_settings, texture_id, uvs, Vector3(x_pos, tile_pos_y, layer), tile_vertical_size_vec, color, masked, saturated, nil)
+			elseif retained_ids then
+				local retained_id = retained_ids [retained_id_index]
+				UIRenderer.script_draw_bitmap_uv(gui_retained, self.render_settings, texture_id, uvs, Vector3(x_pos, tile_pos_y, layer), tile_vertical_size_vec, color, masked, saturated, retained_id)
+				retained_id_index = retained_id_index + 1
+			else
+				UIRenderer.script_draw_bitmap_uv(gui, self.render_settings, texture_id, uvs, Vector3(x_pos, tile_pos_y, layer), tile_vertical_size_vec, color, masked, saturated)
+			end
 
-			UIRenderer.script_draw_bitmap_uv(gui, self.render_settings, texture_id, uvs_r, Vector3(x_pos + x_size - tile_vertical_size_x, tile_pos_y, layer), tile_vertical_size_vec, color, masked, saturated)
+
+			if retained_ids == true then
+				new_retained_ids [#new_retained_ids + 1] = UIRenderer.script_draw_bitmap_uv(gui_retained, self.render_settings, texture_id, uvs_r, Vector3(x_pos + x_size - tile_vertical_size_x, tile_pos_y, layer), tile_vertical_size_vec, color, masked, saturated, nil)
+			elseif retained_ids then
+				local retained_id = retained_ids [retained_id_index]
+				UIRenderer.script_draw_bitmap_uv(gui_retained, self.render_settings, texture_id, uvs_r, Vector3(x_pos + x_size - tile_vertical_size_x, tile_pos_y, layer), tile_vertical_size_vec, color, masked, saturated, retained_id)
+				retained_id_index = retained_id_index + 1
+			else
+				UIRenderer.script_draw_bitmap_uv(gui, self.render_settings, texture_id, uvs_r, Vector3(x_pos + x_size - tile_vertical_size_x, tile_pos_y, layer), tile_vertical_size_vec, color, masked, saturated)
+			end
 
 			tile_pos_y = tile_pos_y + tile_vertical_size_y
 			total_size = total_size - tile_vertical_size_y
@@ -1627,9 +1701,26 @@ function UIRenderer:draw_texture_frame(position, size, texture_id, texture_size,
 			tile_horizontal_size_vec [1] = segment_size * tile_horizontal_size_x
 
 
-			UIRenderer.script_draw_bitmap_uv(gui, self.render_settings, texture_id, uvs, Vector3(tile_pos_x, y_pos, layer), tile_horizontal_size_vec, color, masked, saturated)
+			if retained_ids == true then
+				new_retained_ids [#new_retained_ids + 1] = UIRenderer.script_draw_bitmap_uv(gui_retained, self.render_settings, texture_id, uvs, Vector3(tile_pos_x, y_pos, layer), tile_horizontal_size_vec, color, masked, saturated, nil)
+			elseif retained_ids then
+				local retained_id = retained_ids [retained_id_index]
+				UIRenderer.script_draw_bitmap_uv(gui_retained, self.render_settings, texture_id, uvs, Vector3(tile_pos_x, y_pos, layer), tile_horizontal_size_vec, color, masked, saturated, retained_id)
+				retained_id_index = retained_id_index + 1
+			else
+				UIRenderer.script_draw_bitmap_uv(gui, self.render_settings, texture_id, uvs, Vector3(tile_pos_x, y_pos, layer), tile_horizontal_size_vec, color, masked, saturated)
+			end
 
-			UIRenderer.script_draw_bitmap_uv(gui, self.render_settings, texture_id, uvs_u, Vector3(tile_pos_x, y_pos + y_size - tile_horizontal_size_y, layer), tile_horizontal_size_vec, color, masked, saturated)
+
+			if retained_ids == true then
+				new_retained_ids [#new_retained_ids + 1] = UIRenderer.script_draw_bitmap_uv(gui_retained, self.render_settings, texture_id, uvs_u, Vector3(tile_pos_x, y_pos + y_size - tile_horizontal_size_y, layer), tile_horizontal_size_vec, color, masked, saturated, nil)
+			elseif retained_ids then
+				local retained_id = retained_ids [retained_id_index]
+				UIRenderer.script_draw_bitmap_uv(gui_retained, self.render_settings, texture_id, uvs_u, Vector3(tile_pos_x, y_pos + y_size - tile_horizontal_size_y, layer), tile_horizontal_size_vec, color, masked, saturated, retained_id)
+				retained_id_index = retained_id_index + 1
+			else
+				UIRenderer.script_draw_bitmap_uv(gui, self.render_settings, texture_id, uvs_u, Vector3(tile_pos_x, y_pos + y_size - tile_horizontal_size_y, layer), tile_horizontal_size_vec, color, masked, saturated)
+			end
 
 			tile_pos_x = tile_pos_x + tile_horizontal_size_x
 			total_size = total_size - tile_horizontal_size_x
@@ -1654,9 +1745,26 @@ function UIRenderer:draw_texture_frame(position, size, texture_id, texture_size,
 		uvs_r [2] [2] = 0.5 + tile_vertical_size_y / size [2] * 0.5
 
 		local tile_pos_y = y_pos + corner_size_y
-		UIRenderer.script_draw_bitmap_uv(gui, self.render_settings, texture_id, uvs, Vector3(x_pos, tile_pos_y, layer), tile_vertical_size_vec, color, masked, saturated)
+		if retained_ids == true then
+			new_retained_ids [#new_retained_ids + 1] = UIRenderer.script_draw_bitmap_uv(gui_retained, self.render_settings, texture_id, uvs, Vector3(x_pos, tile_pos_y, layer), tile_vertical_size_vec, color, masked, saturated, nil)
+		elseif retained_ids then
+			local retained_id = retained_ids [retained_id_index]
+			UIRenderer.script_draw_bitmap_uv(gui_retained, self.render_settings, texture_id, uvs, Vector3(x_pos, tile_pos_y, layer), tile_vertical_size_vec, color, masked, saturated, retained_id)
+			retained_id_index = retained_id_index + 1
+		else
+			UIRenderer.script_draw_bitmap_uv(gui, self.render_settings, texture_id, uvs, Vector3(x_pos, tile_pos_y, layer), tile_vertical_size_vec, color, masked, saturated)
+		end
 
-		UIRenderer.script_draw_bitmap_uv(gui, self.render_settings, texture_id, uvs_r, Vector3(x_pos + x_size - tile_vertical_size_x, tile_pos_y, layer), tile_vertical_size_vec, color, masked, saturated)
+
+		if retained_ids == true then
+			new_retained_ids [#new_retained_ids + 1] = UIRenderer.script_draw_bitmap_uv(gui_retained, self.render_settings, texture_id, uvs_r, Vector3(x_pos + x_size - tile_vertical_size_x, tile_pos_y, layer), tile_vertical_size_vec, color, masked, saturated, nil)
+		elseif retained_ids then
+			local retained_id = retained_ids [retained_id_index]
+			UIRenderer.script_draw_bitmap_uv(gui_retained, self.render_settings, texture_id, uvs_r, Vector3(x_pos + x_size - tile_vertical_size_x, tile_pos_y, layer), tile_vertical_size_vec, color, masked, saturated, retained_id)
+			retained_id_index = retained_id_index + 1
+		else
+			UIRenderer.script_draw_bitmap_uv(gui, self.render_settings, texture_id, uvs_r, Vector3(x_pos + x_size - tile_vertical_size_x, tile_pos_y, layer), tile_vertical_size_vec, color, masked, saturated)
+		end
 
 
 
@@ -1679,12 +1787,31 @@ function UIRenderer:draw_texture_frame(position, size, texture_id, texture_size,
 		uvs [2] [2] = 1
 
 		local tile_pos_x = x_pos + corner_size_x
-		UIRenderer.script_draw_bitmap_uv(gui, self.render_settings, texture_id, uvs, Vector3(tile_pos_x, y_pos, layer), tile_horizontal_size_vec, color, masked, saturated)
+		if retained_ids == true then
+			new_retained_ids [#new_retained_ids + 1] = UIRenderer.script_draw_bitmap_uv(gui_retained, self.render_settings, texture_id, uvs, Vector3(tile_pos_x, y_pos, layer), tile_horizontal_size_vec, color, masked, saturated, nil)
+		elseif retained_ids then
+			local retained_id = retained_ids [retained_id_index]
+			UIRenderer.script_draw_bitmap_uv(gui_retained, self.render_settings, texture_id, uvs, Vector3(tile_pos_x, y_pos, layer), tile_horizontal_size_vec, color, masked, saturated, retained_id)
+			retained_id_index = retained_id_index + 1
+		else
+			UIRenderer.script_draw_bitmap_uv(gui, self.render_settings, texture_id, uvs, Vector3(tile_pos_x, y_pos, layer), tile_horizontal_size_vec, color, masked, saturated)
+		end
 
-		UIRenderer.script_draw_bitmap_uv(gui, self.render_settings, texture_id, uvs_u, Vector3(tile_pos_x, y_pos + y_size - tile_horizontal_size_y, layer), tile_horizontal_size_vec, color, masked, saturated)
+
+		if retained_ids == true then
+			new_retained_ids [#new_retained_ids + 1] = UIRenderer.script_draw_bitmap_uv(gui_retained, self.render_settings, texture_id, uvs_u, Vector3(tile_pos_x, y_pos + y_size - tile_horizontal_size_y, layer), tile_horizontal_size_vec, color, masked, saturated, nil)
+		elseif retained_ids then
+			local retained_id = retained_ids [retained_id_index]
+			UIRenderer.script_draw_bitmap_uv(gui_retained, self.render_settings, texture_id, uvs_u, Vector3(tile_pos_x, y_pos + y_size - tile_horizontal_size_y, layer), tile_horizontal_size_vec, color, masked, saturated, retained_id)
+			retained_id_index = retained_id_index + 1
+		else
+			UIRenderer.script_draw_bitmap_uv(gui, self.render_settings, texture_id, uvs_u, Vector3(tile_pos_x, y_pos + y_size - tile_horizontal_size_y, layer), tile_horizontal_size_vec, color, masked, saturated)
+		end
 	end
 
 
+
+	return new_retained_ids
 end
 
 function UIRenderer:destroy_bitmap(retained_id)

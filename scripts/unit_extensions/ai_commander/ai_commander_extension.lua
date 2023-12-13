@@ -1,4 +1,4 @@
-require("scripts/settings/dlcs/shovel/shovel_constants")
+require("scripts/settings/profiles/career_constants")
 
 
 
@@ -151,12 +151,19 @@ end
 function AICommanderExtension:set_controlled_unit_template(controlled_unit, template_name, re_initialize, optional_t)
 	if re_initialize then
 		self._controlled_units [controlled_unit] = {
-			start_t = optional_t,
+			start_t = optional_t or Managers.time:time("game"),
 			command_state = CommandStates.Following }
 	end
 
 
 	local template = ControlledUnitTemplates [template_name]
+	if not self._is_server then
+		local client_version = template.client_version
+		if client_version then
+			template = ControlledUnitTemplates [client_version]
+		end
+	end
+
 	self._controlled_units [controlled_unit].template = template
 end
 
@@ -1030,7 +1037,7 @@ function AICommanderExtension:_update_command_stand_ground()
 			local position = POSITION_LOOKUP [controlled_unit]
 			local necromancer_position = POSITION_LOOKUP [self._unit]
 			local dist_sq = Vector3.distance_squared(position, necromancer_position)
-			local max_range = NecromancerConstants.max_range
+			local max_range = CareerConstants.bw_necromancer.max_range
 
 			if dist_sq > max_range * max_range then
 				cancel_stand_ground = true

@@ -1,4 +1,4 @@
-local charge_bar_size = { 250, 16 }
+local DEFAULT_BAR_SIZE = { 250, 16 }
 
 local scenegraph_definition = {
 	screen = { scale = "fit",
@@ -18,7 +18,7 @@ local scenegraph_definition = {
 
 	charge_bar = { vertical_alignment = "center", parent = "screen_bottom_pivot", horizontal_alignment = "center",
 
-		size = charge_bar_size,
+		size = DEFAULT_BAR_SIZE,
 
 
 		position = { 0, -220, 1 } } }
@@ -69,7 +69,7 @@ local widget_definitions = {
 
 
 
-			size = { charge_bar_size [1] - 6, charge_bar_size [2] },
+			size = { DEFAULT_BAR_SIZE [1] - 6, DEFAULT_BAR_SIZE [2] },
 			frame = frame_settings.texture },
 
 		style = {
@@ -80,30 +80,31 @@ local widget_definitions = {
 				texture_sizes = frame_settings.texture_sizes,
 				color = { 255, 255, 255, 255 },
 				offset = { 0, 0, 0 },
-				size = charge_bar_size },
+				size = DEFAULT_BAR_SIZE },
 
 			bar_1 = { gradient_threshold = 0,
 
 				color = { 255, 255, 255, 255 },
 				offset = { 3, 3, 3 },
-				size = { charge_bar_size [1] - 6, charge_bar_size [2] - 6 } },
+				size = { DEFAULT_BAR_SIZE [1] - 6, DEFAULT_BAR_SIZE [2] - 6 } },
 
 			icon = {
 				size = { 34, 34 },
-				offset = { charge_bar_size [1], charge_bar_size [2] / 2 - 17, 5 },
+				offset = { DEFAULT_BAR_SIZE [1], DEFAULT_BAR_SIZE [2] / 2 - 17, 5 },
 				color = { 100, 0, 0, 1 } },
 
 			icon_shadow = {
 				size = { 34, 34 },
-				offset = { charge_bar_size [1] + 2, charge_bar_size [2] / 2 - 17 - 2, 5 },
+				offset = { DEFAULT_BAR_SIZE [1] + 2, DEFAULT_BAR_SIZE [2] / 2 - 17 - 2, 5 },
 				color = { 0, 0, 0, 0 } },
 
 			bar_fg = {
 				offset = { 0, 0, 5 },
-				color = { 204, 255, 255, 255 } },
+				color = { 204, 255, 255, 255 },
+				size = DEFAULT_BAR_SIZE },
 
 			bar_bg = {
-				size = { charge_bar_size [1] - 6, charge_bar_size [2] - 6 },
+				size = { DEFAULT_BAR_SIZE [1] - 6, DEFAULT_BAR_SIZE [2] - 5 },
 				offset = { 3, 3, 0 },
 				color = { 100, 0, 0, 0 } },
 
@@ -111,13 +112,13 @@ local widget_definitions = {
 				pivot = { 0, 0 },
 				offset = { 0, 3, 4 },
 				color = { 204, 0, 0, 0 },
-				size = { 2, charge_bar_size [2] - 6 } },
+				size = { 2, DEFAULT_BAR_SIZE [2] - 6 } },
 
 			max_threshold = {
 				pivot = { 0, 0 },
 				offset = { 0, 3, 4 },
 				color = { 204, 0, 0, 0 },
-				size = { 2, charge_bar_size [2] - 6 } } },
+				size = { 2, DEFAULT_BAR_SIZE [2] - 6 } } },
 
 
 
@@ -128,4 +129,5 @@ local widget_definitions = {
 
 return {
 	scenegraph_definition = scenegraph_definition,
-	widget_definitions = widget_definitions }
+	widget_definitions = widget_definitions,
+	DEFAULT_BAR_SIZE = DEFAULT_BAR_SIZE }

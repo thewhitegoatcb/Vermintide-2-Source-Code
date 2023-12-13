@@ -397,6 +397,8 @@ function HeroWindowItemCustomization:play_sound(sound_event)
 end
 
 function HeroWindowItemCustomization:update(dt, t)
+
+
 	self:_handle_gamepad_activity()
 	self:_update_craft_response()
 
@@ -428,6 +430,8 @@ function HeroWindowItemCustomization:update(dt, t)
 
 	self:_update_scroll_position()
 	self:_draw(input_service, dt)
+
+
 end
 
 function HeroWindowItemCustomization:post_update(dt, t)
@@ -575,7 +579,7 @@ function HeroWindowItemCustomization:_handle_gamepad_input(input_service, dt, t)
 			local input_move_down = input_service:get("move_down_hold_continuous")
 
 
-			local input_index = self._input_index
+			local input_index = self._input_index or 1
 
 			if input_move_down then
 				input_index = math.min(input_index + 1, #self._available_states)

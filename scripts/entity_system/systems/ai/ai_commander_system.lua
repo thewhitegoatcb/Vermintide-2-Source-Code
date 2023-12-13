@@ -1,7 +1,8 @@
 require("scripts/unit_extensions/ai_commander/command_states")
 require("scripts/unit_extensions/ai_commander/controlled_unit_templates")
 
-local RPCS = { "rpc_add_controlled_unit", "rpc_remove_controlled_unit", "rpc_cancel_current_command", "rpc_command_stand_ground", "rpc_command_attack" }
+local RPCS = { "rpc_add_controlled_unit", "rpc_remove_controlled_unit", "rpc_cancel_current_command", "rpc_command_stand_ground", "rpc_command_attack", "rpc_set_controlled_unit_template" }
+
 
 
 
@@ -149,4 +150,21 @@ function AICommanderSystem:rpc_command_attack(channel_id, controlled_unit_id, ta
 	end
 
 	extension:command_attack(controlled_unit, target_unit)
+end
+
+function AICommanderSystem:rpc_set_controlled_unit_template(channel_id, controlled_unit_id, controlled_unit_template_id)
+	local controlled_unit = self._unit_storage:unit(controlled_unit_id)
+	local commander_unit = self:get_commander_unit(controlled_unit)
+	if not commander_unit then
+
+		return
+	end
+
+	local extension = self._extensions [commander_unit]
+	if not extension then
+		return
+	end
+
+	local template_name = NetworkLookup.controlled_unit_templates [controlled_unit_template_id]
+	extension:set_controlled_unit_template(controlled_unit, template_name, true)
 end

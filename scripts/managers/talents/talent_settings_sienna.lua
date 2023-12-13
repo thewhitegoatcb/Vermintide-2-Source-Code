@@ -1,3 +1,4 @@
+require("scripts/settings/profiles/career_constants")
 local buff_perks = require("scripts/unit_extensions/default_player_unit/buffs/settings/buff_perk_names")
 
 local buff_tweak_data = {
@@ -8,7 +9,8 @@ local buff_tweak_data = {
 	sienna_scholar_ability_cooldown_on_damage_taken = { bonus = 0.3 },
 
 
-	sienna_scholar_passive = { chunk_size = 6 },
+	sienna_scholar_passive = { chunk_size = 9 },
+
 
 
 	sienna_scholar_passive_crit_chance = { max_stacks = 5, bonus = 0.06 },
@@ -76,11 +78,21 @@ local buff_tweak_data = {
 
 
 
-	sienna_scholar_ranged_power_ascending_descending = { update_frequency = 1, max_sub_buff_stacks = 20 },
+	sienna_scholar_ranged_power_ascending_descending = { update_frequency = 1, max_sub_buff_stacks = 25 },
 
 
 
-	sienna_scholar_ranged_power_ascending_descending_buff = { max_stacks = 20, multiplier = 0.01 },
+
+
+
+
+
+	sienna_scholar_ranged_power_ascending_descending_buff = { max_stacks = 25, multiplier = 0.01 },
+
+
+
+
+
 
 
 
@@ -95,20 +107,32 @@ local buff_tweak_data = {
 
 
 
-	sienna_scholar_passive_increased_attack_speed_from_overcharge = { chunk_size = 6 },
+	sienna_scholar_passive_increased_attack_speed_from_overcharge = { chunk_size = 9 },
+
 
 
 	sienna_scholar_passive_increased_attack_speed = { max_stacks = 5, multiplier = 0.02 },
 
 
 
-	sienna_scholar_passive_increased_power_level_on_high_overcharge = { chunk_size = 30 },
+	sienna_scholar_passive_increased_power_level_on_high_overcharge = { chunk_size = 42 },
 
 
-	sienna_scholar_passive_increased_power_level_on_high_overcharge_buff = { multiplier = 0.15 },
+
+	sienna_scholar_passive_increased_power_level_on_high_overcharge_buff = { multiplier = 0.2 },
 
 
-	sienna_scholar_passive_overcharge_pause_on_special_kill_buff = { duration = 10, multiplier = -1 },
+
+
+
+
+
+	sienna_scholar_passive_overcharge_pause_on_special_kill_buff = { duration = 12, multiplier = -1 },
+
+
+
+
+
 
 
 
@@ -123,6 +147,22 @@ local buff_tweak_data = {
 
 
 
+
+
+
+
+	sienna_scholar_activated_ability_no_overcharge = { max_stacks = 1, duration = 12, multiplier = -0.5 },
+
+
+
+
+
+
+
+	sienna_scholar_vent_zone = { multiplier = -0.8 },
+
+
+	sienna_scholar_vent_zone_buff = { multiplier = 0.2 },
 
 
 
@@ -222,7 +262,37 @@ local buff_tweak_data = {
 
 
 
-	sienna_adept_damage_reduction_on_ignited_enemy_buff = { max_stacks = 3, multiplier = -0.1, duration = 5 },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	sienna_adept_damage_reduction_on_ignited_enemy_buff = { max_stacks = 3, multiplier = -0.08, duration = 5 },
 
 
 
@@ -231,10 +301,10 @@ local buff_tweak_data = {
 
 
 
-	sienna_adept_increased_burn_damage = { multiplier = 1.5 },
+	sienna_adept_increased_burn_damage = { multiplier = 1 },
 
 
-	sienna_adept_reduced_non_burn_damage = { multiplier = -0.3 },
+	sienna_adept_reduced_non_burn_damage = { multiplier = -0.15 },
 
 
 
@@ -245,7 +315,9 @@ local buff_tweak_data = {
 	sienna_adept_activated_ability_distance = { display_multiplier = 0.5 },
 
 
-	sienna_adept_activated_ability_cooldown = { multiplier = -0.3 },
+	sienna_adept_activated_ability_cooldown = { multiplier = -0.4 },
+
+
 
 
 
@@ -401,6 +473,24 @@ TalentBuffTemplates.bright_wizard = {
 
 	sienna_scholar_passive_ranged_damage = {
 		buffs = { { stat_buff = "increased_weapon_damage_ranged" } } },
+
+
+
+
+
+
+	sienna_scholar_passive_max_overcharge = {
+		buffs = { { stat_buff = "max_overcharge",
+
+
+				multiplier = CareerConstants.bw_scholar.perk_3_max_overcharge } } },
+
+
+
+	sienna_scholar_overcharge_no_slow = {
+		buffs = { {
+
+				perks = { buff_perks.overcharge_no_slow } } } },
 
 
 
@@ -574,7 +664,12 @@ TalentBuffTemplates.bright_wizard = {
 
 
 	sienna_scholar_ranged_power_ascending_descending_buff = {
-		buffs = { { max_stacks = 20, icon = "sienna_scholar_ranged_power_ascending_descending", stat_buff = "power_level_ranged" } } },
+		buffs = { { max_stacks = 25, icon = "sienna_scholar_ranged_power_ascending_descending", stat_buff = "power_level_ranged" } } },
+
+
+
+
+
 
 
 
@@ -683,6 +778,31 @@ TalentBuffTemplates.bright_wizard = {
 
 
 
+
+	sienna_scholar_vent_zone = {
+		buffs = { { buff_to_add = "sienna_scholar_vent_zone_buff", radius = 7, stat_buff = "vent_damage", update_func = "sienna_scholar_vent_zone_update", update_frequency = 1 } } },
+
+
+
+
+
+
+
+
+
+
+	sienna_scholar_vent_zone_buff = {
+		buffs = { { max_stacks = 3, icon = "sienna_scholar_activated_ability_dump_overcharge", stat_buff = "vent_damage", debuff = true } } },
+
+
+
+
+
+
+
+
+
+
 	sienna_scholar_move_speed_on_critical_hit = {
 		buffs = { { buff_to_add = "sienna_scholar_move_speed_on_critical_hit_buff", event = "on_critical_hit", buff_func = "add_buff" } } },
 
@@ -704,10 +824,26 @@ TalentBuffTemplates.bright_wizard = {
 
 
 
-	sienna_scholar_overcharge_no_slow = {
-		buffs = { {
 
-				perks = { buff_perks.overcharge_no_slow } } } },
+
+
+
+
+
+
+
+
+
+
+
+	sienna_scholar_activated_ability_no_overcharge = {
+		buffs = { { refresh_durations = true, stat_buff = "reduced_ranged_charge_time", icon = "sienna_scholar_overcharge_no_slow", priority_buff = true,
+
+
+
+
+
+				perks = { buff_perks.no_overcharge_explosion } } } },
 
 
 
@@ -1475,8 +1611,18 @@ TalentTrees.bright_wizard = { {
 		{ "sienna_scholar_ranged_power_ascending_descending", "sienna_scholar_increased_attack_speed", "sienna_scholar_crit_chance_above_health_threshold" },
 		{ "sienna_scholar_smiter_unbalance", "sienna_scholar_linesman_unbalance", "sienna_scholar_power_level_unbalance" },
 		{ "sienna_scholar_passive_overcharge_pause_on_special_kill", "sienna_scholar_passive_increased_power_level_on_high_overcharge", "sienna_scholar_passive_increased_attack_speed_from_overcharge" },
-		{ "sienna_scholar_damage_taken_on_elite_or_special_kill", "sienna_scholar_overcharge_no_slow", "sienna_scholar_move_speed_on_critical_hit" },
-		{ "sienna_scholar_activated_ability_dump_overcharge", "sienna_scholar_activated_ability_heal", "sienna_scholar_activated_ability_crit_refresh_cooldown" } },
+		{ "sienna_scholar_damage_taken_on_elite_or_special_kill", "sienna_scholar_vent_zone", "sienna_scholar_move_speed_on_critical_hit" },
+
+
+
+
+
+		{ "sienna_scholar_activated_ability_no_overcharge", "sienna_scholar_activated_ability_heal", "sienna_scholar_activated_ability_crit_refresh_cooldown" } },
+
+
+
+
+
 
 	{
 		{ "sienna_adept_vanguard", "sienna_adept_bloodlust_2", "sienna_adept_heal_share" },
@@ -1763,18 +1909,35 @@ Talents.bright_wizard = { { description = "reaper_desc", name = "sienna_scholar_
 
 
 
-	{ description = "sienna_scholar_overcharge_no_slow_desc", name = "sienna_scholar_overcharge_no_slow", num_ranks = 1, icon = "sienna_scholar_overcharge_no_slow",
+	{ description = "sienna_scholar_vent_zone_desc", name = "sienna_scholar_vent_zone", num_ranks = 1, icon = "sienna_scholar_activated_ability_dump_overcharge",
 
 
 
-		description_values = { },
 
 
-		buffs = { "sienna_scholar_overcharge_no_slow" } },
+
+
+
+
+
+
+
+
+
+
+
+
+		description_values = { { value_type = "percent",
+				value = -buff_tweak_data.sienna_scholar_vent_zone.multiplier }, { value_type = "percent",
+				value = -buff_tweak_data.sienna_scholar_vent_zone_buff.multiplier } },
+
+
+		buffs = { "sienna_scholar_vent_zone" } },
 
 
 
 	{ description = "sienna_scholar_move_speed_on_critical_hit_desc", name = "sienna_scholar_move_speed_on_critical_hit", num_ranks = 1, icon = "sienna_scholar_move_speed_on_critical_hit",
+
 
 
 
@@ -1788,12 +1951,27 @@ Talents.bright_wizard = { { description = "reaper_desc", name = "sienna_scholar_
 
 
 
-	{ description = "sienna_scholar_activated_ability_dump_overcharge_desc", name = "sienna_scholar_activated_ability_dump_overcharge", num_ranks = 1, icon = "sienna_scholar_activated_ability_dump_overcharge",
+	{ description = "sienna_scholar_activated_ability_no_overcharge_desc", name = "sienna_scholar_activated_ability_no_overcharge", num_ranks = 1, icon = "sienna_scholar_overcharge_no_slow",
 
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+		description_values = { { value_type = "baked_percent",
+				value = 1 + buff_tweak_data.sienna_scholar_activated_ability_no_overcharge.multiplier }, {
+				value = buff_tweak_data.sienna_scholar_activated_ability_no_overcharge.duration } },
 
 		buffs = { } },
 

@@ -1181,13 +1181,17 @@ function DamageUtils.create_explosion(world, attacker_unit, impact_position, rot
 		end
 		fassert(radius, "Explosion template [%s] has no radius, or radius_min & radius_max, set", explosion_template.name)
 
+		local buff_extension = ScriptUnit.has_extension(attacker_unit, "buff_system")
 		local is_grenade = explosion_template.is_grenade
-		if is_grenade then
-			local buff_extension = ScriptUnit.has_extension(attacker_unit, "buff_system")
-			if buff_extension then
-				radius = buff_extension:apply_buffs_to_value(radius, "grenade_radius")
-				max_damage_radius = buff_extension:apply_buffs_to_value(max_damage_radius, "grenade_radius")
+		if buff_extension then
+			local radius_multiplier = 1
+			if is_grenade then
+				radius_multiplier = radius_multiplier + buff_extension:apply_buffs_to_value(1, "grenade_radius") - 1
 			end
+			radius_multiplier = radius_multiplier + buff_extension:apply_buffs_to_value(1, "explosion_radius") - 1
+
+			radius = radius * radius_multiplier
+			max_damage_radius = max_damage_radius * radius_multiplier
 		end
 
 
@@ -1237,13 +1241,24 @@ function DamageUtils.create_explosion(world, attacker_unit, impact_position, rot
 		local attacker_is_player = attacker_player ~= nil
 
 		local friendly_fire_disabled = explosion_data.no_friendly_fire
+		local allow_friendly_fire_override = explosion_data.allow_friendly_fire_override
 		local friendly_fire_allowed = nil
 		if attacker_is_player then
-			friendly_fire_allowed = DamageUtils.allow_friendly_fire_ranged(difficulty_settings, attacker_player)
+			friendly_fire_allowed = allow_friendly_fire_override or DamageUtils.allow_friendly_fire_ranged(difficulty_settings, attacker_player)
 		else
 			friendly_fire_allowed = explosion_data.ai_friendly_fire
 		end
-		local forced_friendly_player_damage = explosion_data.always_hurt_players
+
+
+		local buff_extension = ScriptUnit.has_extension(attacker_unit, "buff_system")
+		if buff_extension then
+			local no_friendly_damage_perk = buff_extension:has_buff_perk(buff_perk_names.no_explosion_friendly_fire)
+			if no_friendly_damage_perk then
+				friendly_fire_allowed = false
+			end
+		end
+
+
 		local friendly_fire_enabled = friendly_fire_allowed and not friendly_fire_disabled
 
 
@@ -1408,9 +1423,7 @@ function DamageUtils.create_explosion(world, attacker_unit, impact_position, rot
 
 			local damage_unit = not is_ally or friendly_fire_enabled
 			if is_player then
-				if is_ally then
-					damage_unit = damage_unit or forced_friendly_player_damage
-				elseif damage_unit then
+				if not is_ally and damage_unit then
 					local ghost_mode_extension = ScriptUnit.has_extension(hit_unit, "ghost_mode_system")
 				end
 
@@ -1619,9 +1632,14 @@ function DamageUtils.create_aoe(world, attacker_unit, position, damage_source, e
 	local attacker_unit = AiUtils.get_actual_attacker_unit(attacker_unit)
 
 	local is_grenade = explosion_template.is_grenade
-	if ScriptUnit.has_extension(attacker_unit, "buff_system") and is_grenade then
-		local buff_extension = ScriptUnit.extension(attacker_unit, "buff_system")
-		radius = buff_extension:apply_buffs_to_value(radius, "grenade_radius")
+	local buff_extension = ScriptUnit.has_extension(attacker_unit, "buff_system")
+	if buff_extension then
+		local radius_multiplier = 1
+		if is_grenade then
+			radius_multiplier = radius_multiplier + buff_extension:apply_buffs_to_value(1, "grenade_radius") - 1
+		end
+		radius_multiplier = radius_multiplier + buff_extension:apply_buffs_to_value(1, "explosion_radius") - 1
+		radius = radius * radius_multiplier
 	end
 
 	local attacker_player = Managers.player:owner(attacker_unit)
@@ -1632,7 +1650,7 @@ function DamageUtils.create_aoe(world, attacker_unit, position, damage_source, e
 		local difficulty_settings = Managers.state.difficulty:get_difficulty_settings()
 		local friendly_fire_disabled = aoe_data.no_friendly_fire
 		local friendly_fire_allowed = DamageUtils.allow_friendly_fire_ranged(difficulty_settings, attacker_player)
-		local forced_friendly_fire = aoe_data.always_hurt_players
+		local forced_friendly_fire = aoe_data.allow_friendly_fire
 
 		damage_players = forced_friendly_fire or friendly_fire_allowed and not friendly_fire_disabled
 	end
@@ -3256,7 +3274,7 @@ function DamageUtils.process_projectile_hit(world, damage_source, owner_unit, is
 	hit_data.hits = num_penetrations
 
 	local friendly_fire_disabled = damage_profile.no_friendly_fire
-	local forced_friendly_fire = damage_profile.always_hurt_players
+	local forced_friendly_fire = damage_profile.allow_friendly_fire
 
 	local difficulty_rank = Managers.state.difficulty:get_difficulty_rank()
 	local allow_friendly_fire = forced_friendly_fire or not friendly_fire_disabled and DamageUtils.allow_friendly_fire_ranged(difficulty_settings, owner_player)

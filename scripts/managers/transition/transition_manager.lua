@@ -1,6 +1,7 @@
 require("scripts/ui/views/disconnect_indicator_view")
 require("scripts/ui/views/loading_icon_view")
 require("scripts/ui/views/twitch_icon_view")
+require("scripts/ui/views/dev_backend_water_mark_view")
 
 if script_data.honduras_demo then
 	require("scripts/ui/views/water_mark_view")
@@ -21,6 +22,10 @@ function TransitionManager:init()
 	if script_data.honduras_demo then
 		self._watermark = WaterMarkView:new(self._world)
 		self._transition_video = TransitionVideo:new(self._world)
+	end
+
+	if not GameSettingsDevelopment.backend_settings.is_prod then
+		self._dev_backend_watermark = DevBackendWatermarkView:new(self._world)
 	end
 
 	self._color = Vector3Box(0, 0, 0)
@@ -82,6 +87,10 @@ function TransitionManager:destroy()
 
 	if self._watermark then
 		self._watermark:destroy()
+	end
+
+	if self._dev_backend_watermark then
+		self._dev_backend_watermark:destroy()
 	end
 
 	if self._transition_video then
@@ -263,6 +272,12 @@ function TransitionManager:force_render(dt)
 		self._transition_video:update(dt)
 	end
 
+	if self._dev_backend_watermark and
+	not Development.parameter("disable_water_mark") then
+		self._dev_backend_watermark:update(dt)
+	end
+
+
 	self:_render()
 end
 
@@ -293,6 +308,12 @@ function TransitionManager:update(dt)
 		end
 		self._transition_video:update(dt)
 	end
+
+	if self._dev_backend_watermark and
+	not Development.parameter("disable_water_mark") then
+		self._dev_backend_watermark:update(dt)
+	end
+
 
 	if self._fade_state == "out" then
 		return

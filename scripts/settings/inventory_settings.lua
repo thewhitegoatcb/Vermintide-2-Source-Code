@@ -67,6 +67,7 @@ for index, slot in ipairs(InventorySettings.slots) do
 end
 
 InventorySettings.slots_by_wield_input = { }
+
 for index, slot in ipairs(InventorySettings.slots) do
 	if slot.wield_input then
 		local index_string = string.sub(slot.wield_input, 7)
@@ -76,6 +77,7 @@ for index, slot in ipairs(InventorySettings.slots) do
 		InventorySettings.slots_by_wield_input [index] = slot
 	end
 end
+
 
 InventorySettings.slots_by_inventory_button_index = { }
 for index, slot in ipairs(InventorySettings.slots) do

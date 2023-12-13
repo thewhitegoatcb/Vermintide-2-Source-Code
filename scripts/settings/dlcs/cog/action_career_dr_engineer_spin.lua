@@ -25,9 +25,11 @@ function ActionCareerDREngineerSpin:client_owner_start_action(new_action, t)
 	self._visual_spinup_time = new_action.visual_spinup_time
 	self._last_update_t = t
 
+
 	if self.talent_extension:has_talent("bardin_engineer_reduced_ability_fire_slowdown") then
 		self._current_windup = 1
 	end
+
 end
 
 function ActionCareerDREngineerSpin:client_owner_post_update(dt, t, world, can_damage)

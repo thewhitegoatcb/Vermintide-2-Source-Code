@@ -30,7 +30,8 @@ local buff_tweak_data = {
 
 
 
-	markus_questing_knight_charged_attacks_increased_power = { multiplier = 0.25 },
+	markus_questing_knight_charged_attacks_increased_power = { multiplier = 0.3 },
+
 
 
 	markus_questing_knight_crit_can_insta_kill = { damage_multiplier = 4, proc_chance = 1, boss_damage_multiplier = 2 },
@@ -40,7 +41,8 @@ local buff_tweak_data = {
 
 	markus_questing_knight_kills_buff_power_stacking = { },
 
-	markus_questing_knight_kills_buff_power_stacking_buff = { max_stacks = 3, multiplier = 0.1, duration = 10 },
+	markus_questing_knight_kills_buff_power_stacking_buff = { max_stacks = 3, multiplier = 0.08, duration = 10 },
+
 
 
 

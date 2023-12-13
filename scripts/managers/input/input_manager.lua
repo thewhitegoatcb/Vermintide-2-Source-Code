@@ -181,7 +181,8 @@ end
 
 
 function InputManager:block_device_except_service(service_exception, device_type, device_index, block_reason)
-	if gamepad_disabled and device_type == "gamepad" then
+
+	if gamepad_disabled and (device_type == "gamepad" or device_type == "ps_pad") then
 		return
 	end
 
@@ -190,7 +191,7 @@ function InputManager:block_device_except_service(service_exception, device_type
 	if not device_list then
 		return
 	end
-	if device_type == "gamepad" then
+	if device_type == "gamepad" or device_type == "ps_pad" then
 		for _, input_device in ipairs(device_list) do
 			local device_data = self.input_devices [input_device]
 			for name, service in pairs(self.input_services) do
@@ -233,10 +234,17 @@ function InputManager:block_device_except_service(service_exception, device_type
 			end
 		end
 	end
+
+
+	if IS_WINDOWS and device_type == "gamepad" then
+		self:block_device_except_service(service_exception, "ps_pad", device_index, block_reason)
+	end
+
 end
 
 function InputManager:device_unblock_all_services(device_type, device_index)
-	if gamepad_disabled and device_type == "gamepad" then
+
+	if gamepad_disabled and (device_type == "gamepad" or device_type == "ps_pad") then
 		return
 	end
 
@@ -245,7 +253,8 @@ function InputManager:device_unblock_all_services(device_type, device_index)
 		return
 	end
 
-	if device_type == "gamepad" then
+
+	if device_type == "gamepad" or device_type == "ps_pad" then
 		for _, input_device in ipairs(device_list) do
 			local device_data = self.input_devices [input_device]
 			local input_services = self.input_services
@@ -267,10 +276,17 @@ function InputManager:device_unblock_all_services(device_type, device_index)
 			end
 		end
 	end
+
+
+	if IS_WINDOWS and device_type == "gamepad" then
+		self:device_unblock_all_services("ps_pad", device_index)
+	end
+
 end
 
 function InputManager:device_block_service(device_type, device_index, service_name, block_reason)
-	if gamepad_disabled and device_type == "gamepad" then
+
+	if gamepad_disabled and (device_type == "gamepad" or device_type == "ps_pad") then
 		return
 	end
 
@@ -302,10 +318,17 @@ function InputManager:device_block_service(device_type, device_index, service_na
 			input_service:set_blocked(true)
 		end
 	end
+
+
+	if IS_WINDOWS and device_type == "gamepad" then
+		self:device_block_service("ps_pad", device_index, service_name, block_reason)
+	end
+
 end
 
 function InputManager:device_unblock_service(device_type, device_index, service_name)
-	if gamepad_disabled and device_type == "gamepad" then
+
+	if gamepad_disabled and (device_type == "gamepad" or device_type == "ps_pad") then
 		return
 	end
 
@@ -331,6 +354,12 @@ function InputManager:device_unblock_service(device_type, device_index, service_
 			self.input_services [service_name]:set_blocked(nil)
 		end
 	end
+
+
+	if IS_WINDOWS and device_type == "gamepad" then
+		self:device_unblock_service("ps_pad", device_index, service_name)
+	end
+
 end
 
 function InputManager:get_unblocked_services(device_type, device_index, services_dest)
@@ -562,7 +591,8 @@ end
 
 
 function InputManager:map_device_to_service(input_service_name, input_device_type, input_device_slot)
-	if gamepad_disabled and input_device_type == "gamepad" then
+	if gamepad_disabled and (input_device_type == "gamepad" or input_device_type == "ps_pad") then
+
 		return
 	end
 
@@ -576,7 +606,8 @@ function InputManager:map_device_to_service(input_service_name, input_device_typ
 	local device_list = InputAux.input_device_mapping [input_device_type]
 	assert(device_list, "No such input device type: %s", input_device_type)
 
-	if input_device_type == "gamepad" then
+	if input_device_type == "gamepad" or input_device_type == "ps_pad" then
+
 		for _, input_device in ipairs(device_list) do
 			local input_device_data = self.input_devices [input_device]
 			input_service:map_device(input_device_type, input_device, input_device_data)
@@ -589,6 +620,12 @@ function InputManager:map_device_to_service(input_service_name, input_device_typ
 		local input_device_data = self.input_devices [input_device]
 		input_service:map_device(input_device_type, input_device, input_device_data)
 	end
+
+
+	if IS_WINDOWS and input_device_type == "gamepad" then
+		self:map_device_to_service(input_service_name, "ps_pad", input_device_slot)
+	end
+
 end
 
 function InputManager:update(dt, t)
@@ -619,6 +656,11 @@ function InputManager:update_devices(dt, t)
 		local pressed = device_data.pressed
 		local held = device_data.held
 		local soft_button = device_data.soft_button
+
+
+		local controller_type = input_device.type()
+		local is_ps_pad = controller_type == "sce_pad"
+
 
 
 
@@ -661,7 +703,8 @@ function InputManager:update_devices(dt, t)
 			axis [key] = input_device.axis(key)
 
 			local button_name = input_device.axis_name(key)
-			if IS_PS4 then
+			if IS_PS4 or is_ps_pad then
+
 				local valid_axis = { left = true, right = true }
 
 
@@ -694,6 +737,8 @@ function InputManager:update_devices(dt, t)
 			if most_recent_input_device ~= input_device then
 				most_recent_input_device = input_device
 				most_recent_input_device_type = InputAux.input_device_type_lookup [input_device]
+
+				local device_type = most_recent_input_device.type()
 
 				local device_name = input_device._name
 				local allow_cursor_rendering = device_name == "Keyboard" or device_name == "Mouse"

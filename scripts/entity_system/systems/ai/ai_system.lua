@@ -471,8 +471,6 @@ function AISystem:on_add_extension(world, unit, extension_name, extension_init_d
 		end
 		if breed.immediate_threat then
 			AiUtils.activate_unit(extension._blackboard)
-		else
-			AiUtils.deactivate_unit(extension._blackboard)
 		end
 
 		local sync_func = breed.hot_join_sync
@@ -549,11 +547,6 @@ function AISystem:_cleanup_extension(unit, extension_name)
 		extension.broadphase_id = nil
 	end
 
-	local blackboard = self.blackboards [unit]
-	if blackboard then
-		AiUtils.deactivate_unit(blackboard)
-	end
-
 	self._hot_join_sync_units [unit] = nil
 	self.unit_extension_data [unit] = nil
 
@@ -568,6 +561,11 @@ function AISystem:_cleanup_extension(unit, extension_name)
 		end
 
 
+		local blackboard = self.blackboards [unit]
+		if blackboard then
+			blackboard.activation_lock = true
+			AiUtils.deactivate_unit(blackboard)
+		end
 
 		local ai_blackboard_updates = self.ai_blackboard_updates
 		local ai_blackboard_updates_n = #ai_blackboard_updates
@@ -617,15 +615,16 @@ function AISystem:freeze(unit, extension_name, reason)
 	end
 
 	local extension = self.unit_extension_data [unit]
-	self:_cleanup_extension(unit, extension_name)
-	self.unit_extension_data [unit] = nil
-	extension:unit_removed_from_game()
 	frozen_extensions [unit] = extension
 	if extension.freeze then
 
 		extension:freeze(unit)
 	end
 
+
+
+	self:_cleanup_extension(unit, extension_name)
+	extension:unit_removed_from_game()
 end
 
 function AISystem:unfreeze(unit, extension_name, data)
@@ -653,10 +652,9 @@ function AISystem:unfreeze(unit, extension_name, data)
 			self.ai_units_perception [unit] = extension
 		end
 
+		extension._blackboard.activation_lock = nil
 		if breed.immediate_threat then
 			AiUtils.activate_unit(extension._blackboard)
-		else
-			AiUtils.deactivate_unit(extension._blackboard)
 		end
 
 		local sync_func = breed.hot_join_sync

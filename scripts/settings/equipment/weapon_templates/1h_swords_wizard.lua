@@ -258,7 +258,7 @@ weapon_template.actions = {
 
 
 
-		heavy_attack_spell = { damage_window_start = 0.2, forward_offset = 0.75, push_radius = 2.5, kind = "shield_slam", damage_profile_target = "dagger_burning_slam_target", additional_critical_strike_chance = 0, no_damage_impact_sound_event = "fire_hit_armour", armor_impact_sound_event = "fire_hit_armour", damage_profile = "dagger_burning_slam", hit_effect = "fireball_impact", hit_time = 0.35, aim_assist_ramp_multiplier = 0.2, damage_window_end = 0.25, impact_sound_event = "fire_hit", charge_value = "heavy_attack", anim_end_event = "attack_finished", damage_profile_aoe = "dagger_burning_slam_aoe", aim_assist_max_ramp_multiplier = 0.4, impact_particle_effect = "fx/wpnfx_staff_spark_impact", dedicated_target_range = 3.5, aim_assist_ramp_decay_delay = 0.1, uninterruptible = false, anim_event = "attack_swing_right_spell", total_time = 1.5,
+		heavy_attack_spell = { damage_window_start = 0.2, forward_offset = 0.75, fatigue_cost = "action_stun_push", kind = "shield_slam", damage_profile_target = "dagger_burning_slam_target", additional_critical_strike_chance = 0, no_damage_impact_sound_event = "fire_hit_armour", armor_impact_sound_event = "fire_hit_armour", damage_profile = "dagger_burning_slam", hit_effect = "fireball_impact", push_radius = 2.5, hit_time = 0.35, damage_window_end = 0.25, impact_sound_event = "fire_hit", charge_value = "heavy_attack", anim_end_event = "attack_finished", damage_profile_aoe = "dagger_burning_slam_aoe", aim_assist_ramp_multiplier = 0.2, impact_particle_effect = "fx/wpnfx_staff_spark_impact", dedicated_target_range = 3.5, aim_assist_max_ramp_multiplier = 0.4, uninterruptible = false, anim_event = "attack_swing_right_spell", aim_assist_ramp_decay_delay = 0.1, total_time = 1.5,
 
 
 

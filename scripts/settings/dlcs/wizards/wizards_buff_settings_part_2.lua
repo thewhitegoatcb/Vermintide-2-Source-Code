@@ -183,7 +183,7 @@ settings.buff_function_templates = { }
 
 settings.explosion_templates = {
 	ethereal_skull_explosion = {
-		explosion = { always_hurt_players = true, radius = 1, always_stagger_ai = true, buff_to_apply = "ethereal_skull_debuff", max_damage_radius_min = 0.5, attack_template = "drakegun", max_damage_radius_max = 1, alert_enemies = false, damage_profile = "homing_skull_explosion", power_level = 500, effect_name = "fx/ethereal_skulls_explosion",
+		explosion = { allow_friendly_fire_override = true, radius = 1, always_stagger_ai = true, buff_to_apply = "ethereal_skull_debuff", max_damage_radius_min = 0.5, attack_template = "drakegun", max_damage_radius_max = 1, alert_enemies = false, damage_profile = "homing_skull_explosion", power_level = 500, effect_name = "fx/ethereal_skulls_explosion",
 
 
 

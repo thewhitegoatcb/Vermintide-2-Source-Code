@@ -359,7 +359,7 @@ settings.proc_functions = {
 
 settings.explosion_templates = {
 	homing_skull_explosion = {
-		explosion = { always_hurt_players = true, radius = 1, always_stagger_ai = true, alert_enemies = false, buff_to_apply = "belakor_homing_skull_debuff", max_damage_radius_min = 0.5, attack_template = "drakegun", max_damage_radius_max = 1, sound_event_name = "Play_curse_shadow_dagger_projectile_impact", damage_profile = "homing_skull_explosion", power_level = 500, effect_name = "fx/belakor/blk_curse_skulls_explosion_fx",
+		explosion = { alert_enemies = false, radius = 1, always_stagger_ai = true, allow_friendly_fire_override = true, buff_to_apply = "belakor_homing_skull_debuff", max_damage_radius_min = 0.5, attack_template = "drakegun", max_damage_radius_max = 1, sound_event_name = "Play_curse_shadow_dagger_projectile_impact", damage_profile = "homing_skull_explosion", power_level = 500, effect_name = "fx/belakor/blk_curse_skulls_explosion_fx",
 
 
 
@@ -403,7 +403,7 @@ settings.explosion_templates = {
 		end },
 
 	tiny_explosive_barrel = {
-		explosion = { radius = 6, dot_template_name = "burning_dot_1tick", max_damage_radius = 1.75, alert_enemies = true, alert_enemies_radius = 10, always_hurt_players = true, attack_template = "drakegun", sound_event_name = "boon_cluster_barrel_explosion", damage_profile = "explosive_barrel", effect_name = "fx/wpnfx_barrel_explosion",
+		explosion = { radius = 6, dot_template_name = "burning_dot_1tick", max_damage_radius = 1.75, alert_enemies = true, alert_enemies_radius = 10, allow_friendly_fire_override = true, attack_template = "drakegun", sound_event_name = "boon_cluster_barrel_explosion", damage_profile = "explosive_barrel", effect_name = "fx/wpnfx_barrel_explosion",
 
 
 
@@ -432,8 +432,7 @@ settings.explosion_templates = {
 
 
 	belakor_arena_finish = {
-		explosion = { always_hurt_players = false, radius = 300, no_aggro = true, player_push_speed = 5, collision_filter = "filter_simple_explosion_overlap", alert_enemies = false, damage_profile = "belakor_arena_finish", power_level = 1000, level_unit_damage = true } } }
-
+		explosion = { no_aggro = true, radius = 300, player_push_speed = 5, alert_enemies = false, damage_profile = "belakor_arena_finish", power_level = 1000, level_unit_damage = true, collision_filter = "filter_simple_explosion_overlap" } } }
 
 
 

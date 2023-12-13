@@ -161,6 +161,7 @@ function ConflictDirector:init(world, level_key, network_event_delegate, level_s
 	end
 	self._enemy_side = enemy_side
 
+	self._master_event_id = 0
 	local data_by_side = self._conflict_data_by_side
 	local sides = Managers.state.side:sides()
 	for side_id, _ in pairs(sides) do
@@ -301,10 +302,10 @@ function ConflictDirector:reset_queued_spawn_by_breed()
 	end
 end
 
+
 function ConflictDirector:_reset_spawned_by_breed(side_id)
 
 	local conflict_data = self._conflict_data_by_side [side_id or self.default_enemy_side_id]
-	conflict_data.num_spawned_ai = 0
 
 	for name, breed in pairs(Breeds) do
 		conflict_data.num_spawned_by_breed [name] = 0
@@ -316,6 +317,8 @@ function ConflictDirector:_reset_spawned_by_breed(side_id)
 end
 
 function ConflictDirector:_reset_spawned_by_breed_during_event(side_id)
+	self._master_event_id = self._master_event_id + 1
+
 	local conflict_data = self._conflict_data_by_side [side_id or self.default_enemy_side_id]
 	for name, breed in pairs(Breeds) do
 		conflict_data.num_spawned_by_breed_during_event [name] = 0
@@ -2052,8 +2055,10 @@ function ConflictDirector:_post_spawn_unit(ai_unit, go_id, breed, spawn_pos, spa
 	local spawned_lookup = conflict_data.spawned_lookup
 
 
-	spawned [#spawned + 1] = ai_unit
-	spawned_lookup [ai_unit] = #spawned
+	local num_spawned_ai = conflict_data.num_spawned_ai + 1
+	conflict_data.num_spawned_ai = num_spawned_ai
+	spawned [num_spawned_ai] = ai_unit
+	spawned_lookup [ai_unit] = num_spawned_ai
 
 	self._num_spawned_ai = self._num_spawned_ai + 1
 	self._all_spawned_units [self._num_spawned_ai] = ai_unit
@@ -2066,16 +2071,17 @@ function ConflictDirector:_post_spawn_unit(ai_unit, go_id, breed, spawn_pos, spa
 	num_spawned_by_breed [breed_name] = num_spawned_by_breed [breed_name] + 1
 
 	spawned_units_by_breed [breed_name] [ai_unit] = ai_unit
-	conflict_data.num_spawned_ai = conflict_data.num_spawned_ai + 1
 
 
 	if not optional_data.ignore_event_counter and self.running_master_event then
-		blackboard.event_spawned = true
+		blackboard.master_event_id = self._master_event_id
 		conflict_data.num_spawned_ai_event = conflict_data.num_spawned_ai_event + 1
 		conflict_data.num_spawned_by_breed_during_event [breed_name] = conflict_data.num_spawned_by_breed_during_event [breed_name] + 1
+	else
+		blackboard.master_event_id = nil
 	end
 
-	Managers.state.event:trigger("ai_unit_spawned", ai_unit, breed_name, side_id, blackboard.event_spawned)
+	Managers.state.event:trigger("ai_unit_spawned", ai_unit, breed_name, side_id, blackboard.master_event_id)
 
 	if breed.spawn_stinger then
 		local wwise_world = Managers.world:wwise_world(self._world)
@@ -2258,7 +2264,7 @@ function ConflictDirector:_remove_unit_from_spawned(unit, blackboard, do_not_tri
 	conflict_data.spawned_units_by_breed [breed_name] [unit] = nil
 	conflict_data.num_spawned_ai = conflict_data.num_spawned_ai - 1
 
-	if blackboard.event_spawned then
+	if blackboard.master_event_id and blackboard.master_event_id == self._master_event_id then
 		conflict_data.num_spawned_by_breed_during_event [breed_name] = conflict_data.num_spawned_by_breed_during_event [breed_name] - 1
 		conflict_data.num_spawned_ai_event = conflict_data.num_spawned_ai_event - 1
 	end
@@ -2275,7 +2281,7 @@ function ConflictDirector:_remove_unit_from_spawned(unit, blackboard, do_not_tri
 	end
 
 	if not do_not_trigger_despawn_event then
-		Managers.state.event:trigger("ai_unit_despawned", unit, breed_name, side_id, blackboard.event_spawned)
+		Managers.state.event:trigger("ai_unit_despawned", unit, breed_name, side_id, blackboard.master_event_id)
 	end
 end
 

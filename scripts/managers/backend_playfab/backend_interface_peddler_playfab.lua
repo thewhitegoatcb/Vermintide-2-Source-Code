@@ -1098,21 +1098,26 @@ function BackendInterfacePeddlerPlayFab:_refresh_login_rewards_cb(external_cb, r
 
 
 	local login_rewards = result.FunctionResult
-	login_rewards.count_down_to_next_claim = nil
 
 
 
 
 
 
-	if not GameSettingsDevelopment.use_offline_backend and login_rewards.total_claims > 0 then
-		login_rewards.reward_index = login_rewards.reward_index + 1
-	end
+
+
+
+
+
+
+
+
+
 
 	self._login_rewards = login_rewards
 
 	if external_cb then
-		external_cb()
+		external_cb(login_rewards)
 	end
 end
 
@@ -1124,7 +1129,7 @@ function BackendInterfacePeddlerPlayFab:done_claiming_login_rewards()
 	return self._is_done_claiming
 end
 
-function BackendInterfacePeddlerPlayFab:claim_login_rewards(external_cb)
+function BackendInterfacePeddlerPlayFab:claim_login_rewards(external_cb, offset)
 	if not self._is_done_claiming then
 		return
 	end
@@ -1136,20 +1141,21 @@ function BackendInterfacePeddlerPlayFab:claim_login_rewards(external_cb)
 
 
 
-	local request = { FunctionName = "claimStoreRewards" }
+	local request = { FunctionName = "claimStoreRewards",
+
+		FunctionParameter = {
+
+			offset = offset } }
 
 
-
-
-
-	local request_cb = callback(self, "_claim_store_rewards_cb", external_cb)
+	local request_cb = callback(self, "_claim_store_rewards_cb", external_cb, offset)
 	local request_queue = self._backend_mirror:request_queue()
 	request_queue:enqueue(request, request_cb, true)
 
 	self._is_done_claiming = false
 end
 
-function BackendInterfacePeddlerPlayFab:_claim_store_rewards_cb(external_cb, result)
+function BackendInterfacePeddlerPlayFab:_claim_store_rewards_cb(external_cb, offset, result)
 	self:_refresh_login_rewards_cb(nil, result)
 	local granted_items = result.FunctionResult.items
 	local rewards_claimed = false
@@ -1214,9 +1220,12 @@ function BackendInterfacePeddlerPlayFab:_claim_store_rewards_cb(external_cb, res
 	end
 
 	if rewards_claimed then
-		Managers.telemetry_events:store_rewards_claimed(result.FunctionResult)
+		Managers.telemetry_events:store_rewards_claimed(result.FunctionResult, offset)
 		Managers.save:auto_save(SaveFileName, SaveData, nil)
 	end
 
 	self._is_done_claiming = true
+	if external_cb then
+		external_cb(result.FunctionResult)
+	end
 end

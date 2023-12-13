@@ -65,7 +65,8 @@ local components = { { use_hud_scale = true, class_name = "WorldMarkerUI", filen
 
 
 
-		visibility_groups = { "deus_run_stats", "game_mode_disable_hud", "entering_mission", "hero_selection_popup", "mission_vote", "game_mode_disable_hud", "cutscene", "realism", "dead", "alive" },
+		visibility_groups = { "deus_run_stats", "game_mode_disable_hud", "entering_mission", "hero_selection_popup", "mission_vote", "game_mode_disable_hud", "cutscene", "realism", "dead", "alive", "in_menu" },
+
 
 
 

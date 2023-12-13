@@ -349,7 +349,27 @@ function StartMenuStateOverview:_populate_career_page(hero_name, career_index)
 	end
 
 	self:_set_hero_info(Localize(character_name), level)
-	self:_create_player_portrait(portrait_image, level)
+	local player_portrait_frame = self:_get_portrait_frame(profile_index, career_index)
+	self:_create_player_portrait(portrait_image, level, player_portrait_frame)
+end
+
+function StartMenuStateOverview:_get_portrait_frame(profile_index, career_index)
+	local profile = SPProfiles [profile_index]
+	local career_data = profile.careers [career_index]
+	local career_name = career_data.name
+
+	local player_portrait_frame = "default"
+
+	local item = BackendUtils.get_loadout_item(career_name, "slot_frame")
+
+	if item then
+		local item_data = item.data
+		local frame_name = item_data.temporary_template
+
+		player_portrait_frame = frame_name or player_portrait_frame
+	end
+
+	return player_portrait_frame
 end
 
 function StartMenuStateOverview:_set_hero_info(name, level)
@@ -358,10 +378,11 @@ function StartMenuStateOverview:_set_hero_info(name, level)
 	widgets_by_name.info_hero_level.content.text = Localize("level") .. ": " .. level
 end
 
-function StartMenuStateOverview:_create_player_portrait(portrait_image, level)
+function StartMenuStateOverview:_create_player_portrait(portrait_image, level, player_portrait_frame)
 	local level_text = level and tostring(level) or "-"
-	local frame_settings_name = "default"
-	local definition = UIWidgets.create_portrait_frame("portrait_root", frame_settings_name, level_text, 1, nil, portrait_image)
+	local scale = 1
+	local retained_mode = false
+	local definition = UIWidgets.create_portrait_frame("portrait_root", player_portrait_frame, level_text, scale, retained_mode, portrait_image)
 	local widget = UIWidget.init(definition)
 	self._player_portrait_widget = widget
 end

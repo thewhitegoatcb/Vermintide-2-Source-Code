@@ -35,7 +35,7 @@ function TalentExtension:extensions_ready(world, unit)
 
 	self:apply_buffs_from_talents(talent_ids)
 	self:update_talent_weapon_index(talent_ids)
-	self:_broadcast_talents_changed()
+	self:_broadcast_talents_changed(true)
 end
 
 function TalentExtension:game_object_initialized(unit, unit_go_id)
@@ -71,7 +71,7 @@ function TalentExtension:talents_changed()
 		self:_send_rpc_sync_talents(talent_ids)
 	end
 
-	self:_broadcast_talents_changed()
+	self:_broadcast_talents_changed(false)
 end
 
 function TalentExtension:_send_rpc_sync_talents(talent_ids)
@@ -304,10 +304,10 @@ function TalentExtension:get_talent_names()
 	return talent_names
 end
 
-function TalentExtension:_broadcast_talents_changed()
+function TalentExtension:_broadcast_talents_changed(is_spawning)
 	local event_manager = Managers.state.event
 	if event_manager then
-		event_manager:trigger("on_talents_changed", self._unit, self)
+		event_manager:trigger("on_talents_changed", self._unit, self, is_spawning)
 	end
 end
 

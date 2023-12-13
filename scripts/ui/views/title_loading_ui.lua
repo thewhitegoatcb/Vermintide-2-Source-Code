@@ -1350,9 +1350,13 @@ function TitleLoadingUI:_update_any_held()
 		end
 	end
 
-	local input = Pad1.any_pressed()
-	if input then
-		self._current_inputs [input] = Pad1
+	local gamepads = InputAux.input_device_mapping.gamepad
+	for i = 1, #gamepads do
+		local gamepad = gamepads [i]
+		local input = gamepad.any_pressed()
+		if input then
+			self._current_inputs [input] = gamepad
+		end
 	end
 
 	return held

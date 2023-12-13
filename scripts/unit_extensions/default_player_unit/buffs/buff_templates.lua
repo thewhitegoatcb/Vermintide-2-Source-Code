@@ -34,7 +34,8 @@ RangedAttackTypes = {
 	[AttackTypes.grenade] = true }
 
 
-StatBuffApplicationMethods = { deus_coins_greed = "stacking_multiplier", dummy_stagger = "stacking_bonus", gromril_cooldown = "stacking_bonus", headshot_multiplier = "stacking_multiplier", increased_max_targets = "stacking_bonus", power_level_ranged = "stacking_multiplier", protection_chaos = "stacking_multiplier", max_damage_taken_from_boss_or_elite = "min", debuff_armoured = "stacking_bonus", attack_speed_drakefire = "stacking_multiplier", increased_balefire_dot_duration = "stacking_multiplier", power_level_large = "stacking_multiplier", critical_strike_effectiveness = "stacking_multiplier", critical_strike_chance_melee = "stacking_bonus", protection_gutter_runner = "stacking_multiplier", power_level_armoured = "stacking_multiplier", vent_speed = "stacking_multiplier", power_level_melee_cleave = "stacking_multiplier", power_level_critical_strike = "stacking_multiplier", damage_taken_elites = "stacking_multiplier", damage_taken = "stacking_multiplier_multiplicative", damage_taken_kd = "stacking_multiplier", not_consume_potion = "proc", reduced_overcharge = "stacking_multiplier", critical_strike_chance_ranged = "stacking_bonus", increased_weapon_damage_melee_1h = "stacking_multiplier", not_consume_grenade = "proc", faster_revive = "stacking_multiplier", push_power = "stacking_multiplier", grenade_extra_shot = "stacking_bonus", block_cost = "stacking_multiplier", applied_stagger_distance = "stacking_multiplier", timed_block_cost = "stacking_multiplier", push_range = "stacking_bonus", reduced_overcharge_from_passive = "stacking_multiplier", clip_size = "stacking_multiplier", first_melee_hit_damage = "stacking_multiplier", increased_weapon_damage_ranged_to_wounded = "stacking_multiplier", attack_intensity_reset = "stacking_multiplier", faster_respawn = "stacking_multiplier", life_essence = "stacking_multiplier", max_controlled_pets = "stacking_bonus_and_multiplier", attack_intensity_decay = "stacking_multiplier", reload_speed = "stacking_multiplier", stun_duration = "stacking_multiplier", cooldown_regen = "stacking_multiplier", power_level_chaos = "stacking_multiplier", health_curse = "stacking_bonus", increased_damage_to_balefire = "stacking_multiplier", increased_weapon_damage_melee = "stacking_multiplier", power_level = "stacking_multiplier", hit_force = "stacking_multiplier", coop_stamina = "proc", extra_wounds = "stacking_bonus", unbalanced_damage_taken = "stacking_bonus", increased_weapon_damage_ranged = "stacking_multiplier", protection_aoe = "stacking_multiplier", max_health_kd = "stacking_multiplier", grenade_radius = "stacking_multiplier", overcharge_regen = "stacking_multiplier", grimoire_max_health = "stacking_multiplier", overcharge_damage_immunity = "proc", power_level_impact = "stacking_multiplier", curse_protection = "stacking_multiplier", increased_weapon_damage = "stacking_multiplier", outer_block_angle = "stacking_multiplier", damage_dealt = "stacking_multiplier", increased_weapon_damage_poisoned_or_bleeding = "stacking_multiplier", reduced_spread_hit = "stacking_multiplier", power_level_super_armour = "stacking_multiplier", protection_ratling_gunner = "stacking_multiplier", max_damage_taken = "min", movement_speed = "stacking_multiplier", shield_break_proc = "proc", full_charge_boost = "stacking_multiplier", pet_life_time = "stacking_multiplier", attack_intensity_threshold = "stacking_multiplier", power_level_frenzy = "stacking_multiplier", stagger_distance = "stacking_multiplier", max_health_alive = "stacking_multiplier", headshot_damage = "stacking_multiplier", vent_damage = "stacking_multiplier", counter_push_power = "stacking_multiplier", damage_taken_to_overcharge = "stacking_multiplier", fatigue_regen = "stacking_multiplier", block_angle = "stacking_multiplier", increase_luck = "stacking_multiplier", hit_mass_amount = "stacking_multiplier", max_health = "stacking_multiplier", projectile_bounces = "stacking_bonus", extra_shot = "stacking_bonus", heal_self_on_heal_other = "proc", stagger_resistance = "stacking_multiplier", damage_taken_ranged = "stacking_multiplier", unbalanced_damage_dealt = "stacking_multiplier", hit_mass_reduction = "stacking_multiplier", critical_strike_chance = "stacking_bonus", max_overcharge = "stacking_multiplier", reduced_non_burn_damage = "stacking_multiplier", activated_cooldown = "stacking_multiplier", increased_weapon_damage_heavy_attack = "stacking_multiplier", no_push_fatigue_cost = "proc", reduced_spread = "stacking_multiplier", reduced_spread_moving = "stacking_multiplier", increased_burn_dot_damage = "stacking_multiplier", non_headshot_damage = "stacking_multiplier", flat_power_level = "stacking_bonus", reduced_spread_shot = "stacking_multiplier", healing_received = "stacking_multiplier", protection_skaven = "stacking_multiplier", power_level_melee = "stacking_multiplier", potion_duration = "stacking_multiplier", total_ammo = "stacking_multiplier", reduced_ranged_charge_time = "stacking_multiplier", impact_vulnerability = "stacking_multiplier", max_fatigue = "stacking_bonus", power_level_unarmoured = "stacking_multiplier", attack_speed = "stacking_multiplier", increased_move_speed_while_aiming = "stacking_multiplier", protection_pack_master = "stacking_multiplier", headshot_vulnerability = "stacking_multiplier", not_consume_medpack = "proc", increased_weapon_damage_melee_2h = "stacking_multiplier", backstab_multiplier = "stacking_bonus", protection_poison_wind = "stacking_multiplier", throw_speed_increase = "stacking_multiplier", ranged_additional_penetrations = "stacking_bonus", power_level_skaven = "stacking_multiplier", damage_taken_burning_enemy = "stacking_multiplier", shielding_player_by_assist = "proc", power_level_ranged_drakefire = "stacking_multiplier" }
+StatBuffApplicationMethods = { deus_coins_greed = "stacking_multiplier", dummy_stagger = "stacking_bonus", gromril_cooldown = "stacking_bonus", headshot_multiplier = "stacking_multiplier", protection_chaos = "stacking_multiplier", max_damage_taken_from_boss_or_elite = "min", attack_speed_drakefire = "stacking_multiplier", increased_damage_to_balefire = "stacking_multiplier", debuff_armoured = "stacking_bonus", power_level_large = "stacking_multiplier", increased_balefire_dot_duration = "stacking_multiplier", critical_strike_effectiveness = "stacking_multiplier", critical_strike_chance_melee = "stacking_bonus", critical_strike_chance_ranged = "stacking_bonus", protection_gutter_runner = "stacking_multiplier", vent_speed = "stacking_multiplier", power_level_melee_cleave = "stacking_multiplier", faster_respawn = "stacking_multiplier", damage_taken_elites = "stacking_multiplier", coop_stamina = "proc", damage_taken_kd = "stacking_multiplier", power_level_armoured = "stacking_multiplier", not_consume_potion = "proc", reduced_overcharge = "stacking_multiplier", increased_weapon_damage_ranged_to_wounded = "stacking_multiplier", not_consume_grenade = "proc", increased_max_targets = "stacking_bonus", faster_revive = "stacking_multiplier", increased_weapon_damage_melee_1h = "stacking_multiplier", grenade_extra_shot = "stacking_bonus", block_cost = "stacking_multiplier", applied_stagger_distance = "stacking_multiplier", timed_block_cost = "stacking_multiplier", push_range = "stacking_bonus", reduced_overcharge_from_passive = "stacking_multiplier", clip_size = "stacking_multiplier", first_melee_hit_damage = "stacking_multiplier", attack_intensity_reset = "stacking_multiplier", damage_taken = "stacking_multiplier_multiplicative", extra_wounds = "stacking_bonus", life_essence = "stacking_multiplier", max_controlled_pets = "stacking_bonus_and_multiplier", attack_intensity_decay = "stacking_multiplier", reload_speed = "stacking_multiplier", stun_duration = "stacking_multiplier", cooldown_regen = "stacking_multiplier", power_level_chaos = "stacking_multiplier", health_curse = "stacking_bonus", power_level_critical_strike = "stacking_multiplier", increased_weapon_damage_melee = "stacking_multiplier", power_level = "stacking_multiplier", hit_force = "stacking_multiplier", push_power = "stacking_multiplier", power_level_ranged = "stacking_multiplier", unbalanced_damage_taken = "stacking_bonus", increased_weapon_damage_ranged = "stacking_multiplier", protection_aoe = "stacking_multiplier", max_health_kd = "stacking_multiplier", grenade_radius = "stacking_multiplier", overcharge_regen = "stacking_multiplier", grimoire_max_health = "stacking_multiplier", overcharge_damage_immunity = "proc", power_level_impact = "stacking_multiplier", curse_protection = "stacking_multiplier", increased_weapon_damage = "stacking_multiplier", outer_block_angle = "stacking_multiplier", damage_dealt = "stacking_multiplier", increased_weapon_damage_poisoned_or_bleeding = "stacking_multiplier", reduced_spread_hit = "stacking_multiplier", power_level_super_armour = "stacking_multiplier", protection_ratling_gunner = "stacking_multiplier", max_damage_taken = "min", movement_speed = "stacking_multiplier", shield_break_proc = "proc", full_charge_boost = "stacking_multiplier", pet_life_time = "stacking_multiplier", attack_intensity_threshold = "stacking_multiplier", power_level_frenzy = "stacking_multiplier", stagger_distance = "stacking_multiplier", max_health_alive = "stacking_multiplier", headshot_damage = "stacking_multiplier", vent_damage = "stacking_multiplier", counter_push_power = "stacking_multiplier", damage_taken_to_overcharge = "stacking_multiplier", fatigue_regen = "stacking_multiplier", block_angle = "stacking_multiplier", increase_luck = "stacking_multiplier", hit_mass_amount = "stacking_multiplier", max_health = "stacking_multiplier", projectile_bounces = "stacking_bonus", extra_shot = "stacking_bonus", heal_self_on_heal_other = "proc", stagger_resistance = "stacking_multiplier", damage_taken_ranged = "stacking_multiplier", unbalanced_damage_dealt = "stacking_multiplier", hit_mass_reduction = "stacking_multiplier", critical_strike_chance = "stacking_bonus", max_overcharge = "stacking_multiplier", reduced_non_burn_damage = "stacking_multiplier", activated_cooldown = "stacking_multiplier", increased_weapon_damage_heavy_attack = "stacking_multiplier", no_push_fatigue_cost = "proc", reduced_spread = "stacking_multiplier", reduced_spread_moving = "stacking_multiplier", increased_burn_dot_damage = "stacking_multiplier", non_headshot_damage = "stacking_multiplier", flat_power_level = "stacking_bonus", reduced_spread_shot = "stacking_multiplier", explosion_radius = "stacking_multiplier", healing_received = "stacking_multiplier", protection_skaven = "stacking_multiplier", power_level_melee = "stacking_multiplier", potion_duration = "stacking_multiplier", total_ammo = "stacking_multiplier", reduced_ranged_charge_time = "stacking_multiplier", impact_vulnerability = "stacking_multiplier", max_fatigue = "stacking_bonus", power_level_unarmoured = "stacking_multiplier", attack_speed = "stacking_multiplier", increased_move_speed_while_aiming = "stacking_multiplier", protection_pack_master = "stacking_multiplier", headshot_vulnerability = "stacking_multiplier", not_consume_medpack = "proc", increased_weapon_damage_melee_2h = "stacking_multiplier", backstab_multiplier = "stacking_bonus", protection_poison_wind = "stacking_multiplier", throw_speed_increase = "stacking_multiplier", ranged_additional_penetrations = "stacking_bonus", power_level_skaven = "stacking_multiplier", damage_taken_burning_enemy = "stacking_multiplier", shielding_player_by_assist = "proc", power_level_ranged_drakefire = "stacking_multiplier" }
+
 
 
 
@@ -3957,11 +3958,12 @@ ProcFunctions = {
 
 
 StackingBuffFunctions = {
-	add_remove_buffs = function (unit, sub_buff_template, new_buff_params)
+	add_remove_buffs = function (unit, sub_buff_template, new_buff_params, is_overflow)
 		if ALIVE [unit] then
 			local max_stack_data = sub_buff_template.max_stack_data
 			if max_stack_data then
 				local buff_extension = ScriptUnit.extension(unit, "buff_system")
+
 				local buffs_to_add = max_stack_data.buffs_to_add
 				if buffs_to_add then
 					for i = 1, #buffs_to_add do
@@ -3969,18 +3971,49 @@ StackingBuffFunctions = {
 					end
 				end
 
-				local talent_buffs_to_add = max_stack_data.talent_buffs_to_add
-				if talent_buffs_to_add then
+
+				if is_overflow then
+					local overflow_buffs_to_add = max_stack_data.overflow_buffs_to_add
+					if overflow_buffs_to_add then
+						for i = 1, #overflow_buffs_to_add do
+							buff_extension:add_buff(overflow_buffs_to_add [i])
+						end
+					end
+				end
+
+				local talent_buffs = max_stack_data.talent_buffs
+				if talent_buffs then
 					local talent_extension = ScriptUnit.has_extension(unit, "talent_system")
 					if talent_extension then
-						for name, data in pairs(talent_buffs_to_add) do
-							if talent_extension:has_talent(name) then
-								local buff_to_add = data.buff_to_add
-								if data.rpc_sync then
-									local buff_system = Managers.state.entity:system("buff_system")
-									buff_system:add_buff(unit, buff_to_add, unit, false)
-								else
-									buff_extension:add_buff(buff_to_add)
+						for name, data in pairs(talent_buffs) do
+							local buffs_to_add = data.buffs_to_add
+							local buffs_to_add_if_missing = data.buffs_to_add_if_missing
+							local has_talent = talent_extension:has_talent(name)
+							if has_talent and buffs_to_add then
+								for i = 1, #buffs_to_add do
+									local buff_to_add = buffs_to_add [i]
+									if not buff_to_add.only_if_overflow or is_overflow then
+										local buff_name = buff_to_add.name
+										if data.rpc_sync then
+											local buff_system = Managers.state.entity:system("buff_system")
+											buff_system:add_buff(unit, buff_name, unit, false)
+										else
+											buff_extension:add_buff(buff_name)
+										end
+									end
+								end
+							elseif not has_talent and buffs_to_add_if_missing then
+								for i = 1, #buffs_to_add_if_missing do
+									local buff_to_add = buffs_to_add_if_missing [i]
+									if not buff_to_add.only_if_overflow or is_overflow then
+										local buff_name = buff_to_add.name
+										if data.rpc_sync then
+											local buff_system = Managers.state.entity:system("buff_system")
+											buff_system:add_buff(unit, buff_name, unit, false)
+										else
+											buff_extension:add_buff(buff_name)
+										end
+									end
 								end
 							end
 						end
@@ -4000,7 +4033,7 @@ StackingBuffFunctions = {
 		end
 		return false
 	end,
-	reapply_buff = function (unit, sub_buff_template, new_buff_params)
+	reapply_buff = function (unit, sub_buff_template, new_buff_params, is_overflow)
 		if ALIVE [unit] then
 			local buff_extension = ScriptUnit.extension(unit, "buff_system")
 			local buff_stacks = buff_extension:get_stacking_buff(sub_buff_template.name)
@@ -4021,7 +4054,7 @@ StackingBuffFunctions = {
 		end
 		return true
 	end,
-	reapply_infinite_burn = function (unit, sub_buff_template, new_buff_params)
+	reapply_infinite_burn = function (unit, sub_buff_template, new_buff_params, is_overflow)
 		if ALIVE [unit] then
 			local buff_extension = ScriptUnit.extension(unit, "buff_system")
 			local burn_buffs = buff_extension:get_stacking_buff(sub_buff_template.name)
@@ -4070,15 +4103,20 @@ StackingBuffFunctions = {
 		end
 		return true
 	end,
-	add_buff_synced = function (unit, sub_buff_template, new_buff_params)
+	add_buff_synced = function (unit, sub_buff_template, new_buff_params, is_overflow)
 		local dummy_buff = FrameTable.alloc_table()
 		dummy_buff.template = sub_buff_template
 		BuffFunctionTemplates.functions.add_buff_synced(unit, dummy_buff, new_buff_params)
 	end,
-	remove_buff_synced = function (unit, sub_buff_template, new_buff_params)
+	remove_buff_synced = function (unit, sub_buff_template, new_buff_params, is_overflow)
 		local dummy_buff = FrameTable.alloc_table()
 		dummy_buff.template = sub_buff_template
 		BuffFunctionTemplates.functions.remove_buff_synced(unit, dummy_buff, new_buff_params)
+	end,
+	reduce_cooldown_percent = function (unit, sub_buff_template, new_buff_params, is_overflow)
+		local dummy_buff = FrameTable.alloc_table()
+		dummy_buff.template = sub_buff_template
+		BuffFunctionTemplates.functions.reduce_cooldown_percent(unit, dummy_buff, new_buff_params)
 	end }
 
 
@@ -7739,7 +7777,7 @@ BuffTemplates = {
 
 
 
-				duration_modifier_func = function (buff_template, duration)
+				duration_modifier_func = function (owner_unit, buff_template, duration)
 					return duration * TwitchSettings.mutator_duration_multiplier
 				end } } },
 
@@ -7751,7 +7789,7 @@ BuffTemplates = {
 
 
 
-				duration_modifier_func = function (buff_template, duration)
+				duration_modifier_func = function (owner_unit, buff_template, duration)
 					return duration * TwitchSettings.mutator_duration_multiplier
 				end } } },
 
@@ -7763,7 +7801,7 @@ BuffTemplates = {
 
 
 
-				duration_modifier_func = function (buff_template, duration)
+				duration_modifier_func = function (owner_unit, buff_template, duration)
 					return duration * TwitchSettings.mutator_duration_multiplier
 				end } } },
 
@@ -7775,7 +7813,7 @@ BuffTemplates = {
 
 
 
-				duration_modifier_func = function (buff_template, duration)
+				duration_modifier_func = function (owner_unit, buff_template, duration)
 					return duration * TwitchSettings.mutator_duration_multiplier
 				end } } },
 
@@ -7787,7 +7825,7 @@ BuffTemplates = {
 
 
 
-				duration_modifier_func = function (buff_template, duration)
+				duration_modifier_func = function (owner_unit, buff_template, duration)
 					return duration * TwitchSettings.mutator_duration_multiplier
 				end } } },
 
@@ -7799,7 +7837,7 @@ BuffTemplates = {
 
 
 
-				duration_modifier_func = function (buff_template, duration)
+				duration_modifier_func = function (owner_unit, buff_template, duration)
 					return duration * TwitchSettings.mutator_duration_multiplier
 				end } } },
 
@@ -7811,7 +7849,7 @@ BuffTemplates = {
 
 
 
-				duration_modifier_func = function (buff_template, duration)
+				duration_modifier_func = function (owner_unit, buff_template, duration)
 					return duration * TwitchSettings.mutator_duration_multiplier
 				end } } },
 
@@ -7823,7 +7861,7 @@ BuffTemplates = {
 
 
 
-				duration_modifier_func = function (buff_template, duration)
+				duration_modifier_func = function (owner_unit, buff_template, duration)
 					return duration * TwitchSettings.mutator_duration_multiplier
 				end } } },
 
@@ -7835,7 +7873,7 @@ BuffTemplates = {
 
 
 
-				duration_modifier_func = function (buff_template, duration)
+				duration_modifier_func = function (owner_unit, buff_template, duration)
 					return duration * TwitchSettings.mutator_duration_multiplier
 				end } } },
 

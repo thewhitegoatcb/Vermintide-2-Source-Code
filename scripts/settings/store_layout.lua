@@ -572,7 +572,7 @@ function StoreLayoutConfig.make_sort_key(item)
 
 
 
-	prio = 4096 - prio
+	prio = 65536 - prio
 	if prio <= 0 then
 
 		prio = 1

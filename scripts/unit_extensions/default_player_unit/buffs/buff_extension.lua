@@ -243,7 +243,7 @@ function BuffExtension:add_buff(template_name, params)
 
 
 			if sub_buff_template.duration_modifier_func then
-				duration, ticks = sub_buff_template:duration_modifier_func(duration, self, params)
+				duration, ticks = sub_buff_template.duration_modifier_func(unit, sub_buff_template, duration, self, params)
 			end
 
 
@@ -376,6 +376,13 @@ function BuffExtension:add_buff(template_name, params)
 					BuffFunctionTemplates.functions [apply_buff_func](unit, buff, buff_extension_function_params, world)
 				end
 
+				local delayed_apply_buff_func = sub_buff_template.delayed_apply_buff_func
+				if delayed_apply_buff_func then
+					local delayed_funcs = self._delayed_apply_funcs or { }
+					delayed_funcs [#delayed_funcs + 1] = buff
+					self._delayed_apply_funcs = delayed_funcs
+				end
+
 
 				if sub_buff_template.stat_buff then
 					local index = self:_add_stat_buff(sub_buff_template, buff)
@@ -398,8 +405,8 @@ function BuffExtension:add_buff(template_name, params)
 
 
 				if sub_buff_template.duration_end_func then
-					local delayed_func_name = sub_buff_template.duration_end_func
-					buff.delayed_func_name = delayed_func_name
+					local delayed_remove_func_name = sub_buff_template.duration_end_func
+					buff.delayed_remove_func_name = delayed_remove_func_name
 				end
 
 
@@ -505,7 +512,9 @@ function BuffExtension:_add_stacking_buff(sub_buff_template, max_stacks, start_t
 	if max_stacks <= num_stacks then
 		local on_max_stacks_overflow_func = StackingBuffFunctions [sub_buff_template.on_max_stacks_overflow_func]
 		if on_max_stacks_overflow_func then
-			should_add_buff = on_max_stacks_overflow_func(self._unit, sub_buff_template, params)
+			local is_overflow = true
+			params = params or FrameTable.alloc_table()
+			should_add_buff = on_max_stacks_overflow_func(self._unit, sub_buff_template, params, is_overflow)
 		else
 			should_add_buff = false
 		end
@@ -653,6 +662,19 @@ function BuffExtension:update(unit, input, dt, context, t)
 
 
 
+	local apply_queue = self._delayed_apply_funcs
+	if apply_queue then
+		self._delayed_apply_funcs = nil
+		for i = 1, #apply_queue do
+			local buff = apply_queue [i]
+			if not buff.is_stale then
+				local delayed_func_name = buff.template.delayed_apply_buff_func
+				local func = BuffFunctionTemplates.functions [delayed_func_name]
+				func(unit, buff)
+			end
+		end
+	end
+
 	local queue = self._remove_buff_queue
 	if queue then
 		self._remove_buff_queue = nil
@@ -685,9 +707,9 @@ function BuffExtension:update(unit, input, dt, context, t)
 					self:_remove_sub_buff(buff, i, buff_extension_function_params, true)
 				end
 
-				local delayed_func_name = buff.delayed_func_name
-				if delayed_func_name and not buff.aborted then
-					local delayed_func = BuffFunctionTemplates.functions [delayed_func_name]
+				local delayed_remove_func_name = buff.delayed_remove_func_name
+				if delayed_remove_func_name and not buff.aborted then
+					local delayed_func = BuffFunctionTemplates.functions [delayed_remove_func_name]
 					delayed_func(unit, buff, buff_extension_function_params, world)
 				end
 			elseif not done_ticking then
@@ -855,7 +877,7 @@ function BuffExtension:_remove_sub_buff(buff, index, buff_extension_function_par
 					if all_buff then
 						local buff_type = all_buff.buff_type
 						if buff_type == buffs_to_remove_on_remove [i] then
-							if all_buff.delayed_func_name then
+							if all_buff.delayed_remove_func_name then
 								all_buff.aborted = true
 							end
 							self:remove_buff(all_buff.id)

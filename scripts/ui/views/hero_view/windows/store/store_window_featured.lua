@@ -240,26 +240,40 @@ function StoreWindowFeatured:_update_animations(dt)
 end
 
 function StoreWindowFeatured:_sync_login_rewards()
-	local content = self._widgets_by_name.login_rewards_button.content
-	if GameSettingsDevelopment.use_offline_backend then
-		content.visible = false
-		return
-	end
+	local login_rewards_content = self._widgets_by_name.login_rewards_button.content
+	local gotwf_rewards_content = self._widgets_by_name.gotwf_rewards_button.content
 
 	local backend_store = Managers.backend:get_interface("peddler")
 	local login_rewards = backend_store:get_login_rewards()
-	local cooldown = login_rewards.next_claim_timestamp - os.time()
-	if cooldown <= 0 then
-		content.is_claimable = true
-		content.title = "store_login_claim_reward_title"
-		content.subtitle = Localize("available_now")
-	else
-		local timer = UIUtils.format_duration(cooldown)
-		content.is_claimable = false
-		content.title = "store_login_rewards_title"
-		content.subtitle = Localize("store_login_rewards_next_available_in") .. timer
 
-		content.visible = not Managers.input:is_device_active("gamepad")
+	local now = os.time(os.date("!*t"))
+	local next_claim_timestamp = os.time(os.date("!*t", login_rewards.next_claim_timestamp / 1000))
+
+	local cooldown = next_claim_timestamp - now
+	local can_claim = cooldown <= 0
+
+
+	local active_content = nil
+	if login_rewards.event_type == "calendar" then
+		active_content = gotwf_rewards_content
+		login_rewards_content.visible = false
+	else
+		active_content = login_rewards_content
+		gotwf_rewards_content.visible = false
+	end
+
+
+
+
+	if can_claim then
+		active_content.is_claimable = true
+		active_content.subtitle = Localize("available_now")
+		active_content.title = login_rewards.title or "store_login_claim_reward_title"
+	else
+		active_content.is_claimable = false
+		local timer = UIUtils.format_duration(cooldown)
+		active_content.subtitle = Localize("store_login_rewards_next_available_in") .. timer
+		active_content.title = login_rewards.title or "store_login_rewards_title"
 	end
 end
 
@@ -347,13 +361,30 @@ function StoreWindowFeatured:_handle_input(dt, t)
 
 
 	local login_rewards_button = self._widgets_by_name.login_rewards_button
-	UIWidgetUtils.animate_default_button(login_rewards_button, dt)
-	if UIUtils.is_button_hover_enter(login_rewards_button) then
-		self:_play_sound("Play_hud_store_button_hover")
+	local disabled = login_rewards_button.content.visible == false
+	if not disabled then
+		UIWidgetUtils.animate_default_button(login_rewards_button, dt)
+		if UIUtils.is_button_hover_enter(login_rewards_button) then
+			self:_play_sound("Play_hud_store_button_hover")
+		end
+		if UIUtils.is_button_pressed(login_rewards_button) or input_service:get("special_1_press") then
+			parent:open_login_rewards_popup()
+		end
 	end
-	if UIUtils.is_button_pressed(login_rewards_button) or input_service:get("special_1_press") and not GameSettingsDevelopment.use_offline_backend then
-		parent:open_login_rewards_popup()
+
+
+	local gotwf_rewards_button = self._widgets_by_name.gotwf_rewards_button
+	local disabled = gotwf_rewards_button.content.visible == false
+	if not disabled then
+		UIWidgetUtils.animate_default_button(gotwf_rewards_button, dt)
+		if UIUtils.is_button_hover_enter(gotwf_rewards_button) then
+			self:_play_sound("Play_hud_store_button_hover")
+		end
+		if UIUtils.is_button_pressed(gotwf_rewards_button) or input_service:get("special_1_press") then
+			parent:open_gotwf_rewards()
+		end
 	end
+
 
 
 
@@ -1121,13 +1152,41 @@ function StoreWindowFeatured:_set_slideshow_selected_read_index(widget, index)
 
 	content.show_hourglass = slide_content.is_discounted
 
-	local header = slide_content.header or slide_content.backend_header
-	local description = slide_content.description or slide_content.backend_description
-
+	local header = slide_content.header or slide_content.backend_header or "tutorial_no_text"
 	content.title_text = Localize(header)
-	content.description_text = Localize(description)
+
+	local description = slide_content.description or slide_content.backend_description or "tutorial_no_text"
+
+	local description_func_name = slide_content.description_func
+	if description_func_name then
+		local func = self [description_func_name]
+		if func then
+			content.description_text = func(self, slide_content.description_params) or ""
+		else
+			Application.warning(string.format("[StoreWindowFeatured] There is no description function called %q in StoreWindowFeatured", description_func_name))
+		end
+	else
+		content.description_text = Localize(description)
+	end
 
 	self._current_read_index = index
+end
+
+function StoreWindowFeatured:gotwf_description(params)
+	local start_time = params.start_time
+	if not start_time then
+		return
+	end
+
+	local num_rewards = params.num_rewards or 1
+
+	local start_date = os.date("%x", start_time * 0.001)
+	local end_date = os.date("%x", start_time * 0.001 + 86400 * (num_rewards - 1))
+	if end_date ~= start_date then
+		do return start_date .. " - " .. end_date end
+	else
+		return start_date
+	end
 end
 
 function StoreWindowFeatured:_on_slideshow_pressed(widget)
@@ -1140,6 +1199,7 @@ function StoreWindowFeatured:_on_slideshow_pressed(widget)
 	local path = slide_content.path
 	local product_id = slide_content.product_id
 	local steam_url = slide_content.steam_url
+	local layout_name = slide_content.layout_name
 
 	local parent = self._parent
 
@@ -1153,6 +1213,9 @@ function StoreWindowFeatured:_on_slideshow_pressed(widget)
 		parent:go_to_store_path(path)
 	elseif HAS_STEAM and steam_url then
 		Steam.open_url(steam_url)
+	elseif layout_name then
+		parent:play_sound("Play_hud_store_buy_window")
+		parent:set_layout_by_name(layout_name)
 	end
 end
 

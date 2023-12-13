@@ -494,6 +494,7 @@ function RewardPopupUI:_setup_presentation(presentation_data)
 	local spacing = 20
 	local min_height = 80
 	self._skip_blur = presentation_data.skip_blur
+	self._bg_alpha = presentation_data.bg_alpha or 100
 
 	for i = 1, #presentation_data do
 		local presentation_entries = presentation_data [i]
@@ -533,6 +534,7 @@ function RewardPopupUI:_setup_presentation(presentation_data)
 	end
 
 	scenegraph_definition.background_center.size [2] = min_height + spacing
+	self._ui_scenegraph.background.local_position = presentation_data.offset or { 0, 0, 1 }
 	return animation_data
 end
 
@@ -707,7 +709,7 @@ function RewardPopupUI:set_fullscreen_effect_enable_state(enabled, progress)
 		ShadingEnvironment.set_scalar(shading_env, "fullscreen_blur_amount", enabled and progress * 0.75 or 0)
 		ShadingEnvironment.apply(shading_env)
 
-		self.screen_background_widget.style.rect.color [1] = 100 * progress
+		self.screen_background_widget.style.rect.color [1] = self._bg_alpha * progress
 	end
 
 	self._fullscreen_effect_enabled = enabled

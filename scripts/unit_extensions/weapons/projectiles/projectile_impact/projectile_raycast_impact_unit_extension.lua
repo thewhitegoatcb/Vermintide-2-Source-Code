@@ -17,6 +17,7 @@ function ProjectileRaycastImpactUnitExtension:init(extension_init_context, unit,
 	self.server_side_raycast = extension_init_data.server_side_raycast
 	self.is_server = Managers.player.is_server
 	self._dont_target_friendly = extension_init_data.dont_target_friendly
+	self._dont_target_patrols = extension_init_data.dont_target_patrols
 	self._ignore_dead = extension_init_data.ignore_dead
 
 	self.last_position = nil
@@ -121,6 +122,10 @@ function ProjectileRaycastImpactUnitExtension:_valid_target(unit, hit_unit, hit_
 		if has_side and not side_manager:is_enemy(self.owner_unit, hit_unit) then
 			return false
 		end
+	end
+
+	if self._dont_target_patrols and AiUtils.is_part_of_patrol(hit_unit) and not AiUtils.is_aggroed(hit_unit) then
+		return false
 	end
 
 

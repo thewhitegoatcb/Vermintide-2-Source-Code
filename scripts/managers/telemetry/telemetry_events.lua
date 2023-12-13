@@ -526,13 +526,25 @@ function TelemetryEvents:_store_product_purchased(product)
 	self._manager:register_event(event)
 end
 
-function TelemetryEvents:store_rewards_claimed(claim)
+function TelemetryEvents:store_rewards_claimed(claim, offset)
 	local event = self:_create_event("store_rewards_claimed")
 
 
-	claim.claimed_rewards = table.keys(claim.claimed_rewards)
 
-	event:set_data(claim)
+
+
+
+
+
+	local event_data = claim
+	if event_data.event_type == "personal_time_strike" then
+		event_data.reward_index = event_data.total_claims or 0
+	else
+		event_data.reward_index = #event_data.rewards + (offset or 0)
+	end
+
+
+	event:set_data(event_data)
 	self._manager:register_event(event)
 end
 

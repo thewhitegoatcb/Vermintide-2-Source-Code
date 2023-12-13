@@ -1,3 +1,5 @@
+
+
 local settings = DLCSettings.morris
 
 local function can_spawn_deus_pickup(params, is_debug_spawn)
@@ -307,6 +309,18 @@ settings.pickups = {
 
 	grenades = {
 		holy_hand_grenade = { only_once = true, individual_pickup = false, slot_name = "slot_grenade", item_description = "holy_hand_grenade_desc", spawn_weighting = 0.8, debug_pickup_category = "grenades", dupable = true, pickup_sound_event = "pickup_grenade", item_name = "holy_hand_grenade", unit_name = "units/weapons/player/pup_grenades/pup_holy_hand_grenade_01_t1", bots_mule_pickup = true, type = "inventory_item", consumable_item = true, local_pickup_sound = true, hud_description = "holy_hand_grenade_desc" } } }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -716,13 +716,48 @@ local damage_templates = {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	trapped_soul = { charge_value = "projectile", no_stagger_damage_reduction_ranged = true,
 		critical_strike = {
-			attack_armor_power_modifer = { 0.5, 0.5, 2, 0.5, 0.5, 0.2 },
+			attack_armor_power_modifer = { 0.5, 0.6, 2.5, 0.5, 0.5, 0.2 },
 			impact_armor_power_modifer = { 0.7, 0.7, 0.7, 0.7, 0.7, 0.2 } },
 
 		armor_modifier = {
-			attack = { 0.5, 0.5, 2, 0.5, 0.1, 0 },
+			attack = { 0.5, 0.6, 2.5, 0.5, 0.1, 0 },
 			impact = { 0.7, 0.7, 0.7, 0.7, 0.5, 0.1 } },
 
 		cleave_distribution = { attack = 0.25, impact = 0.25 },
@@ -734,17 +769,19 @@ local damage_templates = {
 
 
 
-			power_distribution_near = { attack = 0.12, impact = 0.2 },
+			power_distribution_near = { attack = 0.17, impact = 0.25 },
 
 
 
-			power_distribution_far = { attack = 0.12, impact = 0.2 },
+			power_distribution_far = { attack = 0.17, impact = 0.25 },
 
 
 
 
 
 			range_modifier_settings = shotgun_dropoff_ranges } },
+
+
 
 
 

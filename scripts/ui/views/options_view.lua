@@ -1988,6 +1988,12 @@ function OptionsView:apply_changes(user_settings, render_settings, bot_spawn_pri
 
 	if gamepad_look_sensitivity then
 		local platform_key = IS_WINDOWS and "xb1" or self.platform
+
+
+		local most_recent_device = Managers.input:get_most_recent_device()
+		if most_recent_device.type() == "sce_pad" then platform_key = "ps_pad"
+		end
+
 		local base_filter = InputUtils.get_platform_filters(PlayerControllerFilters, platform_key)
 		local base_look_multiplier = base_filter.look_controller.multiplier_x
 		local base_melee_look_multiplier = base_filter.look_controller_melee.multiplier_x
@@ -2015,6 +2021,12 @@ function OptionsView:apply_changes(user_settings, render_settings, bot_spawn_pri
 
 	if gamepad_look_sensitivity_y then
 		local platform_key = IS_WINDOWS and "xb1" or self.platform
+
+
+		local most_recent_device = Managers.input:get_most_recent_device()
+		if most_recent_device.type() == "sce_pad" then platform_key = "ps_pad"
+		end
+
 		local base_filter = InputUtils.get_platform_filters(PlayerControllerFilters, platform_key)
 		local base_look_multiplier = base_filter.look_controller.multiplier_y
 		local base_melee_look_multiplier = base_filter.look_controller.multiplier_y
@@ -2037,6 +2049,12 @@ function OptionsView:apply_changes(user_settings, render_settings, bot_spawn_pri
 	local gamepad_zoom_sensitivity = user_settings.gamepad_zoom_sensitivity
 	if gamepad_zoom_sensitivity then
 		local platform_key = IS_WINDOWS and "xb1" or self.platform
+
+
+		local most_recent_device = Managers.input:get_most_recent_device()
+		if most_recent_device.type() == "sce_pad" then platform_key = "ps_pad"
+		end
+
 		local base_filter = InputUtils.get_platform_filters(PlayerControllerFilters, platform_key)
 		local base_look_multiplier = base_filter.look_controller_zoom.multiplier_x
 		local input_filters = player_input_service:get_active_filters(platform_key)
@@ -2049,6 +2067,12 @@ function OptionsView:apply_changes(user_settings, render_settings, bot_spawn_pri
 	local gamepad_zoom_sensitivity_y = user_settings.gamepad_zoom_sensitivity_y
 	if gamepad_zoom_sensitivity_y then
 		local platform_key = IS_WINDOWS and "xb1" or self.platform
+
+
+		local most_recent_device = Managers.input:get_most_recent_device()
+		if most_recent_device.type() == "sce_pad" then platform_key = "ps_pad"
+		end
+
 		local base_filter = InputUtils.get_platform_filters(PlayerControllerFilters, platform_key)
 		local base_look_multiplier = base_filter.look_controller_zoom.multiplier_y
 		local input_filters = player_input_service:get_active_filters(platform_key)
@@ -2082,6 +2106,12 @@ function OptionsView:apply_changes(user_settings, render_settings, bot_spawn_pri
 	local gamepad_look_invert_y = user_settings.gamepad_look_invert_y
 	if gamepad_look_invert_y ~= nil then
 		local platform_key = IS_WINDOWS and "xb1" or self.platform
+
+
+		local most_recent_device = Managers.input:get_most_recent_device()
+		if most_recent_device.type() == "sce_pad" then platform_key = "ps_pad"
+		end
+
 		local input_filters = player_input_service:get_active_filters(platform_key)
 
 		local look_filter = input_filters.look_controller
@@ -2431,11 +2461,22 @@ function OptionsView:_apply_keybinding_changes(keybinding_table_name, keybinding
 		local input_type = keybind [i + 2]
 
 		local button_index = nil
-		if device == "gamepad" then
+		local is_gamepad = device == "gamepad"
+		local controller_device = Pad1
+
+
+		if IS_WINDOWS and keybinding_table_key == "ps_pad" then
+			is_gamepad = true
+			local ps_pads = InputAux.input_device_mapping.ps_pad
+			controller_device = ps_pads [1] or Pad1
+		end
+
+
+		if is_gamepad then
 			if input_type == "axis" then
-				button_index = Pad1.axis_index(button_name)
+				button_index = controller_device.axis_index(button_name)
 			else
-				button_index = Pad1.button_index(button_name)
+				button_index = controller_device.button_index(button_name)
 			end
 		elseif device == "keyboard" then
 			button_index = Keyboard.button_index(button_name)
@@ -2567,6 +2608,7 @@ function OptionsView:update(dt)
 	end
 
 	self:draw_widgets(dt, disable_all_input)
+	self:_handle_ps_pads(gamepad_active)
 
 	if self.save_data_error_popup_id then
 		local result = Managers.popup:query_result(self.save_data_error_popup_id)
@@ -2678,6 +2720,23 @@ function OptionsView:update(dt)
 		end
 	end
 end
+
+
+function OptionsView:_handle_ps_pads(gamepad_active)
+	if not IS_WINDOWS or not gamepad_active then
+		return
+	end
+
+	local gamepad_layout_widget = self.gamepad_layout_widget
+	if not gamepad_layout_widget then
+		return
+	end
+
+	local most_recent_device = Managers.input:get_most_recent_device()
+	local gamepad_use_ps4_style_input_icons = assigned(self.changed_user_settings.gamepad_use_ps4_style_input_icons, Application.user_setting("gamepad_use_ps4_style_input_icons"))
+	gamepad_layout_widget.content.use_texture2_layout = most_recent_device.type() == "sce_pad" or gamepad_use_ps4_style_input_icons
+end
+
 
 function OptionsView:cb_delete_save(result)
 	if result.error then
@@ -6237,7 +6296,13 @@ function OptionsView:cb_gamepad_look_sensitivity_setup()
 	sensitivity = math.clamp(sensitivity, min, max) --[[ END OF BLOCK #2 --]]
 
 	slot6 = if IS_WINDOWS then  else --[[ JUMP TO BLOCK #4 --]] end  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #3 30-31, warpins: 1 --]] slot6 = "xb1" --[[ END OF BLOCK #3 --]] --[[ UNCONDITIONAL JUMP --]] --[[ TARGET BLOCK #5; --]]  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #4 32-32, warpins: 1 --]] local platform_key = self.platform --[[ END OF BLOCK #4 --]] --[[ FLOW --]] --[[ TARGET BLOCK #5; --]]  --[[ Decompilation error in this vicinity: --]] 
-	--[[ BLOCK #5 33-63, warpins: 2 --]] local base_filter = InputUtils.get_platform_filters(PlayerControllerFilters, platform_key)
+
+
+	--[[ BLOCK #5 33-41, warpins: 2 --]] local most_recent_device = Managers.input:get_most_recent_device() --[[ END OF BLOCK #5 --]]
+	if most_recent_device.type() == "sce_pad" then  else --[[ JUMP TO BLOCK #7 --]] end  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #6 42-43, warpins: 1 --]] platform_key = "ps_pad" --[[ END OF BLOCK #6 --]] --[[ UNCONDITIONAL JUMP --]] --[[ TARGET BLOCK #7; --]]  --[[ Decompilation error in this vicinity: --]] 
+
+
+	--[[ BLOCK #7 44-74, warpins: 2 --]] local base_filter = InputUtils.get_platform_filters(PlayerControllerFilters, platform_key)
 
 	local base_look_multiplier = base_filter.look_controller.multiplier_x
 	local base_melee_look_multiplier = base_filter.look_controller_melee.multiplier_x
@@ -6248,20 +6313,20 @@ function OptionsView:cb_gamepad_look_sensitivity_setup()
 
 	local look_filter = input_filters.look_controller
 	local function_data = look_filter.function_data
-	function_data.multiplier_x = base_look_multiplier * 0.85 ^ (-sensitivity) --[[ END OF BLOCK #5 --]]
-	slot15 = if base_filter.look_controller.multiplier_min_x then  else --[[ JUMP TO BLOCK #7 --]] end  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #6 64-71, warpins: 1 --]] --[[ END OF BLOCK #6 --]] slot15 = if not (base_filter.look_controller.multiplier_min_x * 0.85 ^ (-sensitivity)) then  else --[[ JUMP TO BLOCK #8 --]] end  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #7 72-73, warpins: 2 --]] local melee_look_filter = function_data.multiplier_x * 0.25 --[[ END OF BLOCK #7 --]] --[[ FLOW --]] --[[ TARGET BLOCK #8; --]]  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #8 74-85, warpins: 2 --]] function_data.min_multiplier_x = melee_look_filter
+	function_data.multiplier_x = base_look_multiplier * 0.85 ^ (-sensitivity) --[[ END OF BLOCK #7 --]]
+	slot16 = if base_filter.look_controller.multiplier_min_x then  else --[[ JUMP TO BLOCK #9 --]] end  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #8 75-82, warpins: 1 --]] --[[ END OF BLOCK #8 --]] slot16 = if not (base_filter.look_controller.multiplier_min_x * 0.85 ^ (-sensitivity)) then  else --[[ JUMP TO BLOCK #10 --]] end  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #9 83-84, warpins: 2 --]] local melee_look_filter = function_data.multiplier_x * 0.25 --[[ END OF BLOCK #9 --]] --[[ FLOW --]] --[[ TARGET BLOCK #10; --]]  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #10 85-96, warpins: 2 --]] function_data.min_multiplier_x = melee_look_filter
 
 	local melee_look_filter = input_filters.look_controller_melee
 	local function_data = melee_look_filter.function_data
-	function_data.multiplier_x = base_melee_look_multiplier * 0.85 ^ (-sensitivity) --[[ END OF BLOCK #8 --]]
-	slot17 = if base_filter.look_controller_melee.multiplier_min_x then  else --[[ JUMP TO BLOCK #10 --]] end  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #9 86-93, warpins: 1 --]] --[[ END OF BLOCK #9 --]] slot17 = if not (base_filter.look_controller_melee.multiplier_min_x * 0.85 ^ (-sensitivity)) then  else --[[ JUMP TO BLOCK #11 --]] end  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #10 94-95, warpins: 2 --]] local ranged_look_filter = function_data.multiplier_x * 0.25 --[[ END OF BLOCK #10 --]] --[[ FLOW --]] --[[ TARGET BLOCK #11; --]]  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #11 96-107, warpins: 2 --]] function_data.min_multiplier_x = ranged_look_filter
+	function_data.multiplier_x = base_melee_look_multiplier * 0.85 ^ (-sensitivity) --[[ END OF BLOCK #10 --]]
+	slot18 = if base_filter.look_controller_melee.multiplier_min_x then  else --[[ JUMP TO BLOCK #12 --]] end  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #11 97-104, warpins: 1 --]] --[[ END OF BLOCK #11 --]] slot18 = if not (base_filter.look_controller_melee.multiplier_min_x * 0.85 ^ (-sensitivity)) then  else --[[ JUMP TO BLOCK #13 --]] end  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #12 105-106, warpins: 2 --]] local ranged_look_filter = function_data.multiplier_x * 0.25 --[[ END OF BLOCK #12 --]] --[[ FLOW --]] --[[ TARGET BLOCK #13; --]]  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #13 107-118, warpins: 2 --]] function_data.min_multiplier_x = ranged_look_filter
 
 	local ranged_look_filter = input_filters.look_controller_ranged
 	local function_data = ranged_look_filter.function_data
-	function_data.multiplier_x = base_ranged_look_multiplier * 0.85 ^ (-sensitivity) --[[ END OF BLOCK #11 --]]
-	slot19 = if base_filter.look_controller_ranged.multiplier_min_x then  else --[[ JUMP TO BLOCK #13 --]] end  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #12 108-115, warpins: 1 --]] --[[ END OF BLOCK #12 --]] slot19 = if not (base_filter.look_controller_ranged.multiplier_min_x * 0.85 ^ (-sensitivity)) then  else --[[ JUMP TO BLOCK #14 --]] end  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #13 116-117, warpins: 2 --]] slot19 = function_data.multiplier_x * 0.25 --[[ END OF BLOCK #13 --]] --[[ FLOW --]] --[[ TARGET BLOCK #14; --]]  --[[ Decompilation error in this vicinity: --]] 
-	--[[ BLOCK #14 118-125, warpins: 2 --]] function_data.min_multiplier_x = slot19
-	return value, min, max, 1, "menu_settings_gamepad_look_sensitivity", default_value --[[ END OF BLOCK #14 --]]
+	function_data.multiplier_x = base_ranged_look_multiplier * 0.85 ^ (-sensitivity) --[[ END OF BLOCK #13 --]]
+	slot20 = if base_filter.look_controller_ranged.multiplier_min_x then  else --[[ JUMP TO BLOCK #15 --]] end  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #14 119-126, warpins: 1 --]] --[[ END OF BLOCK #14 --]] slot20 = if not (base_filter.look_controller_ranged.multiplier_min_x * 0.85 ^ (-sensitivity)) then  else --[[ JUMP TO BLOCK #16 --]] end  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #15 127-128, warpins: 2 --]] slot20 = function_data.multiplier_x * 0.25 --[[ END OF BLOCK #15 --]] --[[ FLOW --]] --[[ TARGET BLOCK #16; --]]  --[[ Decompilation error in this vicinity: --]] 
+	--[[ BLOCK #16 129-136, warpins: 2 --]] function_data.min_multiplier_x = slot20
+	return value, min, max, 1, "menu_settings_gamepad_look_sensitivity", default_value --[[ END OF BLOCK #16 --]]
 end
 
 function OptionsView:cb_gamepad_look_sensitivity_saved_value(widget)
@@ -6290,7 +6355,13 @@ function OptionsView:cb_gamepad_look_sensitivity_y_setup()
 
 	slot6 = if IS_WINDOWS then  else --[[ JUMP TO BLOCK #4 --]] end  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #3 30-31, warpins: 1 --]] slot6 = "xb1" --[[ END OF BLOCK #3 --]] --[[ UNCONDITIONAL JUMP --]] --[[ TARGET BLOCK #5; --]]  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #4 32-32, warpins: 1 --]] local platform_key = self.platform --[[ END OF BLOCK #4 --]] --[[ FLOW --]] --[[ TARGET BLOCK #5; --]]  --[[ Decompilation error in this vicinity: --]] 
 
-	--[[ BLOCK #5 33-80, warpins: 2 --]] local base_filter = InputUtils.get_platform_filters(PlayerControllerFilters, platform_key)
+
+	--[[ BLOCK #5 33-41, warpins: 2 --]] local most_recent_device = Managers.input:get_most_recent_device() --[[ END OF BLOCK #5 --]]
+	if most_recent_device.type() == "sce_pad" then  else --[[ JUMP TO BLOCK #7 --]] end  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #6 42-43, warpins: 1 --]] platform_key = "ps_pad" --[[ END OF BLOCK #6 --]] --[[ UNCONDITIONAL JUMP --]] --[[ TARGET BLOCK #7; --]]  --[[ Decompilation error in this vicinity: --]] 
+
+
+
+	--[[ BLOCK #7 44-91, warpins: 2 --]] local base_filter = InputUtils.get_platform_filters(PlayerControllerFilters, platform_key)
 	local base_look_multiplier = base_filter.look_controller.multiplier_y
 	local base_melee_look_multiplier = base_filter.look_controller_melee.multiplier_y
 	local base_ranged_look_multiplier = base_filter.look_controller_ranged.multiplier_y
@@ -6309,7 +6380,7 @@ function OptionsView:cb_gamepad_look_sensitivity_y_setup()
 	local function_data = ranged_look_filter.function_data
 	function_data.multiplier_y = base_ranged_look_multiplier * 0.85 ^ (-sensitivity)
 
-	return value, min, max, 1, "menu_settings_gamepad_look_sensitivity_y", default_value --[[ END OF BLOCK #5 --]]
+	return value, min, max, 1, "menu_settings_gamepad_look_sensitivity_y", default_value --[[ END OF BLOCK #7 --]]
 end
 
 function OptionsView:cb_gamepad_look_sensitivity_y_saved_value(widget)
@@ -6336,7 +6407,13 @@ function OptionsView:cb_gamepad_zoom_sensitivity_setup()
 	sensitivity = math.clamp(sensitivity, min, max) --[[ END OF BLOCK #2 --]]
 
 	slot6 = if IS_WINDOWS then  else --[[ JUMP TO BLOCK #4 --]] end  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #3 30-31, warpins: 1 --]] slot6 = "xb1" --[[ END OF BLOCK #3 --]] --[[ UNCONDITIONAL JUMP --]] --[[ TARGET BLOCK #5; --]]  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #4 32-32, warpins: 1 --]] local platform_key = self.platform --[[ END OF BLOCK #4 --]] --[[ FLOW --]] --[[ TARGET BLOCK #5; --]]  --[[ Decompilation error in this vicinity: --]] 
-	--[[ BLOCK #5 33-59, warpins: 2 --]] local base_filter = InputUtils.get_platform_filters(PlayerControllerFilters, platform_key)
+
+
+	--[[ BLOCK #5 33-41, warpins: 2 --]] local most_recent_device = Managers.input:get_most_recent_device() --[[ END OF BLOCK #5 --]]
+	if most_recent_device.type() == "sce_pad" then  else --[[ JUMP TO BLOCK #7 --]] end  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #6 42-43, warpins: 1 --]] platform_key = "ps_pad" --[[ END OF BLOCK #6 --]] --[[ UNCONDITIONAL JUMP --]] --[[ TARGET BLOCK #7; --]]  --[[ Decompilation error in this vicinity: --]] 
+
+
+	--[[ BLOCK #7 44-70, warpins: 2 --]] local base_filter = InputUtils.get_platform_filters(PlayerControllerFilters, platform_key)
 
 	local base_look_multiplier = base_filter.look_controller_zoom.multiplier_x
 	local input_service = self.input_manager:get_service("Player")
@@ -6344,10 +6421,10 @@ function OptionsView:cb_gamepad_zoom_sensitivity_setup()
 
 	local look_filter = input_filters.look_controller_zoom
 	local function_data = look_filter.function_data
-	function_data.multiplier_x = base_look_multiplier * 0.85 ^ (-sensitivity) --[[ END OF BLOCK #5 --]]
-	slot13 = if base_filter.look_controller_zoom.multiplier_min_x then  else --[[ JUMP TO BLOCK #7 --]] end  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #6 60-67, warpins: 1 --]] --[[ END OF BLOCK #6 --]] slot13 = if not (base_filter.look_controller_zoom.multiplier_min_x * 0.85 ^ (-sensitivity)) then  else --[[ JUMP TO BLOCK #8 --]] end  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #7 68-69, warpins: 2 --]] slot13 = function_data.multiplier_x * 0.25 --[[ END OF BLOCK #7 --]] --[[ FLOW --]] --[[ TARGET BLOCK #8; --]]  --[[ Decompilation error in this vicinity: --]] 
-	--[[ BLOCK #8 70-77, warpins: 2 --]] function_data.min_multiplier_x = slot13
-	return value, min, max, 1, "menu_settings_gamepad_zoom_sensitivity", default_value --[[ END OF BLOCK #8 --]]
+	function_data.multiplier_x = base_look_multiplier * 0.85 ^ (-sensitivity) --[[ END OF BLOCK #7 --]]
+	slot14 = if base_filter.look_controller_zoom.multiplier_min_x then  else --[[ JUMP TO BLOCK #9 --]] end  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #8 71-78, warpins: 1 --]] --[[ END OF BLOCK #8 --]] slot14 = if not (base_filter.look_controller_zoom.multiplier_min_x * 0.85 ^ (-sensitivity)) then  else --[[ JUMP TO BLOCK #10 --]] end  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #9 79-80, warpins: 2 --]] slot14 = function_data.multiplier_x * 0.25 --[[ END OF BLOCK #9 --]] --[[ FLOW --]] --[[ TARGET BLOCK #10; --]]  --[[ Decompilation error in this vicinity: --]] 
+	--[[ BLOCK #10 81-88, warpins: 2 --]] function_data.min_multiplier_x = slot14
+	return value, min, max, 1, "menu_settings_gamepad_zoom_sensitivity", default_value --[[ END OF BLOCK #10 --]]
 end
 
 function OptionsView:cb_gamepad_zoom_sensitivity_saved_value(widget)
@@ -6375,7 +6452,13 @@ function OptionsView:cb_gamepad_zoom_sensitivity_y_setup()
 
 	slot6 = if IS_WINDOWS then  else --[[ JUMP TO BLOCK #4 --]] end  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #3 30-31, warpins: 1 --]] slot6 = "xb1" --[[ END OF BLOCK #3 --]] --[[ UNCONDITIONAL JUMP --]] --[[ TARGET BLOCK #5; --]]  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #4 32-32, warpins: 1 --]] local platform_key = self.platform --[[ END OF BLOCK #4 --]] --[[ FLOW --]] --[[ TARGET BLOCK #5; --]]  --[[ Decompilation error in this vicinity: --]] 
 
-	--[[ BLOCK #5 33-62, warpins: 2 --]] local base_filter = InputUtils.get_platform_filters(PlayerControllerFilters, platform_key)
+
+	--[[ BLOCK #5 33-41, warpins: 2 --]] local most_recent_device = Managers.input:get_most_recent_device() --[[ END OF BLOCK #5 --]]
+	if most_recent_device.type() == "sce_pad" then  else --[[ JUMP TO BLOCK #7 --]] end  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #6 42-43, warpins: 1 --]] platform_key = "ps_pad" --[[ END OF BLOCK #6 --]] --[[ UNCONDITIONAL JUMP --]] --[[ TARGET BLOCK #7; --]]  --[[ Decompilation error in this vicinity: --]] 
+
+
+
+	--[[ BLOCK #7 44-73, warpins: 2 --]] local base_filter = InputUtils.get_platform_filters(PlayerControllerFilters, platform_key)
 	local base_look_multiplier = base_filter.look_controller_zoom.multiplier_y
 	local input_service = self.input_manager:get_service("Player")
 	local input_filters = input_service:get_active_filters(platform_key)
@@ -6384,7 +6467,7 @@ function OptionsView:cb_gamepad_zoom_sensitivity_y_setup()
 	local function_data = look_filter.function_data
 	function_data.multiplier_y = base_look_multiplier * 0.85 ^ (-sensitivity)
 
-	return value, min, max, 1, "menu_settings_gamepad_zoom_sensitivity_y", default_value --[[ END OF BLOCK #5 --]]
+	return value, min, max, 1, "menu_settings_gamepad_zoom_sensitivity_y", default_value --[[ END OF BLOCK #7 --]]
 end
 
 function OptionsView:cb_gamepad_zoom_sensitivity_y_saved_value(widget)
@@ -6566,37 +6649,43 @@ function OptionsView:cb_gamepad_look_invert_y_setup()
 
 	local input_service = self.input_manager:get_service("Player") --[[ END OF BLOCK #2 --]]
 	slot5 = if IS_WINDOWS then  else --[[ JUMP TO BLOCK #4 --]] end  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #3 34-35, warpins: 1 --]] slot5 = "xb1" --[[ END OF BLOCK #3 --]] --[[ UNCONDITIONAL JUMP --]] --[[ TARGET BLOCK #5; --]]  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #4 36-36, warpins: 1 --]] local platform_key = self.platform --[[ END OF BLOCK #4 --]] --[[ FLOW --]] --[[ TARGET BLOCK #5; --]]  --[[ Decompilation error in this vicinity: --]] 
-	--[[ BLOCK #5 37-44, warpins: 2 --]] local input_filters = input_service:get_active_filters(platform_key)
+
+
+	--[[ BLOCK #5 37-45, warpins: 2 --]] local most_recent_device = Managers.input:get_most_recent_device() --[[ END OF BLOCK #5 --]]
+	if most_recent_device.type() == "sce_pad" then  else --[[ JUMP TO BLOCK #7 --]] end  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #6 46-47, warpins: 1 --]] platform_key = "ps_pad" --[[ END OF BLOCK #6 --]] --[[ UNCONDITIONAL JUMP --]] --[[ TARGET BLOCK #7; --]]  --[[ Decompilation error in this vicinity: --]] 
+
+
+	--[[ BLOCK #7 48-55, warpins: 2 --]] local input_filters = input_service:get_active_filters(platform_key)
 
 
 	local look_filter = input_filters.look_controller
-	local function_data = look_filter.function_data --[[ END OF BLOCK #5 --]] slot3 = if invert_gamepad_y then  else --[[ JUMP TO BLOCK #7 --]] end  --[[ Decompilation error in this vicinity: --]] 
+	local function_data = look_filter.function_data --[[ END OF BLOCK #7 --]] slot3 = if invert_gamepad_y then  else --[[ JUMP TO BLOCK #9 --]] end  --[[ Decompilation error in this vicinity: --]] 
 
-	--[[ BLOCK #6 45-46, warpins: 1 --]] slot9 = "scale_vector3_xy_accelerated_x_inverted" --[[ END OF BLOCK #6 --]] --[[ UNCONDITIONAL JUMP --]] --[[ TARGET BLOCK #8; --]]  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #7 47-47, warpins: 1 --]] local look_filter = "scale_vector3_xy_accelerated_x" --[[ END OF BLOCK #7 --]] --[[ FLOW --]] --[[ TARGET BLOCK #8; --]]  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #8 48-52, warpins: 2 --]] function_data.filter_type = look_filter
+	--[[ BLOCK #8 56-57, warpins: 1 --]] slot10 = "scale_vector3_xy_accelerated_x_inverted" --[[ END OF BLOCK #8 --]] --[[ UNCONDITIONAL JUMP --]] --[[ TARGET BLOCK #10; --]]  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #9 58-58, warpins: 1 --]] local look_filter = "scale_vector3_xy_accelerated_x" --[[ END OF BLOCK #9 --]] --[[ FLOW --]] --[[ TARGET BLOCK #10; --]]  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #10 59-63, warpins: 2 --]] function_data.filter_type = look_filter
 
 
 	local look_filter = input_filters.look_controller_ranged
-	local function_data = look_filter.function_data --[[ END OF BLOCK #8 --]] slot3 = if invert_gamepad_y then  else --[[ JUMP TO BLOCK #10 --]] end  --[[ Decompilation error in this vicinity: --]] 
+	local function_data = look_filter.function_data --[[ END OF BLOCK #10 --]] slot3 = if invert_gamepad_y then  else --[[ JUMP TO BLOCK #12 --]] end  --[[ Decompilation error in this vicinity: --]] 
 
-	--[[ BLOCK #9 53-54, warpins: 1 --]] slot11 = "scale_vector3_xy_accelerated_x_inverted" --[[ END OF BLOCK #9 --]] --[[ UNCONDITIONAL JUMP --]] --[[ TARGET BLOCK #11; --]]  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #10 55-55, warpins: 1 --]] local look_filter = "scale_vector3_xy_accelerated_x" --[[ END OF BLOCK #10 --]] --[[ FLOW --]] --[[ TARGET BLOCK #11; --]]  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #11 56-60, warpins: 2 --]] function_data.filter_type = look_filter
+	--[[ BLOCK #11 64-65, warpins: 1 --]] slot12 = "scale_vector3_xy_accelerated_x_inverted" --[[ END OF BLOCK #11 --]] --[[ UNCONDITIONAL JUMP --]] --[[ TARGET BLOCK #13; --]]  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #12 66-66, warpins: 1 --]] local look_filter = "scale_vector3_xy_accelerated_x" --[[ END OF BLOCK #12 --]] --[[ FLOW --]] --[[ TARGET BLOCK #13; --]]  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #13 67-71, warpins: 2 --]] function_data.filter_type = look_filter
 
 
 	local look_filter = input_filters.look_controller_melee
-	local function_data = look_filter.function_data --[[ END OF BLOCK #11 --]] slot3 = if invert_gamepad_y then  else --[[ JUMP TO BLOCK #13 --]] end  --[[ Decompilation error in this vicinity: --]] 
+	local function_data = look_filter.function_data --[[ END OF BLOCK #13 --]] slot3 = if invert_gamepad_y then  else --[[ JUMP TO BLOCK #15 --]] end  --[[ Decompilation error in this vicinity: --]] 
 
-	--[[ BLOCK #12 61-62, warpins: 1 --]] slot13 = "scale_vector3_xy_accelerated_x_inverted" --[[ END OF BLOCK #12 --]] --[[ UNCONDITIONAL JUMP --]] --[[ TARGET BLOCK #14; --]]  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #13 63-63, warpins: 1 --]] local look_filter = "scale_vector3_xy_accelerated_x" --[[ END OF BLOCK #13 --]] --[[ FLOW --]] --[[ TARGET BLOCK #14; --]]  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #14 64-68, warpins: 2 --]] function_data.filter_type = look_filter
+	--[[ BLOCK #14 72-73, warpins: 1 --]] slot14 = "scale_vector3_xy_accelerated_x_inverted" --[[ END OF BLOCK #14 --]] --[[ UNCONDITIONAL JUMP --]] --[[ TARGET BLOCK #16; --]]  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #15 74-74, warpins: 1 --]] local look_filter = "scale_vector3_xy_accelerated_x" --[[ END OF BLOCK #15 --]] --[[ FLOW --]] --[[ TARGET BLOCK #16; --]]  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #16 75-79, warpins: 2 --]] function_data.filter_type = look_filter
 
 
 	local look_filter = input_filters.look_controller_zoom
-	local function_data = look_filter.function_data --[[ END OF BLOCK #14 --]] slot3 = if invert_gamepad_y then  else --[[ JUMP TO BLOCK #16 --]] end  --[[ Decompilation error in this vicinity: --]] 
+	local function_data = look_filter.function_data --[[ END OF BLOCK #16 --]] slot3 = if invert_gamepad_y then  else --[[ JUMP TO BLOCK #18 --]] end  --[[ Decompilation error in this vicinity: --]] 
 
-	--[[ BLOCK #15 69-70, warpins: 1 --]] slot15 = "scale_vector3_xy_accelerated_x_inverted" --[[ END OF BLOCK #15 --]] --[[ UNCONDITIONAL JUMP --]] --[[ TARGET BLOCK #17; --]]  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #16 71-71, warpins: 1 --]] slot15 = "scale_vector3_xy_accelerated_x" --[[ END OF BLOCK #16 --]] --[[ FLOW --]] --[[ TARGET BLOCK #17; --]]  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #17 72-74, warpins: 2 --]] function_data.filter_type = slot15 --[[ END OF BLOCK #17 --]] slot3 = if invert_gamepad_y then  else --[[ JUMP TO BLOCK #19 --]] end  --[[ Decompilation error in this vicinity: --]] 
+	--[[ BLOCK #17 80-81, warpins: 1 --]] slot16 = "scale_vector3_xy_accelerated_x_inverted" --[[ END OF BLOCK #17 --]] --[[ UNCONDITIONAL JUMP --]] --[[ TARGET BLOCK #19; --]]  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #18 82-82, warpins: 1 --]] slot16 = "scale_vector3_xy_accelerated_x" --[[ END OF BLOCK #18 --]] --[[ FLOW --]] --[[ TARGET BLOCK #19; --]]  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #19 83-85, warpins: 2 --]] function_data.filter_type = slot16 --[[ END OF BLOCK #19 --]] slot3 = if invert_gamepad_y then  else --[[ JUMP TO BLOCK #21 --]] end  --[[ Decompilation error in this vicinity: --]] 
 
-	--[[ BLOCK #18 75-76, warpins: 1 --]] slot15 = 2 --[[ END OF BLOCK #18 --]] --[[ UNCONDITIONAL JUMP --]] --[[ TARGET BLOCK #20; --]]  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #19 77-77, warpins: 1 --]] local selection = 1 --[[ END OF BLOCK #19 --]] --[[ FLOW --]] --[[ TARGET BLOCK #20; --]]  --[[ Decompilation error in this vicinity: --]] 
-	--[[ BLOCK #20 78-79, warpins: 2 --]] --[[ END OF BLOCK #20 --]] slot2 = if default_value then  else --[[ JUMP TO BLOCK #22 --]] end  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #21 80-81, warpins: 1 --]] slot16 = 2 --[[ END OF BLOCK #21 --]] --[[ UNCONDITIONAL JUMP --]] --[[ TARGET BLOCK #23; --]]  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #22 82-82, warpins: 1 --]] local default_option = 1 --[[ END OF BLOCK #22 --]] --[[ FLOW --]] --[[ TARGET BLOCK #23; --]]  --[[ Decompilation error in this vicinity: --]] 
+	--[[ BLOCK #20 86-87, warpins: 1 --]] slot16 = 2 --[[ END OF BLOCK #20 --]] --[[ UNCONDITIONAL JUMP --]] --[[ TARGET BLOCK #22; --]]  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #21 88-88, warpins: 1 --]] local selection = 1 --[[ END OF BLOCK #21 --]] --[[ FLOW --]] --[[ TARGET BLOCK #22; --]]  --[[ Decompilation error in this vicinity: --]] 
+	--[[ BLOCK #22 89-90, warpins: 2 --]] --[[ END OF BLOCK #22 --]] slot2 = if default_value then  else --[[ JUMP TO BLOCK #24 --]] end  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #23 91-92, warpins: 1 --]] slot17 = 2 --[[ END OF BLOCK #23 --]] --[[ UNCONDITIONAL JUMP --]] --[[ TARGET BLOCK #25; --]]  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #24 93-93, warpins: 1 --]] local default_option = 1 --[[ END OF BLOCK #24 --]] --[[ FLOW --]] --[[ TARGET BLOCK #25; --]]  --[[ Decompilation error in this vicinity: --]] 
 
 
-	--[[ BLOCK #23 83-87, warpins: 2 --]] return selection, options, "menu_settings_gamepad_look_invert_y", default_option --[[ END OF BLOCK #23 --]] end
+	--[[ BLOCK #25 94-98, warpins: 2 --]] return selection, options, "menu_settings_gamepad_look_invert_y", default_option --[[ END OF BLOCK #25 --]] end
 
 function OptionsView:cb_gamepad_look_invert_y_saved_value(widget)
 	 --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #0 1-10, warpins: 1 --]] --[[ END OF BLOCK #0 --]] slot2 = if not assigned(self.changed_user_settings.gamepad_look_invert_y, Application.user_setting("gamepad_look_invert_y")) then  else --[[ JUMP TO BLOCK #2 --]] end  --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #1 11-11, warpins: 1 --]] local invert_gamepad_y = false --[[ END OF BLOCK #1 --]] --[[ FLOW --]] --[[ TARGET BLOCK #2; --]]  --[[ Decompilation error in this vicinity: --]] 
@@ -7040,7 +7129,8 @@ function OptionsView:cb_invert_pitch_enabled(content)
 
 function OptionsView:cb_gamepad_use_ps4_style_input_icons_setup()
 	 --[[ Decompilation error in this vicinity: --]]  --[[ BLOCK #0 1-20, warpins: 1 --]] local options = { } options [1] = { value = false,
-		text = Localize("menu_settings_xb1_input_icons") } options [2] = { value = true,
+
+		text = Localize("menu_settings_auto") } options [2] = { value = true,
 		text = Localize("menu_settings_ps4_input_icons") } --[[ END OF BLOCK #0 --]]
 
 

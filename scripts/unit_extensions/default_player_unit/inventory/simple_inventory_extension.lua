@@ -65,6 +65,8 @@ function SimpleInventoryExtension:init(extension_init_context, unit, extension_i
 
 
 
+	self._blocked_wield_slots = { }
+
 	self._weapon_fx = { }
 
 	self._items_to_spawn = { }
@@ -127,8 +129,8 @@ function SimpleInventoryExtension:extensions_ready(world, unit)
 		end
 	end
 
-
 	local career_settings = career_extension:career_settings()
+
 	if career_settings.additional_inventory then
 		for slot_name, slot_items in pairs(career_settings.additional_inventory) do
 			for i = 1, #slot_items do
@@ -143,6 +145,16 @@ function SimpleInventoryExtension:extensions_ready(world, unit)
 			end
 		end
 	end
+
+
+
+
+
+
+
+
+
+
 
 
 	Unit.set_data(self._first_person_unit, "equipment", self._equipment)
@@ -610,6 +622,16 @@ function SimpleInventoryExtension:wield(slot_name)
 	if slot_data == nil then
 		return false
 	end
+
+
+
+
+
+
+
+
+
+
 
 	if equipment.wielded_slot ~= slot_name then
 		self.buff_extension:trigger_procs("on_unwield")

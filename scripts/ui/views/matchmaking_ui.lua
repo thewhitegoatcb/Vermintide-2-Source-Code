@@ -294,18 +294,7 @@ function MatchmakingUI:update(dt, t)
 			self:_update_mission_timer()
 		end
 
-		local gamepad_active = self.input_manager:is_device_active("gamepad")
-		if gamepad_active then
-			if not self.gamepad_active_last_frame then
-				self.gamepad_active_last_frame = true
-				self:_update_button_prompts()
-			end
-
-		elseif self.gamepad_active_last_frame then
-			self.gamepad_active_last_frame = false
-			self:_update_button_prompts()
-		end
-
+		self:_handle_gamepad_activity()
 
 		if Managers.party:is_leader(self._my_peer_id) then
 			local allow_cancel_matchmaking = self.matchmaking_manager:allow_cancel_matchmaking()
@@ -315,6 +304,27 @@ function MatchmakingUI:update(dt, t)
 		self:_draw(ui_top_renderer, input_service, is_matchmaking, dt)
 	end
 end
+
+function MatchmakingUI:_handle_gamepad_activity()
+	local gamepad_active = self.input_manager:is_device_active("gamepad")
+	local most_recent_device = Managers.input:get_most_recent_device()
+	local force_update = self.gamepad_active_last_frame == nil or gamepad_active and most_recent_device ~= self._most_recent_device
+
+	if gamepad_active then
+		if not self.gamepad_active_last_frame or force_update then
+			self.gamepad_active_last_frame = true
+			self:_update_button_prompts()
+		end
+
+	elseif self.gamepad_active_last_frame or force_update then
+		self.gamepad_active_last_frame = false
+		self:_update_button_prompts()
+	end
+
+
+	self._most_recent_device = most_recent_device
+end
+
 
 function MatchmakingUI:_draw(ui_renderer, input_service, is_matchmaking, dt)
 	local detailed_info_visibility_progress = self._detailed_info_visibility_progress
@@ -856,13 +866,17 @@ function MatchmakingUI:destroy()
 function MatchmakingUI:get_input_texture_data(input_action)
 	local input_manager = self.input_manager
 	local input_service = input_manager:get_service("ingame_menu")
-
 	local gamepad_active = input_manager:is_device_active("gamepad")
+	local most_recent_device = input_manager:get_most_recent_device()
+
 	local platform = PLATFORM
 	if IS_XB1 and GameSettingsDevelopment.allow_keyboard_mouse and not gamepad_active then
 		platform = "win32"
 	elseif IS_WINDOWS and gamepad_active then
 		platform = "xb1"
+
+		if most_recent_device.type() == "sce_pad" then platform = "ps_pad"
+		end
 	end
 
 	local keymap_binding = input_service:get_keymapping(input_action, platform)
@@ -880,8 +894,8 @@ function MatchmakingUI:get_input_texture_data(input_action)
 		do return nil, Keyboard.button_locale_name(key_index) or Keyboard.button_name(key_index), prefix_text end
 	elseif device_type == "mouse" then
 		do return nil, Mouse.button_name(key_index), prefix_text end
-	elseif device_type == "gamepad" then
-		local button_name = Pad1.button_name(key_index)
+	elseif device_type == "gamepad" or device_type == "ps_pad" then
+		local button_name = most_recent_device.button_name(key_index)
 		local button_texture_data = ButtonTextureByName(button_name, platform)
 		return button_texture_data, button_name, prefix_text
 	end

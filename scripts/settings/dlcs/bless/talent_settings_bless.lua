@@ -29,34 +29,33 @@ local buff_tweak_data = {
 
 
 
-	victor_priest_4_1 = { vizualized_multiplier_2 = 1, vizualized_multiplier = 0.25 },
-
-
-
-	victor_priest_4_2 = { vizualized_multiplier = 0.4, vizualized_delay = 1 },
-
-
-
-	victor_priest_4_3 = { chunk_size = 40 },
-
-
-	victor_priest_4_3_debuff = { multiplier = 0.15 },
 
 
 
 
 
-	victor_priest_5_1_buff = { multiplier = 0.35 },
+
+
+
+
+
+
+
+	victor_priest_4_3 = { percent_fury_to_gain = 0.02, chunk_size = 40 },
+
+
+
+
+
+
+	victor_priest_5_1_buff = { multiplier = 0.25 },
+
 
 
 	victor_priest_5_2_buff = { multiplier = 0.25 },
 
 
 	victor_priest_5_3_buff = { multiplier = 0.15 },
-
-
-
-	victor_priest_6_1_buff = { duration = 8, multiplier = 1.25 },
 
 
 
@@ -256,8 +255,20 @@ local talent_buff_templates = {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
 	victor_priest_4_1 = {
-		buffs = { { event = "on_start_action", buff_func = "victor_priest_4_1_on_push" } } },
+		buffs = { { event = "on_damage_taken", buff_func = "victor_priest_4_1_on_damage_taken" } } },
+
 
 
 
@@ -266,6 +277,7 @@ local talent_buff_templates = {
 
 	victor_priest_4_3 = {
 		buffs = { { event = "on_kill", buff_func = "victor_priest_4_3_heal_on_kill" } } },
+
 
 
 
@@ -283,8 +295,21 @@ local talent_buff_templates = {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 	victor_priest_5_1_buff = {
-		buffs = { { max_stacks = 1, icon = "victor_priest_5_1", stat_buff = "critical_strike_effectiveness" } } },
+		buffs = { { max_stacks = 1, icon = "victor_priest_5_1", stat_buff = "power_level_large" } } },
+
 
 
 
@@ -366,7 +391,8 @@ local talent_trees = { {
 		{ "victor_priest_vanguard", "victor_priest_reaper", "victor_priest_heal_share" },
 		{ "victor_priest_2_1", "victor_priest_2_2", "victor_priest_2_3" },
 		{ "victor_priest_3_1", "victor_priest_3_2", "victor_priest_3_3" },
-		{ "victor_priest_4_1", "victor_priest_4_2", "victor_priest_4_3" },
+		{ "victor_priest_4_1_new", "victor_priest_4_2_new", "victor_priest_4_3" },
+
 		{ "victor_priest_5_1", "victor_priest_5_2", "victor_priest_5_3" },
 		{ "victor_priest_6_1", "victor_priest_6_2", "victor_priest_6_3" } } }
 
@@ -500,38 +526,86 @@ local talents = { { description = "vanguard_desc", name = "victor_priest_vanguar
 
 
 
-	{ description = "victor_priest_4_1_desc", name = "victor_priest_4_1", num_ranks = 1, icon = "victor_priest_4_1",
+	{ description = "victor_priest_4_1_desc_new", name = "victor_priest_4_1_new", num_ranks = 1, icon = "victor_priest_4_1",
 
 
 
 
-		description_values = { { value_type = "percent",
-				value = buff_tweak_data.victor_priest_4_1.vizualized_multiplier }, { value_type = "percent",
-				value = buff_tweak_data.victor_priest_4_1.vizualized_multiplier_2 } },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		description_values = { },
+
+
 
 
 		buffs = { "victor_priest_4_1" } },
 
 
 
-	{ description = "victor_priest_4_2_desc", name = "victor_priest_4_2", num_ranks = 1, icon = "victor_priest_4_2",
+	{ description = "victor_priest_4_2_desc_new", name = "victor_priest_4_2_new", num_ranks = 1, icon = "victor_priest_4_2",
 
 
 
-		description_values = { {
-				value = buff_tweak_data.victor_priest_4_2.vizualized_delay }, { value_type = "percent",
-				value = buff_tweak_data.victor_priest_4_2.vizualized_multiplier } },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		description_values = { { value_type = "percent",
+				value = CareerConstants.wh_priest.talent_4_2_fury_to_gain_percent }, { value_type = "percent",
+				value = CareerConstants.wh_priest.talent_4_2_smite_improved_damage } },
 
 
 		buffs = { } },
 
 
-	{ description = "victor_priest_4_3_desc", name = "victor_priest_4_3", buffer = "server", num_ranks = 1, icon = "victor_priest_4_3",
+	{ description = "victor_priest_4_3_desc_new", name = "victor_priest_4_3", buffer = "server", num_ranks = 1, icon = "victor_priest_4_3",
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 		description_values = { { value_type = "percent",
-				value = buff_tweak_data.victor_priest_4_3_debuff.multiplier } },
+				value = buff_tweak_data.victor_priest_4_3.percent_fury_to_gain } },
 
 
 		buffs = { "victor_priest_4_3" } },
@@ -539,7 +613,9 @@ local talents = { { description = "vanguard_desc", name = "victor_priest_vanguar
 
 
 
-	{ description = "victor_priest_5_1_desc", name = "victor_priest_5_1", buffer = "server", num_ranks = 1, icon = "victor_priest_5_1",
+	{ description = "victor_priest_5_1_desc_new", name = "victor_priest_5_1", buffer = "server", num_ranks = 1, icon = "victor_priest_5_1",
+
+
 
 
 
@@ -580,13 +656,14 @@ local talents = { { description = "vanguard_desc", name = "victor_priest_vanguar
 
 
 
-	{ description = "victor_priest_6_1_desc", name = "victor_priest_6_1", num_ranks = 1, icon = "victor_priest_6_1",
+	{ description = "victor_priest_6_1_desc_new", name = "victor_priest_6_1", num_ranks = 1, icon = "victor_priest_6_1",
+
 
 
 
 
 		description_values = { {
-				value = buff_tweak_data.victor_priest_6_1_buff.duration } },
+				value = CareerConstants.wh_priest.talent_6_1_improved_ability_duration } },
 
 
 		buffs = { } },

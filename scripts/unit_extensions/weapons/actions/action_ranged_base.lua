@@ -117,7 +117,7 @@ end
 
 function ActionRangedBase:client_owner_post_update(dt, t, world, can_damage, current_time_in_action)
 	if self._state == "waiting_to_shoot" then
-		self:_waiting_to_shoot(t)
+		self:_waiting_to_shoot(dt, t)
 	end
 	if self._state == "start_shooting" then
 		self:_start_shooting(t)
@@ -161,7 +161,7 @@ function ActionRangedBase:finish(reason)
 	end
 end
 
-function ActionRangedBase:_waiting_to_shoot(t)
+function ActionRangedBase:_waiting_to_shoot(dt, t)
 	if self._time_to_shoot <= t then
 		self._state = "start_shooting"
 	end

@@ -302,7 +302,7 @@ weapon_template.actions = {
 
 
 
-		heavy_attack_right = { damage_window_start = 0.15, range_mod = 1.35, kind = "sweep", first_person_hit_anim = "shake_hit", no_damage_impact_sound_event = "slashing_hit_armour", additional_critical_strike_chance = 0, use_precision_sweep = false, damage_profile = "medium_slashing_linesman_1h", hit_effect = "melee_hit_sword_1h", damage_window_end = 0.3, impact_sound_event = "slashing_hit", anim_end_event = "attack_finished", dedicated_target_range = 2.5, uninterruptible = true, anim_event = "attack_swing_heavy_right", hit_stop_anim = "attack_hit", total_time = 2.25,
+		heavy_attack_right = { damage_window_start = 0.15, range_mod = 1.35, kind = "sweep", first_person_hit_anim = "shake_hit", no_damage_impact_sound_event = "slashing_hit_armour", additional_critical_strike_chance = 0, use_precision_sweep = false, damage_profile = "medium_slashing_tank_1h", hit_effect = "melee_hit_sword_1h", damage_window_end = 0.3, impact_sound_event = "slashing_hit", anim_end_event = "attack_finished", dedicated_target_range = 2.5, uninterruptible = true, anim_event = "attack_swing_heavy_right", hit_stop_anim = "attack_hit", total_time = 2.25,
 
 
 
@@ -346,6 +346,8 @@ weapon_template.actions = {
 
 
 			hit_mass_count = LINESMAN_HIT_MASS_COUNT,
+
+
 
 
 

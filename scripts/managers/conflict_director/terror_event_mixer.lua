@@ -1825,11 +1825,11 @@ function TerrorEventMixer.start_event(event_name, data, id)
 		data = { seed = 0 }
 	end
 
-	print(string.format("TerrorEventMixer.start_event: %s (seed: %d)", event_name, data.seed))
-
 
 	local seed, _ = Math.next_random(data.seed)
 	data.seed = seed
+
+	print(string.format("TerrorEventMixer.start_event: %s (seed: %d)", event_name, data.seed))
 
 	local active_events = TerrorEventMixer.active_events
 

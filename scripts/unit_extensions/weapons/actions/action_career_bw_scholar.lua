@@ -15,11 +15,21 @@ function ActionCareerBWScholar:client_owner_start_action(new_action, t, chain_ac
 	local talent_extension = self.talent_extension
 	local owner_unit = self.owner_unit
 
-	if talent_extension:has_talent("sienna_scholar_activated_ability_dump_overcharge", "bright_wizard", true) then
+
+
+
+
+
+
+
+
+
+
+	if talent_extension:has_talent("sienna_scholar_activated_ability_no_overcharge", "bright_wizard", true) then
 		local player = Managers.player:owner(owner_unit)
 		if player.local_player or self.is_server and player.bot_player then
-			local overcharge_extension = self.overcharge_extension
-			overcharge_extension:reset()
+			local buff_ext = self.buff_extension
+			buff_ext:add_buff("sienna_scholar_activated_ability_no_overcharge")
 		end
 	end
 

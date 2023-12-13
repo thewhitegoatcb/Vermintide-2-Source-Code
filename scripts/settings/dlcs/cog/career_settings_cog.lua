@@ -51,7 +51,8 @@ CareerSettings.dr_engineer = { profile_name = "dwarf_ranger", display_name = "dr
 
 	activated_ability = ActivatedAbilitySettings.dr_4,
 	passive_ability = PassiveAbilitySettings.dr_4,
-	attributes = { max_hp = 100, max_hp_kd = 300, base_critical_strike_chance = 0.05 },
+	attributes = { max_hp = 125, max_hp_kd = 300, base_critical_strike_chance = 0.05 },
+
 
 
 
@@ -163,6 +164,11 @@ CareerSettings.dr_engineer = { profile_name = "dwarf_ranger", display_name = "dr
 
 
 	additional_item_slots = { slot_grenade = 2 } }
+
+
+
+
+
 
 
 

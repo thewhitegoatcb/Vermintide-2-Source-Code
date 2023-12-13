@@ -579,7 +579,7 @@ weapon_template.actions = {
 
 
 
-		push = { damage_window_start = 0.05, anim_end_event = "attack_finished", outer_push_angle = 180, kind = "push_stagger", no_damage_impact_sound_event = "slashing_hit_armour", attack_template = "basic_sweep_push", damage_profile_outer = "light_push", weapon_action_hand = "right", push_angle = 100, hit_effect = "melee_hit_hammers_1h", damage_window_end = 0.2, impact_sound_event = "slashing_hit", charge_value = "action_push", dedicated_target_range = 2, anim_event = "attack_push", damage_profile_inner = "medium_push", total_time = 0.8,
+		push = { damage_window_start = 0.05, anim_end_event = "attack_finished", outer_push_angle = 180, kind = "push_stagger", no_damage_impact_sound_event = "slashing_hit_armour", attack_template = "basic_sweep_push", damage_profile_outer = "light_push", fatigue_cost = "action_stun_push", weapon_action_hand = "right", push_angle = 100, hit_effect = "melee_hit_hammers_1h", damage_window_end = 0.2, impact_sound_event = "slashing_hit", charge_value = "action_push", dedicated_target_range = 2, anim_event = "attack_push", damage_profile_inner = "medium_push", total_time = 0.8,
 
 
 			anim_end_event_condition_func = function (unit, end_reason)
@@ -623,6 +623,7 @@ weapon_template.actions = {
 
 				return not status_extension:fatigued()
 			end } },
+
 
 
 

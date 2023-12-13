@@ -58,6 +58,8 @@ local windows = {
 
 
 
+DLCUtils.merge("store_windows", windows)
+
 local window_layouts = { { name = "featured", display_name = "featured", draw_character = true, close_on_exit = true, menu_option = true,
 
 
@@ -181,6 +183,8 @@ local window_layouts = { { name = "featured", display_name = "featured", draw_ch
 
 
 
+
+DLCUtils.append("store_window_layouts", window_layouts)
 
 local MAX_ACTIVE_WINDOWS = 5
 

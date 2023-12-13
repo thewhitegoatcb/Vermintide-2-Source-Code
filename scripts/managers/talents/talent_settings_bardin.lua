@@ -207,7 +207,9 @@ local buff_tweak_data = {
 
 
 
-	bardin_slayer_crit_chance = { bonus = 0.05 },
+	bardin_slayer_crit_chance = { bonus = 0.1 },
+
+
 
 
 	bardin_slayer_attack_speed_on_double_one_handed_weapons_buff = { multiplier = 0.1 },
@@ -1506,7 +1508,6 @@ TalentBuffTemplates.dwarf_ranger = {
 
 	bardin_ranger_activated_ability_stealth_outside_of_smoke = {
 		buffs = { { buff_to_add = "bardin_ranger_activated_ability_buff", name = "bardin_ranger_activated_ability", icon = "bardin_ranger_activated_ability", max_stacks = 1, refresh_durations = true, apply_buff_func = "add_buff_local" } } },
-
 
 
 

@@ -460,9 +460,7 @@ function BackendInterfaceLootPlayfab:achievement_rewards_request_cb(data, result
 
 	local rewarded_currency = { }
 	if currency_added then
-		for _, data in ipairs(currency_added) do
-			local code = data.code
-			local amount = data.amount
+		for code, amount in pairs(currency_added) do
 			loot [#loot + 1] = { type = "currency", currency_code = code, amount = amount }
 		end
 	end
@@ -626,9 +624,7 @@ function BackendInterfaceLootPlayfab:claim_multiple_achievement_rewards_request_
 
 	local rewarded_currency = { }
 	if currency_added then
-		for _, data in ipairs(currency_added) do
-			local code = data.code
-			local amount = data.amount
+		for code, amount in pairs(currency_added) do
 			loot [#loot + 1] = { type = "currency", currency_code = code, amount = amount }
 		end
 	end

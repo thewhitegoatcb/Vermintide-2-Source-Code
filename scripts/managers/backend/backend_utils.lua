@@ -271,3 +271,32 @@ function BackendUtils.commit_load_time_data(load_time_data)
 	local common = Managers.backend:get_interface("common")
 	common:commit_load_time_data(load_time_data)
 end
+
+local CURRENCY_LOOKUP = {
+	SM = { "shillings_01", [5.0] = "shillings_02", [25.0] = "shillings_04", [10.0] = "shillings_03", [100.0] = "shillings_06", [50.0] = "shillings_05" } }
+
+
+
+
+
+
+
+
+function BackendUtils.get_fake_currency_item(currency_code, amount)
+	local lookup = CURRENCY_LOOKUP [currency_code]
+	fassert(lookup, "Unsupported currency code '%s'", currency_code)
+
+	local item_key = lookup [amount]
+	item_key =
+	item_key or amount >= 1 and amount < 50 and
+	"shillings_small" or
+	amount >= 50 and amount < 100 and
+	"shillings_medium" or
+
+	"shillings_large"
+
+
+
+	local data = Currencies [item_key]
+	return table.clone(data), item_key
+end

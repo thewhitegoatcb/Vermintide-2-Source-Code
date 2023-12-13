@@ -10,6 +10,7 @@ function PlayerProjectileImpactUnitExtension:init(extension_init_context, unit, 
 	self.owner_unit = owner_unit
 	local owner_player = Managers.player:owner(owner_unit)
 	self._dont_target_friendly = extension_init_data.dont_target_friendly
+	self._dont_target_patrols = extension_init_data.dont_target_patrols
 
 	local item_name = extension_init_data.item_name
 	local item_data = ItemMasterList [item_name]
@@ -222,6 +223,10 @@ function PlayerProjectileImpactUnitExtension:_valid_target(unit, hit_unit, owner
 		if has_side and not side_manager:is_enemy(self.owner_unit, hit_unit) then
 			return false
 		end
+	end
+
+	if self._dont_target_patrols and AiUtils.is_part_of_patrol(unit) and not AiUtils.is_aggroed(unit) then
+		return false
 	end
 
 	return true

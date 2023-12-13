@@ -660,6 +660,7 @@ end
 
 
 
+
 function BuffSystem:rpc_add_buff(channel_id, unit_id, buff_template_name_id, attacker_unit_id, server_buff_id, send_to_sender)
 	if self.is_server then
 		if send_to_sender then

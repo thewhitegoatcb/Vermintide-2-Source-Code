@@ -34,9 +34,11 @@ ControlledUnitTemplates = {
 
 
 
-	necromancer_pet_straggler = { pet_ui_type = "buff", duration = 20,
+	necromancer_pet_straggler = { pet_ui_type = "buff", duration = 20, client_version = "necromancer_pet_straggler_client",
 
 		disband_type = ControlledUnitDisbandType.kill } }
+
+
 
 
 

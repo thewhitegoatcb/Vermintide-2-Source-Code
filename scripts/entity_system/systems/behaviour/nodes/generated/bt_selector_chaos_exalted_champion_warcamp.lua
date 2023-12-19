@@ -18,7 +18,7 @@ function BTSelector_chaos_exalted_champion_warcamp:leave(unit, blackboard, t, re
 end
 
 function BTSelector_chaos_exalted_champion_warcamp:run(unit, blackboard, t, dt)
-
+	local Profiler_start = Profiler.start local Profiler_stop = Profiler.stop
 
 	local child_running = self:current_running_child(blackboard)
 	local children = self._children

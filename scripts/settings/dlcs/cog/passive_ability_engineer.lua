@@ -89,6 +89,10 @@ function PassiveAbilityEngineer:_register_events()
 	Managers.state.event:register(self, "on_talents_changed", "on_talents_changed")
 end
 
+function PassiveAbilityEngineer:game_object_initialized(unit, go_id)
+	self:on_talents_changed(unit, self._talent_extension, true)
+end
+
 function PassiveAbilityEngineer:_unregister_events()
 	local event_manager = Managers.state.event
 	if event_manager then

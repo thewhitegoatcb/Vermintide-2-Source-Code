@@ -18,7 +18,7 @@ function BTSelector_dummy_exalted_sorcerer_drachenfels:leave(unit, blackboard, t
 end
 
 function BTSelector_dummy_exalted_sorcerer_drachenfels:run(unit, blackboard, t, dt)
-
+	local Profiler_start = Profiler.start local Profiler_stop = Profiler.stop
 
 	local child_running = self:current_running_child(blackboard)
 	local children = self._children

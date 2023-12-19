@@ -156,8 +156,11 @@ function ActionTrueFlightBowAim:client_owner_post_update(dt, t, world, can_damag
 		self.played_aim_sound = true
 	end
 
-	if not is_bot and current_target and not HEALTH_ALIVE [current_target] then
-		self:_mark_target(nil)
+	if current_target and not HEALTH_ALIVE [current_target] then
+		if not is_bot then
+			self:_mark_target(nil)
+		end
+
 		self.target = nil
 		self.aimed_target = nil
 		current_target = nil

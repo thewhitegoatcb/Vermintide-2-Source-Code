@@ -172,6 +172,16 @@ function CareerExtension:extensions_ready(world, unit)
 	Managers.state.event:register(self, "gm_event_round_started", "set_activated_ability_cooldown_unpaused")
 end
 
+function CareerExtension:game_object_initialized(unit, go_id)
+	local passive_abilities = self._passive_abilities
+	for i = 1, self._num_passive_abilities do
+		local ability = passive_abilities [i]
+		if ability.game_object_initialized then
+			ability:game_object_initialized(unit, go_id)
+		end
+	end
+end
+
 function CareerExtension:force_trigger_active_ability()
 	local player = self.player
 	local abilities = self._abilities

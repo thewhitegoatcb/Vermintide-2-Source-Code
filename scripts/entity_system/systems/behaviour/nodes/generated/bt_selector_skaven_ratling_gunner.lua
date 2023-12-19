@@ -18,7 +18,7 @@ function BTSelector_skaven_ratling_gunner:leave(unit, blackboard, t, reason)
 end
 
 function BTSelector_skaven_ratling_gunner:run(unit, blackboard, t, dt)
-
+	local Profiler_start = Profiler.start local Profiler_stop = Profiler.stop
 
 	local child_running = self:current_running_child(blackboard)
 	local children = self._children
